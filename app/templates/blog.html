@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col content">
+    
+		{% include 'theme-chooser.html' %}
+
+    <h1>{{ page.title }}</h1>
+    <!--<p class="text-muted"><small>{{ page.pub_date }}</small></p>-->
+    <div class="content">
+			{{ page.body }}
+
+      <br />
+      <br />
+			{% for child in page.children %}
+				<div class='card'>
+					<div class='card-body'>
+						<p class='text-muted pull-right'><small>{{ child.pub_date }}</small></p>
+						<h3><a href='{{ child.path }}'>{{ child.title }}</a></h3>
+						<p>{{ child.description }}</p>
+						<i class="fa fa-tags"></i> Tags:
+						{% for tag in child.tags.all %}
+							<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+    </div>
+  
+    <br />
+  </div>
+  <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
+		{# include tableOfContents #}
+  </aside>
+</div>
+{% endblock %}
