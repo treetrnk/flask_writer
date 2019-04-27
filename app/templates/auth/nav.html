@@ -1,0 +1,19 @@
+<h1 class="mb-5">Admin Panel</h1>
+
+<ul class="nav nav-tabs mb-5">
+	<li class="nav-item">
+		<a href="{{ url_for('page.add_page') }}" class="nav-link {% if tab == 'pages' %}active{% endif %}">
+			Pages
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('auth.add_user') }}" class="nav-link {% if tab == 'users' %}active{% endif %}">
+			Users
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('main.home') }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
+			Settings
+		</a>
+	</li>
+</ul>	

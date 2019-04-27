@@ -220,7 +220,7 @@
 
 			{% block content %}
 			{% endblock %}
-
+			<br /><br />
     </section>
 
 		<footer class="text-muted small">
@@ -239,14 +239,20 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://coinhive.com/lib/captcha.min.js" async></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<!--<script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>-->
     <script type="text/javascript">
 			$(document).ready(function() {
+
+				var words = $('#page_body_input').val().match(/[^*#\s]+/g).length;
+				$('#display_count').text(words+" words");
+				
+				$("#page_body_input").on('keyup', function(e) {
+					var words = this.value.match(/[^*$\s]+/g).length;
+					$('#display_count').text(words+" words");
+				});
 
 				$('.nav-menu').click(function(e) {
 					var $this = $(this);
@@ -308,7 +314,7 @@
         });
 
 				$(function () {
-				  $('[data-toggle="tooltip"]').tooltip()
+				  $('[data-toggle="tooltip"]').tooltip
 				})
 
 				var postType = "{# page.template #}";
@@ -322,7 +328,7 @@
         }
 
         $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
+          $('[data-toggle="tooltip"]').tooltip
         })
 
 

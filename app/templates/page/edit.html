@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'auth/nav.html' %}
+
+<h2>New Page</h2>
+
+<form class="form" method="post">
+	{{ form.hidden_tag() }}
+	
+	<!--TITLE-->
+	<div class="form-group row">
+		{{ form.title.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.title.errors %}
+				{{ form.title(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.title.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.title(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--SLUG-->
+	<div class="form-group row">
+		{{ form.slug.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.slug.errors %}
+				{{ form.slug(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.slug.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.slug(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--TEMPLATE-->
+	<div class="form-group row">
+		{{ form.template.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.template.errors %}
+				{{ form.template(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.template.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.template(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--PARENT-->
+	<div class="form-group row">
+		{{ form.parent_id.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.parent_id.errors %}
+				{{ form.parent_id(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.parent_id.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.parent_id(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--BANNER-->
+	<div class="form-group row">
+		{{ form.banner.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.banner.errors %}
+				{{ form.banner(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.banner.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.banner(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--BODY-->
+	<div class="form-group row">
+		{{ form.body.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.body.errors %}
+				{{ form.body(class="form-control is-invalid", rows="10", id="page_body_input") }}
+				<div class="invalid-feedback">
+					{% for error in form.body.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.body(class="form-control", rows="10", id="page_body_input") }}
+			{% endif %}
+			<small id="display_count" class="form-text text-muted float-right">
+				0 words
+			</small>
+		</div>
+	</div>
+
+	<!--SUMMARY-->
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-4">
+			{{ form.summary.label(class="control-label") }} 
+			{% if form.summary.errors %}
+				{{ form.summary(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.summary.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.summary(class="form-control") }}
+			{% endif %}
+		</div>
+
+	<!--SIDEBAR-->
+		<div class="col-sm-4">
+			{{ form.sidebar.label(class="control-label") }} 
+			{% if form.sidebar.errors %}
+				{{ form.sidebar(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.sidebar.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.sidebar(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--TAGS-->
+	<div class="form-group row">
+		{{ form.tags.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.tags.errors %}
+				{{ form.tags(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.tags.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.tags(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--AUTHOR-->
+	<div class="form-group row">
+		{{ form.user_id.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.user_id.errors %}
+				{{ form.user_id(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.tags.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.user_id(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--PUBLISHED DATE-->
+	<div class="form-group row">
+		{{ form.pub_date.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.pub_date.errors %}
+				{{ form.pub_date(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.pub_date.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.pub_date(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--PUBLISHED-->
+	<div class="form-group row">
+		{{ form.published.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.published.errors %}
+				{{ form.published(class="is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.pub_date.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.published() }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			{{ form.submit(class="btn btn-primary") }}
+			<a href="/" class="btn btn-secondary">Cancel</a>
+		</div>
+	</div>
+
+</form>
+
+{% endblock %}

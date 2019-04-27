@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'auth/nav.html' %}
+
+<h2>Add User</h2>
+
+<form class="form" method="post">
+	{{ form.hidden_tag() }}
+	
+	<!--USERNAME-->
+	<div class="form-group row">
+		{{ form.username.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.username.errors %}
+				{{ form.username(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.username.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.username(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--EMAIL-->
+	<div class="form-group row">
+		{{ form.email.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.email.errors %}
+				{{ form.email(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.email.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.email(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--ABOUT ME-->
+	<div class="form-group row">
+		{{ form.about_me.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.about_me.errors %}
+				{{ form.about_me(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.about_me.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.about_me(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--PASSWORD-->
+	<div class="form-group row">
+		{{ form.password.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.password.errors %}
+				{{ form.password(class="form-control is-invalid", placeholder="Password") }}
+				<div class="invalid-feedback">
+					{% for error in form.password.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.password(class="form-control", placeholder="Password") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--CONFIRM PASSWORD-->
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			{% if form.confirm_password.errors %}
+				{{ form.confirm_password(class="form-control is-invalid", placeholder="Confirm Password") }}
+				<div class="invalid-feedback">
+					{% for error in form.confirm_password.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			{{ form.submit(class="btn btn-primary") }}
+			<a href="/" class="btn btn-secondary">Cancel</a>
+		</div>
+	</div>
+
+{% endblock %}
