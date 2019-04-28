@@ -216,9 +216,9 @@
         {% if messages %}
             {% for category, message in messages %}
 							{% if category != "message" %}
-								<div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+								<div class="alert alert-{{ category }}" role="alert">{{ message|safe }}</div>
 							{% else %}
-								<div class="alert alert-warning" role="alert">{{ message }}</div>
+								<div class="alert alert-warning" role="alert">{{ message|safe }}</div>
 							{% endif %}
             {% endfor %}
         {% endif %}

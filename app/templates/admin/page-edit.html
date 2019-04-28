@@ -3,7 +3,7 @@
 
 {% include 'admin/nav.html' %}
 
-<h2>New Page</h2>
+<h2>{{ action }} Page</h2>
 
 <form class="form" method="post">
 	{{ form.hidden_tag() }}
@@ -170,7 +170,7 @@
 			{% if form.user_id.errors %}
 				{{ form.user_id(class="form-control is-invalid") }}
 				<div class="invalid-feedback">
-					{% for error in form.tags.errors %}
+					{% for error in form.user_id.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
@@ -217,7 +217,7 @@
 	<div class="row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
-			{{ form.submit(class="btn btn-primary") }}
+			<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Page</button>
 			<a href="{{ url_for('admin.pages') }}" class="btn btn-secondary">Cancel</a>
 		</div>
 	</div>

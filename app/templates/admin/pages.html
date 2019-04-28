@@ -13,6 +13,7 @@
 	<thead>
 		<tr>
 			<th>Name</th>
+			<th>Path</th>
 			<th width="100">Actions</th>
 		</tr>
 	</thead>
@@ -20,8 +21,9 @@
 		{% for page in pages %}
 			<tr>
 				<td>{{ page.title }}</td>
+				<td>{{ page.path }}</td>
 				<td class="text-center">
-					<a href="#" class="btn btn-primary btn-sm">
+					<a href="{{ url_for('admin.edit_page', id=page.id) }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
 				</td>

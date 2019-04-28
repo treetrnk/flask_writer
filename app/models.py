@@ -23,6 +23,12 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def __str__(self):
+        return self.username
+
+    def __repr__(self):
+        return f"User({self.username})"
+
 
 @login.user_loader
 def load_user(id):
@@ -38,7 +44,7 @@ class Page(db.Model):
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     children = db.relationship('Page', remote_side=[id], backref='parent')
     template = db.Column(db.String(100))
-    banner = db.Column(db.String(500), nullable=True, default='images/default.png')
+    banner = db.Column(db.String(500), nullable=True)
     body = db.Column(db.String(10000000))
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
             backref=db.backref('pages', lazy=True))
@@ -59,7 +65,24 @@ class Page(db.Model):
         ('blog', 'Blog'),
     ]
 
+    def set_path(self):
+        if self.parent:
+            self.path = f"{self.parent.path}/{self.slug}"
+        else:
+            self.path = f"/{self.slug}"
+
+    def __str__(self):
+        return f"{self.title} ({self.path})"
+
+    def __repr__(self):
+        return f"Page({self.title} - {self.path})"
+
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75), nullable=False)
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"Tag({self.name})"
