@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_user') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add User
+</a>
+
+<h2>Users</h2>
+
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th width="100">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for user in users %}
+			<tr>
+				<td>{{ user.username }}</td>
+				<td class="text-center">
+					<a href="#" class="btn btn-primary btn-sm">
+						<i class="fas fa-edit"></i>
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

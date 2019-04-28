@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<h2>Add Tag</h2>
+
+<form class="form" method="post">
+	{{ form.hidden_tag() }}
+	
+	<!--TAG-->
+	<div class="form-group row">
+		{{ form.name.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.name.errors %}
+				{{ form.name(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.name.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.name(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			{{ form.submit(class="btn btn-primary") }}
+			<a href="{{ url_for('admin.tags') }}" class="btn btn-secondary">Cancel</a>
+		</div>
+	</div>
+
+{% endblock %}

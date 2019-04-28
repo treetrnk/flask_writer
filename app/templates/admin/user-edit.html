@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% include 'auth/nav.html' %}
+{% include 'admin/nav.html' %}
 
 <h2>Add User</h2>
 
@@ -97,7 +97,7 @@
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
 			{{ form.submit(class="btn btn-primary") }}
-			<a href="/" class="btn btn-secondary">Cancel</a>
+			<a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Cancel</a>
 		</div>
 	</div>
 

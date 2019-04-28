@@ -202,24 +202,31 @@
     <button type="button" class="btn btn-primary" id="sub-btn" data-toggle="modal" data-target="#subscribeMod" title="Subscribe"><i class="glyphicon glyphicon-envelope"></i><span class="hidden-xs"> Subscribe</span></button>
 
 		<section class="container content-wrapper">
-			{# if page.parent #}
+			{% if page %}
 				<ol class="breadcrumb">
 					{# for parent in page.all_parents #}
 						<li class="breadcrumb-item"><a href="{# parent.path #}">{# parent.title #}</a></li>
 					{# endfor #}
 						<li class="breadcrumb-item active">{# page.title #}</li>
 				</ol>
-			{# endif #}
+			{% endif %}
 			{# $page->breadcrumbs() #}
 
-			<!--
-			<div class='alert alert-danger' role='alert'><b>Error!</b> $error</div>
-			<div class='alert alert-success' role='alert'><b>Success! </b>$success</div>
-			-->
-			<br />
+			{% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+							{% if category != "message" %}
+								<div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+							{% else %}
+								<div class="alert alert-warning" role="alert">{{ message }}</div>
+							{% endif %}
+            {% endfor %}
+        {% endif %}
+			{% endwith %}
 
 			{% block content %}
 			{% endblock %}
+
 			<br /><br />
     </section>
 

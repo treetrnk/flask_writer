@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_page') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Page
+</a>
+
+<h2>Pages</h2>
+
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th width="100">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for page in pages %}
+			<tr>
+				<td>{{ page.title }}</td>
+				<td class="text-center">
+					<a href="#" class="btn btn-primary btn-sm">
+						<i class="fas fa-edit"></i>
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+<h1 class="mb-4"><i class="fas fa-user-astronaut"></i> Admin Panel</h1>
+
+<ul class="nav nav-tabs mb-4">
+	<li class="nav-item">
+		<a href="{{ url_for('admin.pages') }}" class="nav-link {% if tab == 'pages' %}active{% endif %}">
+			Pages
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('admin.users') }}" class="nav-link {% if tab == 'users' %}active{% endif %}">
+			Users
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('admin.tags') }}" class="nav-link {% if tab == 'tags' %}active{% endif %}">
+			Tags
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('main.home') }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
+			Settings
+		</a>
+	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('auth.logout') }}" class="nav-link">
+			Logout
+		</a>
+	</li>
+</ul>	

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="row justify-content-md-center">
+	<div class="col-md-5">
+		
+		<h1>Admin Login</h1>
+				<form method="post">
+					{{ form.hidden_tag() }}
+
+					<!--USERNAME-->
+					<div class="form-group row">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-user"></i></span>
+								</div>
+								{% if form.username.errors %}
+									{{ form.username(class="form-control form-control-lg is-invalid", placeholder="Username") }}
+									<div class="invalid-feedback">
+										{% for error in form.username.errors %}
+											{{ error }}
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.username(class="form-control form-control-lg", placeholder="Username") }}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+					<!--PASSWORD-->
+					<div class="form-group row">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-key"></i></span>
+								</div>
+								{% if form.password.errors %}
+									{{ form.password(class="form-control form-control-lg  is-invalid", placeholder="Password") }}
+									<div class="invalid-feedback">
+										{% for error in form.password.errors %}
+											{{ error }}
+										{% endfor %}
+									</div>
+								{% else %}
+									{{ form.password(class="form-control form-control-lg", placeholder="Password") }}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col">
+							{{ form.submit(class="btn btn-primary btn-lg btn-block") }}
+							<a href="{{ url_for('main.home') }}" class="btn btn-light btn-lg btn-block">Back</a>
+						</div>
+					</div>
+
+				</form>
+
+	</div>
+</div>
+
+{% endblock %}
