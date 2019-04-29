@@ -21,7 +21,7 @@
 			<tr>
 				<td>{{ tag.name }}</td>
 				<td class="text-center">
-					<a href="#" class="btn btn-primary btn-sm">
+					<a href="{{ url_for('admin.edit_tag', id=tag.id) }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
 				</td>

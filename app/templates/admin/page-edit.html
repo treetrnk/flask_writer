@@ -71,14 +71,14 @@
 		{{ form.parent_id.label(class="col-sm-2 control-from-label text-right") }} 
 		<div class="col-sm-8">
 			{% if form.parent_id.errors %}
-				{{ form.parent_id(class="form-control is-invalid") }}
+				{{ form.parent_id(class="form-control is-invalid mkSelect2") }}
 				<div class="invalid-feedback">
 					{% for error in form.parent_id.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.parent_id(class="form-control") }}
+				{{ form.parent_id(class="form-control mkSelect2") }}
 			{% endif %}
 		</div>
 	</div>
@@ -180,14 +180,14 @@
 		{{ form.user_id.label(class="col-sm-2 control-from-label text-right") }} 
 		<div class="col-sm-8">
 			{% if form.user_id.errors %}
-				{{ form.user_id(class="form-control is-invalid") }}
+				{{ form.user_id(class="form-control is-invalid mkSelect2") }}
 				<div class="invalid-feedback">
 					{% for error in form.user_id.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.user_id(class="form-control") }}
+				{{ form.user_id(class="form-control mkSelect2") }}
 			{% endif %}
 		</div>
 	</div>

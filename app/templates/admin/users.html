@@ -21,7 +21,7 @@
 			<tr>
 				<td>{{ user.username }}</td>
 				<td class="text-center">
-					<a href="#" class="btn btn-primary btn-sm">
+					<a href="{{ url_for('admin.edit_user', id=user.id) }}" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
 				</td>

@@ -3,7 +3,7 @@
 
 {% include 'admin/nav.html' %}
 
-<h2>Add User</h2>
+<h2>{{ action }} User</h2>
 
 <form class="form" method="post">
 	{{ form.hidden_tag() }}
@@ -59,6 +59,11 @@
 		</div>
 	</div>
 
+	{% if action == 'Edit' %}
+		<h3 class="mt-4">Change Password</h3>
+		<hr class="mb-4" />
+	{% endif %}
+
 	<!--PASSWORD-->
 	<div class="form-group row">
 		{{ form.password.label(class="col-sm-2 control-from-label text-right") }} 
@@ -75,6 +80,25 @@
 			{% endif %}
 		</div>
 	</div>
+
+	{% if action == 'Edit' %}
+	<!--NEW PASSWORD-->
+	<div class="form-group row mt-4">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			{% if form.new_password.errors %}
+				{{ form.new_password(class="form-control is-invalid", placeholder="New Password") }}
+				<div class="invalid-feedback">
+					{% for error in form.new_password.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.new_password(class="form-control", placeholder="New Password") }}
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
 
 	<!--CONFIRM PASSWORD-->
 	<div class="form-group row">

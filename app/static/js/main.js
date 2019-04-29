@@ -84,7 +84,9 @@ $(document).ready(function() {
 		$("#sub-btn").hide();
 	});
 
-	$('.mkSelect2').select2();
+	$('.mkSelect2').select2({
+		closeOnSelect: true
+	});
 
 	$('.datatable').DataTable({
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
@@ -93,8 +95,6 @@ $(document).ready(function() {
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip
 	})
-
-	var postType = "{# page.template #}";
 
 	if (postType == "chapter" || postType == "post") {
 		readProgress();

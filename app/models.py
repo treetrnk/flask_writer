@@ -68,9 +68,16 @@ class Page(db.Model):
 
     def set_path(self):
         if self.parent_id:
-            parent = Page.query.filter_by(id=self.parent_id)
+            print(f"PARENT ID: {self.parent_id}")
+            parent = Page.query.filter_by(id=self.parent_id).first()
+            print(f"PARENT: {parent}")
+            try:
+                parent_path = parent.path
+            except AttributeError:
+                parent.set_path()
             self.path = f"{parent.path}/{self.slug}"
             self.dir_path = parent.path
+
         else:
             self.path = f"/{self.slug}"
             self.dir_path = "/"
@@ -85,7 +92,7 @@ class Page(db.Model):
         return f"{self.title} ({self.path})"
 
     def __repr__(self):
-        return f"Page({self.title} - {self.path})"
+        return f"Page({self.id}, {self.title}, {self.path})"
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

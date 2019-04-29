@@ -2,7 +2,7 @@ from flask import render_template, redirect, flash, url_for
 from app import db
 from app.admin import bp
 from app.models import Page, User, Tag
-from app.admin.forms import AddUserForm, AddPageForm, AddTagForm 
+from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
 from flask_login import login_required, current_user
 
 @bp.route('/admin/users')
@@ -26,7 +26,26 @@ def add_user():
         db.session.commit()
         flash(f"{user.username.upper()} was added successfully!", "success")
         return redirect(url_for('main.home'))
-    return render_template('admin/user-edit.html', form=form, tab='users')
+    return render_template('admin/user-edit.html', form=form, tab='users', action='Add')
+
+@bp.route('/admin/user/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(id):
+    user = User.query.filter_by(id=id).first()
+    form = EditUserForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        user.about_me = form.about_me.data
+        if user.check_password(form.password.data):
+            user.set_password(form.new_password.data)
+        db.session.commit()
+        flash(f"{user.username.upper()} was added successfully!", "success")
+        return redirect(url_for('main.home'))
+    form.username.data = user.username
+    form.email.data = user.email
+    form.about_me.data = user.about_me
+    return render_template('admin/user-edit.html', form=form, tab='users', action='Edit', user=user)
 
 @bp.route('/admin/pages')
 @login_required
@@ -41,6 +60,8 @@ def add_page():
     form = AddPageForm()
     for field in form:
         print(f"{field.name}: {field.data}")
+    form.parent_id.choices = [(0,'---')] + [(p.id, p.title) for p in Page.query.all()]
+    form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
     if form.validate_on_submit():
         page = Page(
                 title = form.title.data,
@@ -75,19 +96,21 @@ def add_page():
 def edit_page(id):
     page = Page.query.filter_by(id=id).first()
     form = AddPageForm()
+    form.parent_id.choices = [(0,'---')] + [(p.id, p.title) for p in Page.query.filter(Page.id != id)]
+    form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data
-        page.parent_id = form.parent_id.data.id
+        page.parent_id = form.parent_id.data
         page.banner = form.banner.data
         page.body = form.body.data
         page.summary = form.summary.data
         page.sidebar = form.sidebar.data
         page.tags = form.tags.data
-        page.user_id = form.user_id.data.id
+        page.user_id = form.user_id.data
         page.pub_date = form.pub_date.data
         page.published = form.published.data
         page.set_path()
@@ -98,7 +121,7 @@ def edit_page(id):
     form.title.data = page.title
     form.slug.data = page.slug
     form.template.data = page.template
-    form.parent_id.data = page.parent_id
+    form.parent_id.data = page.parent_id 
     form.banner.data = page.banner
     form.body.data = page.body
     form.summary.data = page.summary
@@ -136,5 +159,21 @@ def add_tag():
             return redirect(url_for('admin.tags'))
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
-    return render_template('admin/tag-edit.html', form=form, tab='tags')
+    return render_template('admin/tag-edit.html', form=form, tab='tags', action='Add')
+
+@bp.route('/admin/tag/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_tag(id):
+    tag = Tag.query.filter_by(id=id).first()
+    form = AddTagForm()
+    if form.validate_on_submit():
+        if form.validate_tag(form.name.data, id):
+            tag.name = form.name.data
+            db.session.commit()
+            flash("Tag updated successfully.", "success")
+            return redirect(url_for('admin.tags'))
+        else:
+            flash("<b>Error!</b> That tag already exists.", "danger")
+    form.name.data = tag.name
+    return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit')
 
