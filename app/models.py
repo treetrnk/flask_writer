@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from datetime import datetime
+from markdown import markdown
 
 tags = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
@@ -71,6 +72,12 @@ class Page(db.Model):
         else:
             self.path = f"/{self.slug}"
 
+    def html_body(self):
+        return markdown(self.body)
+
+    def html_sidebar(self):
+        return markdown(self.sidebar)
+    
     def __str__(self):
         return f"{self.title} ({self.path})"
 

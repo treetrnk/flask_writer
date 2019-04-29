@@ -108,6 +108,7 @@ def edit_page(id):
             form=form, 
             tab='pages', 
             action='Edit',
+            edit_page=page
         )
 
 

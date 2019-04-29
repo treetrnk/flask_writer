@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
 <div class="row justify-content-md-center">
   <div class="col-md-8 col content">
     
@@ -8,11 +8,12 @@
 
     <h1>{{ page.title }}</h1>
     <div class="content">
-			{{ page.body|safe }}
+			{{ page.html_body()|safe }}
     </div>
   
     <br /><br />
 
   </div>
 </div>
+
 {% endblock %}

@@ -274,6 +274,11 @@
 					}
 				});
 
+				$("#page_slug_input").on('blur', function(e) {
+					var slug = $(this);
+					slug.val( slugify(slug.val()) );
+				});
+
 				$('.nav-menu').click(function(e) {
 					var $this = $(this);
 					if ($this.hasClass('glyphicon-menu-hamburger')) {
