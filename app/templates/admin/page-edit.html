@@ -158,14 +158,14 @@
 		{{ form.tags.label(class="col-sm-2 control-from-label text-right") }} 
 		<div class="col-sm-8">
 			{% if form.tags.errors %}
-				{{ form.tags(class="form-control is-invalid") }}
+				{{ form.tags(class="form-control is-invalid mkSelect2") }}
 				<div class="invalid-feedback">
 					{% for error in form.tags.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.tags(class="form-control") }}
+				{{ form.tags(class="form-control mkSelect2") }}
 			{% endif %}
 			<small class="form-text float-right">
 				<a href="{{ url_for('admin.add_tag') }}" target="addTag" class="text-success">
