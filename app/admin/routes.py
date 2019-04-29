@@ -65,7 +65,7 @@ def add_page():
     return render_template('admin/page-edit.html', 
             form=form, 
             tab='pages',
-            action='Edit'
+            action='Add'
         )
 
 @bp.route('/admin/page/edit/<int:id>', methods=['GET', 'POST'])

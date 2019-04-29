@@ -248,17 +248,30 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='js/slugify.js') }}"></script>
 		<!--<script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>-->
     <script type="text/javascript">
 			$(document).ready(function() {
 
-				var words = $('#page_body_input').val().match(/[^*#\s]+/g).length;
-				$('#display_count').text(words+" words");
+				var page_body = $('#page_body_input');
+				if (page_body.val()) {
+					var words = $('#page_body_input').val().match(/[^*#\s]+/g).length;
+					$('#display_count').text(words+" words");
+				}
 				
 				$("#page_body_input").on('keyup', function(e) {
 					var words = this.value.match(/[^*$\s]+/g).length;
 					$('#display_count').text(words+" words");
+				});
+
+				$("#page_title_input").on('keyup', function(e) {
+					console.log("fart");
+					var title = $(this).val();
+					var slug_input = $("#page_slug_input")
+					if ($("h2#page_title").text().startsWith("Add")) {
+						slug_input.val(slugify($(this).val()));
+					}
 				});
 
 				$('.nav-menu').click(function(e) {

@@ -3,7 +3,7 @@
 
 {% include 'admin/nav.html' %}
 
-<h2>{{ action }} Page</h2>
+<h2 id="page_title">{{ action }} Page</h2>
 
 <form class="form" method="post">
 	{{ form.hidden_tag() }}
@@ -13,14 +13,14 @@
 		{{ form.title.label(class="col-sm-2 control-from-label text-right") }} 
 		<div class="col-sm-8">
 			{% if form.title.errors %}
-				{{ form.title(class="form-control is-invalid") }}
+				{{ form.title(class="form-control is-invalid", id="page_title_input") }}
 				<div class="invalid-feedback">
 					{% for error in form.title.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.title(class="form-control") }}
+				{{ form.title(class="form-control", id="page_title_input") }}
 			{% endif %}
 		</div>
 	</div>
@@ -30,14 +30,14 @@
 		{{ form.slug.label(class="col-sm-2 control-from-label text-right") }} 
 		<div class="col-sm-8">
 			{% if form.slug.errors %}
-				{{ form.slug(class="form-control is-invalid") }}
+				{{ form.slug(class="form-control is-invalid", id="page_slug_input") }}
 				<div class="invalid-feedback">
 					{% for error in form.slug.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.slug(class="form-control") }}
+				{{ form.slug(class="form-control", id="page_slug_input") }}
 			{% endif %}
 		</div>
 	</div>
