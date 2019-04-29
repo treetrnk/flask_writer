@@ -71,39 +71,39 @@ def add_page():
 @bp.route('/admin/page/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_page(id):
-    edit_page = Page.query.filter_by(id=id).first()
+    page = Page.query.filter_by(id=id).first()
     form = AddPageForm()
-    
+    for field in form:
+        print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
-        edit_page.title = form.title.data
-        edit_page.slug = form.slug.data
-        edit_page.template = form.template.data
-        edit_page.parent_id = form.parent_id.data
-        edit_page.banner = form.banner.data
-        edit_page.body = form.body.data
-        edit_page.summary = form.summary.data
-        edit_page.sidebar = form.sidebar.data
-        edit_page.tags = form.tags.data
-        edit_page.user_id = form.user_id.data
-        edit_page.pub_date = form.pub_date.data
-        edit_page.published = form.published.data
+        page.title = form.title.data
+        page.slug = form.slug.data
+        page.template = form.template.data
+        page.parent_id = form.parent_id.data
+        page.banner = form.banner.data
+        page.body = form.body.data
+        page.summary = form.summary.data
+        page.sidebar = form.sidebar.data
+        page.tags = form.tags.data
+        page.user_id = current_user.id
+        page.pub_date = form.pub_date.data
+        page.published = form.published.data
         db.session.commit()
         flash("Page updated successfully.", "success")
-        return redirect(url_for('admin.pages'))
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
-    form.title.data = edit_page.title
-    form.slug.data = edit_page.slug
-    form.template.data = edit_page.template
-    form.parent_id.data = edit_page.parent_id
-    form.banner.data = edit_page.banner
-    form.body.data = edit_page.body
-    form.summary.data = edit_page.summary
-    form.sidebar.data = edit_page.sidebar
-    form.tags.data = edit_page.tags
-    form.user_id.data = edit_page.user_id
-    form.pub_date.data = edit_page.pub_date
-    form.published.data = edit_page.published
+    form.title.data = page.title
+    form.slug.data = page.slug
+    form.template.data = page.template
+    form.parent_id.data = page.parent_id
+    form.banner.data = page.banner
+    form.body.data = page.body
+    form.summary.data = page.summary
+    form.sidebar.data = page.sidebar
+    form.tags.data = page.tags
+    form.user_id.data = page.user_id
+    form.pub_date.data = page.pub_date
+    form.published.data = page.published
     return render_template('admin/page-edit.html', 
             form=form, 
             tab='pages', 
