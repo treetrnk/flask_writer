@@ -31,21 +31,22 @@ def add_user():
 @bp.route('/admin/pages')
 @login_required
 def pages():
-    pages = Page.query.all()
-    return render_template('admin/pages.html', tab='pages', pages=pages)
+    pub_pages = Page.query.filter_by(published=True)
+    unpub_pages = Page.query.filter_by(published=False)
+    return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages)
 
 @bp.route('/admin/page/add', methods=['GET', 'POST'])
 @login_required
 def add_page():
     form = AddPageForm()
-    #for field in form:
-    #    print(f"{field.name}: {field.data}")
+    for field in form:
+        print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
         page = Page(
                 title = form.title.data,
                 slug = form.slug.data,
                 template = form.template.data,
-                parent_id = form.parent_id.data,
+                parent_id = form.parent_id.data.id,
                 banner = form.banner.data,
                 body = form.body.data,
                 summary = form.summary.data,
@@ -79,13 +80,13 @@ def edit_page(id):
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data
-        page.parent_id = form.parent_id.data
+        page.parent_id = form.parent_id.data.id
         page.banner = form.banner.data
         page.body = form.body.data
         page.summary = form.summary.data
         page.sidebar = form.sidebar.data
         page.tags = form.tags.data
-        page.user_id = current_user.id
+        page.user_id = form.user_id.data.id
         page.pub_date = form.pub_date.data
         page.published = form.published.data
         db.session.commit()
