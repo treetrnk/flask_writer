@@ -67,10 +67,13 @@ class Page(db.Model):
     ]
 
     def set_path(self):
-        if self.parent:
-            self.path = f"{self.parent.path}/{self.slug}"
+        if self.parent_id:
+            parent = Page.query.filter_by(id=self.parent_id)
+            self.path = f"{parent.path}/{self.slug}"
+            self.dir_path = parent.path
         else:
             self.path = f"/{self.slug}"
+            self.dir_path = "/"
 
     def html_body(self):
         return markdown(self.body)

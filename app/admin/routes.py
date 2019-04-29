@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 @bp.route('/admin/users')
 @login_required
 def users():
-    users = User.query.all()
+    users = User.query.order_by('username')
     return render_template('admin/users.html', tab='users', users=users)
 
 @bp.route('/admin/user/add', methods=['GET', 'POST'])
@@ -31,8 +31,8 @@ def add_user():
 @bp.route('/admin/pages')
 @login_required
 def pages():
-    pub_pages = Page.query.filter_by(published=True)
-    unpub_pages = Page.query.filter_by(published=False)
+    pub_pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
+    unpub_pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
     return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages)
 
 @bp.route('/admin/page/add', methods=['GET', 'POST'])
@@ -46,7 +46,6 @@ def add_page():
                 title = form.title.data,
                 slug = form.slug.data,
                 template = form.template.data,
-                parent_id = form.parent_id.data.id,
                 banner = form.banner.data,
                 body = form.body.data,
                 summary = form.summary.data,
@@ -56,6 +55,8 @@ def add_page():
                 pub_date = form.pub_date.data,
                 published = form.published.data,
             )
+        if form.parent_id.data:
+            page.parent_id = form.parent_id.data.id,
         page.set_path()
         db.session.add(page)
         db.session.commit()
@@ -89,6 +90,7 @@ def edit_page(id):
         page.user_id = form.user_id.data.id
         page.pub_date = form.pub_date.data
         page.published = form.published.data
+        page.set_path()
         db.session.commit()
         flash("Page updated successfully.", "success")
     if form.errors:
@@ -116,7 +118,7 @@ def edit_page(id):
 @bp.route('/admin/tags')
 @login_required
 def tags():
-    tags = Tag.query.all()
+    tags = Tag.query.order_by('name')
     return render_template('admin/tags.html', tab='tags', tags=tags)
 
 @bp.route('/admin/tag/add', methods=['GET', 'POST'])
