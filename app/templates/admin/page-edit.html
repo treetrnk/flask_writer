@@ -160,6 +160,11 @@
 			{% else %}
 				{{ form.tags(class="form-control") }}
 			{% endif %}
+			<small class="form-text float-right">
+				<a href="{{ url_for('admin.add_tag') }}" target="addTag" class="text-success">
+					<i class="fas fa-plus"></i> Add Tag</i>
+				</a>
+			</small>
 		</div>
 	</div>
 

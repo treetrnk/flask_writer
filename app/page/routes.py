@@ -4,10 +4,10 @@ from app.models import Page
 
 @bp.route('/<path:path>')
 def index(path):
-    page = Page.query.filter(
-        Page.path + "/" + Page.slug == path
-    ).first()
+    path = f"/{path}"
+    page = Page.query.filter_by(path=path).first()
+    print(f"path: {path}")
+    print(f"page: {page}")
     if page:
-        render_template(f'pages/{page.type}', page=page)    
-    flash("Passed through catchall route!", "warning")
+        return render_template(f'page/{page.template}.html', page=page)    
     return redirect(url_for('main.home'))
