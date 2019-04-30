@@ -5,7 +5,7 @@
 
 <h2 id="page_title">{{ action }} Page</h2>
 {% if action == 'Edit' %}
-	<a href="{{ url_for('page.catch_all', path=edit_page.path) }}">
+	<a href="{{ url_for('page.index', path=edit_page.path) }}">
 		<i class="fas fa-eye"></i> View page
 	</a>
 {% endif %}

@@ -67,6 +67,7 @@ def add_page():
                 title = form.title.data,
                 slug = form.slug.data,
                 template = form.template.data,
+                parent_id = form.parent_id.data,
                 banner = form.banner.data,
                 body = form.body.data,
                 summary = form.summary.data,
@@ -76,8 +77,6 @@ def add_page():
                 pub_date = form.pub_date.data,
                 published = form.published.data,
             )
-        if form.parent_id.data:
-            page.parent_id = form.parent_id.data.id,
         page.set_path()
         db.session.add(page)
         db.session.commit()
@@ -95,6 +94,9 @@ def add_page():
 @login_required
 def edit_page(id):
     page = Page.query.filter_by(id=id).first()
+    print(f"ANCESTORS: {page.ancestors()}")
+    for anc in page.ancestors():
+        print(f"ANCESTOR: {anc}")
     form = AddPageForm()
     form.parent_id.choices = [(0,'---')] + [(p.id, p.title) for p in Page.query.filter(Page.id != id)]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]

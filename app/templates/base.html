@@ -49,11 +49,11 @@
 					padding: 0px;
 					margin: 50px;
 				{% else %}
-					background-image: url({ page.banner %});
+					background-image: url({{ page.banner_path() }});
 				{% endif %}
 			}
 
-			{% if theme == 'dark' %}
+			{% if session['theme'] == 'dark' %}
 				body {
 					background-color: #1c1c1c;
 					color: #aaa;
@@ -114,7 +114,7 @@
             <div class="input-group" id="searchtoggle">
               <input type="text" name="s" class="form-control" placeholder="Search" />
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>
               </span>
             </div>
           </div>
@@ -128,7 +128,11 @@
 		<div class="jumbotron banner">
 			<div class="container">
 				<br /><br /><br /><br />
-				{# page.show_story_title|safe #}
+				{% if page %}
+					{% if page.template == 'story' %}
+						<h1 class="display-4">{{ page.title }}</h1>
+					{% endif %}
+				{% endif %}
         <!--
         -->
 			</div>
@@ -207,12 +211,12 @@
     <button type="button" class="btn btn-primary" id="sub-btn" data-toggle="modal" data-target="#subscribeMod" title="Subscribe"><i class="fas fa-envelope"></i><span class="hidden-xs"> Subscribe</span></button>
 
 		<section class="container content-wrapper">
-			{% if page %}
+			{% if page and page.parent_id %}
 				<ol class="breadcrumb">
-					{# for parent in page.all_parents #}
-						<li class="breadcrumb-item"><a href="{# parent.path #}">{# parent.title #}</a></li>
-					{# endfor #}
-						<li class="breadcrumb-item active">{# page.title #}</li>
+					{% for parent in page.ancestors()[::-1] %}
+						<li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
+					{% endfor %}
+					<li class="breadcrumb-item active">{{ page.title }}</li>
 				</ol>
 			{% endif %}
 			{# $page->breadcrumbs() #}

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% load static %}
 <div class="row justify-content-md-center">
   <div class="col-md-7 col content">
 
@@ -11,8 +10,8 @@
     <p>
       <small>
         <span class="text-muted">
-          <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count }}</span> <!--&#8226;-->
-          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.read_time }}</span>
+          <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count() }}</span> <!--&#8226;-->
+          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.read_time() }}</span>
         </span>
 
       </small>
@@ -21,7 +20,7 @@
 		<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
 		<a href="#" class="btn btn-light float-right border-secondary">Next Page</a></li>
     <div class="content">
-			{{ page.html_body|safe }}
+			{{ page.html_body()|safe }}
     </div>
 
     <br /><br />
@@ -61,7 +60,7 @@
 
     var disqus_config = function () {
 			this.page.url = "{{ page.slug }}";  // Replace PAGE_URL with your page's canonical URL variable
-			this.page.identifier = "{{ page.id }"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			this.page.identifier = "{{ page.id }}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

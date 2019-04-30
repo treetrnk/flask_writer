@@ -1,10 +1,10 @@
 <div class="float-right text-muted" id="theme-select">
 	<small class="hidden-xs">Theme:</small>
 	<small>
-		<a href="?theme=light" id="light-theme" title="Light Theme">
+		<a href="/set-theme/light?path={{ request.path }}" id="light-theme" title="Light Theme">
 			<img src="{{ url_for('static', filename='images/light-theme.png') }}" />
 		</a>
-		<a href="?theme=dark" id="dark-theme" title="Dark Theme">
+		<a href="/set-theme/dark?path={{ request.path }}" id="dark-theme" title="Dark Theme">
 			<img src="{{ url_for('static', filename='images/dark-theme.png') }}" />
 		</a>
 	</small>
