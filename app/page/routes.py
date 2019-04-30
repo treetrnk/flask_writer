@@ -9,9 +9,15 @@ def home():
         return render_template(f'page/{page.template}.html', page=page)
     return render_template('home.html', page='page')
 
+@bp.route('/set-theme')
 @bp.route('/set-theme/<string:theme>')
-def set_theme(theme):
-    session['theme'] = theme
+def set_theme(theme=None):
+    if theme:
+        session['theme'] = theme
+    elif session['theme'] and session['theme'] == 'dark':
+        session['theme'] = 'light'
+    else:
+        session['theme'] = 'dark'
     prev_path = request.args['path']
     if prev_path:
         return redirect(prev_path)

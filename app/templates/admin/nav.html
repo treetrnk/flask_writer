@@ -16,8 +16,8 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('page.home') }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
-			<i class="fas fa-wrench"></i> Settings
+		<a href="{{ url_for('page.set_theme') }}?path={{ request.path }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
+			<i class="fas fa-fill-drip"></i> Theme
 		</a>
 	</li>
 	<li class="nav-item">
