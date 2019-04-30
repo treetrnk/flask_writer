@@ -239,9 +239,23 @@
         {% if messages %}
             {% for category, message in messages %}
 							{% if category != "message" %}
-								<div class="alert alert-{{ category }}" role="alert">{{ message|safe }}</div>
+								<div class="alert alert-{{ category }}" role="alert">
+									{% if category == 'success' %}
+										<b><i class="fas fa-check-circle"></i> Success!</b>
+									{% elif category == 'info' %}
+										<b><i class="fas fa-info-circle"></i> Info!</b>
+									{% elif category == 'warning' %}
+										<b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
+									{% elif category == 'danger' %}
+										<b><i class="fas fa-exclamation-circle"></i> Error!</b>
+									{% endif %}
+									{{ message|safe }}
+								</div>
 							{% else %}
-								<div class="alert alert-warning" role="alert">{{ message|safe }}</div>
+								<div class="alert alert-warning" role="alert">
+									<b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
+									{{ message|safe }}
+								</div>
 							{% endif %}
             {% endfor %}
         {% endif %}
