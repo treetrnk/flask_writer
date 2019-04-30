@@ -14,7 +14,7 @@ def home():
 def set_theme(theme=None):
     if theme:
         session['theme'] = theme
-    elif session['theme'] and session['theme'] == 'dark':
+    elif theme in session and session['theme'] == 'dark':
         session['theme'] = 'light'
     else:
         session['theme'] = 'dark'
