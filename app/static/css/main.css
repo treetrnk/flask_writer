@@ -28,10 +28,13 @@
 				height: 68px;
 				*/
 			}
-			nav a:link, header a:visited, header a:active {
-				color: #ffffff;
+			nav a.nav-link:link, nav a.nav-link:visited, nav a.nav-link:active {
+				color: #fff;
 				text-decoration: none;
 				text-transform: uppercase;
+			}
+			nav a.nav-link.dropdown-toggle {
+				margin-left: -8px;
 			}
 			nav div.dropdown-menu a.dropdown-item {
 				color: #222;
