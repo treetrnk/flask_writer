@@ -79,12 +79,20 @@
 				table.dataTable tbody tr:hover {
 					background-color: #333;
 				}
-				.form-control {
+				input, textarea, button, select, .form-control {
 					background-color: #333;
 					color: #aaa;
 				}
 				.form-control:focus {
 					background-color: #111;
+					color: #aaa;
+				}
+				.dataTables-wrapper label, .dataTables_info ,
+				.dataTables_wrapper .dataTables_length, 
+				.dataTables_wrapper .dataTables_filter, 
+				.dataTables_wrapper .dataTables_info, 
+				.dataTables_wrapper .dataTables_processing, 
+				.dataTables_wrapper .dataTables_paginate {
 					color: #aaa;
 				}
 			{% endif %}
