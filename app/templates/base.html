@@ -109,6 +109,28 @@
 						<ul class="navlinks hidden-sm hidden-xs">
               <li><a href="#" data-toggle="modal" data-target="#searchMod" id="searchbtn"> &nbsp;&nbsp; <i class="glyphicon glyphicon-search"></i> &nbsp;&nbsp; </a></li>
 							{# topnav #}
+							{% for topnav in session["nav"] %}
+								<li>
+									<a href="{{ topnav.path }}">{{ topnav.title }}</a>
+									{% if topnav.children %}
+										<ul>
+											{% for child in topnav.children %}
+												<li>
+													<a href="{{ child.path }}">{{ child.title }}</a>
+													{% if child.children %}
+														<ul>
+															{% for grandchild in child.children %}
+																<li>
+																	<a href="{{ grandchild.path }}">{{ grandchild.title }}</a>
+																</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
+											{% endfor %}
+										</ul>
+									{% endif %}
+								</li>
+							{% endfor %}
 							{# for link in nav #}
 								{# if link.title == 'Home' #}
 									<li><a href="/">{# link.title #}</a></li>
