@@ -98,7 +98,7 @@ class Page(db.Model):
         return self.banner
 
     def pub_children(self):
-        return Page.query.filter_by(parent_id=self.id).order_by('sort','pub_date','title').all()
+        return Page.query.filter_by(parent_id=self.id,published=True).order_by('sort','pub_date','title').all()
 
     def ancestors(self):
         ancestors = []
@@ -167,7 +167,7 @@ class Page(db.Model):
                             'path': child.path,
                             'children': [],
                         }
-                    for grandchild in top_page.pub_children():
+                    for grandchild in child.pub_children():
                         kid['children'].append({
                                 'id': grandchild.id,
                                 'title': grandchild.title,
