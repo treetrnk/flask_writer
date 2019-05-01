@@ -103,6 +103,53 @@
 
 		<progress value="0" data-toggle="tooltip" data-placement="bottom" title="Reading Progress"></progress>
 
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-blue">
+			<div class="container">
+				<a href="{{ url_for('page.home') }}" class='site-title'>
+				<span class="small">Stories by</span>
+					<h2>Houston Hare</h2>
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ml-auto">
+						{% for topnav in session["nav"] %}
+							{% if topnav.children %}
+								<li class="nav-item">
+									<a href="{{ topnav.path }}" class="nav-link">{{ topnav.title }}</a>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="{{ topnav.path }}" class="nav-link dropdown-toggle" data-toggle="dropdown"></a>
+									<div class="dropdown-menu dropdown-menu-right">
+										{% for child in topnav.children %}
+											<a href="{{ child.path }}" class="dropdown-item">{{ child.title }}</a>
+												<!--
+												{# if child.children #}
+													<ul class="dropdown-submenu">
+														{# for grandchild in child.children #}
+															<li>
+																<a href="{# grandchild.path #}">{# grandchild.title #}</a>
+															</li>
+														{# endfor #}
+													</ul>
+												{# endif #}
+												-->
+										{% endfor %}
+									</div>
+								</li>
+							{% else %}
+								<li class="nav-item">
+									<a href="{{ topnav.path }}" class="nav-link">{{ topnav.title }}</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!--
 		<header>
 			<div class="container">
 				<div class="row">
@@ -126,7 +173,7 @@
 												<li>
 													<a href="{{ child.path }}">{{ child.title }}</a>
 													{% if child.children %}
-														<ul class="dropdown-submenu>
+														<ul class="dropdown-submenu">
 															{% for grandchild in child.children %}
 																<li>
 																	<a href="{{ grandchild.path }}">{{ grandchild.title }}</a>
@@ -151,7 +198,10 @@
 				</div>
 			</div>
 		</header>
-    <nav class="toggle-nav" id="toggle-nav">
+		--->
+
+		<!--
+    <nav class="toggle-nav hidden" id="toggle-nav">
       <form action="/search/" method="get">
         <div class="row">
           <div class="col-xs-12">
@@ -168,6 +218,7 @@
 				{# sidenav #}
 			</ul>
 		</nav>
+		-->
 
 		<div class="jumbotron banner">
 			<div class="container">
@@ -313,8 +364,8 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/slugify.js') }}"></script>
 		<script src="{{ url_for('static', filename='datatables/datatables.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>

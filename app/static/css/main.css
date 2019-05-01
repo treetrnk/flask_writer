@@ -15,28 +15,35 @@
         font-family: "Yesteryear";
         src: url(../fonts/Yesteryear-Regular.ttf);
       }
-			header {
+			nav {
 				background-color: #0b5394; /*let user set*/
-				position: fixed;
+				/*position: fixed;
         top: 0;
-				width: 100%;
+				width: 100%;*/
 				-moz-box-shadow:    3px 3px 25px 1px #222;
 				-webkit-box-shadow: 3px 3px 25px 1px #222;
 				box-shadow:         3px 3px 25px 1px #222;
 				z-index: 4;
+				/*
 				height: 68px;
+				*/
 			}
-			header a:link, header a:visited, header a:active {
+			nav a:link, header a:visited, header a:active {
 				color: #ffffff;
 				text-decoration: none;
 				text-transform: uppercase;
 			}
-			div.site-title {
+			nav div.dropdown-menu a.dropdown-item {
+				color: #222;
+				text-transform: initial;
+			}
+			a.site-title {
 				padding-top: 3px;
 				padding-bottom: 2px;
 				line-height: 20px;
+				color: #fff;
 			}
-			div.site-title a h2 {
+			a.site-title h2 {
 				margin: 0;
         font-family: "Yesteryear", cursive;
 				text-transform: none;
@@ -47,6 +54,7 @@
 				font-size: 14px;
 				text-transform: none;
 			}
+			/*
 			nav.navlinks i.nav-menu {
 				font-size: 35px;
 				line-height: 68px;
@@ -167,6 +175,7 @@
       #toggle-nav a i.glyphicon {
         padding: 20px 20px 20px 5px;
       }
+			*/
 			div.jumbotron {
         background-image: url("../images/forest.png");
 				background-color: #ffffff;
