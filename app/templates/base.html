@@ -111,14 +111,14 @@
 							{# topnav #}
 							{% for topnav in session["nav"] %}
 								<li>
-									<a href="{{ topnav.path }}">{{ topnav.title }}</a>
+									<a href="#{# topnav.path #}"class="dropdown-toggle" data-toggle="dropdown">{{ topnav.title }}</a>
 									{% if topnav.children %}
-										<ul>
+										<ul class="dropdown-menu multi-level">
 											{% for child in topnav.children %}
 												<li>
 													<a href="{{ child.path }}">{{ child.title }}</a>
 													{% if child.children %}
-														<ul>
+														<ul class="dropdown-submenu>
 															{% for grandchild in child.children %}
 																<li>
 																	<a href="{{ grandchild.path }}">{{ grandchild.title }}</a>
