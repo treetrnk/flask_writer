@@ -1,10 +1,9 @@
-from flask import render_template, redirect, url_for, flash, session, request
+from flask import render_template, redirect, url_for, flash, session, request, current_app
 from app.page import bp
 from app.models import Page
 
 @bp.route('/')
 def home():
-    Page.top_nav()
     page = Page.query.filter_by(path='/home',published=True).first()
     if page:
         return render_template(f'page/{page.template}.html', page=page)
@@ -13,7 +12,6 @@ def home():
 @bp.route('/set-theme')
 @bp.route('/set-theme/<string:theme>')
 def set_theme(theme=None):
-    Page.top_nav()
     if theme:
         session['theme'] = theme
     elif 'theme' in session and session['theme'] == 'dark':
@@ -27,7 +25,6 @@ def set_theme(theme=None):
 
 @bp.route('/<path:path>')
 def index(path):
-    Page.top_nav()
     path = f"/{path}"
     page = Page.query.filter_by(path=path,published=True).first()
     print(f"path: {path}")
@@ -35,3 +32,7 @@ def index(path):
     if page:
         return render_template(f'page/{page.template}.html', page=page)    
     return redirect(url_for('page.index'))
+
+@bp.before_app_first_request
+def set_nav():
+    Page.set_nav()

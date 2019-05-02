@@ -149,35 +149,33 @@ class Page(db.Model):
         nav = []
         return nav
 
-    def top_nav(force=False):
-        if not 'nav' in session or not len(session['nav']) or force:
-            nav = []
-            top_pages = Page.query.filter_by(published=True,parent_id=0).order_by('sort','pub_date','title').all()
-            for top_page in top_pages:
-                page = {
-                        'id': top_page.id,
-                        'title': top_page.title,
-                        'path': top_page.path,
+    def set_nav():
+        nav = []
+        top_pages = Page.query.filter_by(published=True,parent_id=0).order_by('sort','pub_date','title').all()
+        for top_page in top_pages:
+            page = {
+                    'id': top_page.id,
+                    'title': top_page.title,
+                    'path': top_page.path,
+                    'children': [],
+                }
+            for child in top_page.pub_children():
+                kid = {
+                        'id': child.id,
+                        'title': child.title,
+                        'path': child.path,
                         'children': [],
                     }
-                for child in top_page.pub_children():
-                    kid = {
-                            'id': child.id,
-                            'title': child.title,
-                            'path': child.path,
+                for grandchild in child.pub_children():
+                    kid['children'].append({
+                            'id': grandchild.id,
+                            'title': grandchild.title,
+                            'path': grandchild.path,
                             'children': [],
-                        }
-                    for grandchild in child.pub_children():
-                        kid['children'].append({
-                                'id': grandchild.id,
-                                'title': grandchild.title,
-                                'path': grandchild.path,
-                                'children': [],
-                             })
-                    page['children'].append(kid)
-                nav.append(page)
-
-            session['nav'] = nav
+                         })
+                page['children'].append(kid)
+            nav.append(page)
+        session['nav'] = nav
 
 
     def __str__(self):

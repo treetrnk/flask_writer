@@ -50,7 +50,6 @@ def edit_user(id):
 @bp.route('/admin/pages')
 @login_required
 def pages():
-    Page.top_nav() 
     pub_pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
     unpub_pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
     return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages)
@@ -58,7 +57,6 @@ def pages():
 @bp.route('/admin/page/add', methods=['GET', 'POST'])
 @login_required
 def add_page():
-    Page.top_nav(True) 
     form = AddPageForm()
     for field in form:
         print(f"{field.name}: {field.data}")
@@ -82,6 +80,7 @@ def add_page():
         page.set_path()
         db.session.add(page)
         db.session.commit()
+        Page.set_nav()
         flash("Page added successfully.", "success")
         return redirect(url_for('admin.pages'))
     if form.errors:
@@ -95,7 +94,6 @@ def add_page():
 @bp.route('/admin/page/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_page(id):
-    Page.top_nav(True) 
     page = Page.query.filter_by(id=id).first()
     print(f"ANCESTORS: {page.ancestors()}")
     for anc in page.ancestors():
@@ -106,6 +104,7 @@ def edit_page(id):
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
+        Page.set_nav(True)
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data
@@ -120,6 +119,7 @@ def edit_page(id):
         page.published = form.published.data
         page.set_path()
         db.session.commit()
+        Page.set_nav()
         flash("Page updated successfully.", "success")
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
