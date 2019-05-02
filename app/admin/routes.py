@@ -104,6 +104,27 @@ def edit_page(id):
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
+        
+        # Create version from current
+        version = PageVersion(
+            title = page.title,
+            slug = page.slug,
+            template = page.template,
+            parent_id = page.parent_id,
+            banner = page.banner,
+            body = page.body,
+            summary = page.summary,
+            sidebar = page.sidebar,
+            tags = page.tags,
+            user_id = page.user_id,
+            pub_date = page.pub_date,
+            published = page.published,
+            path = page.path,
+            dir_pat = page.dir_path,
+        )
+        db.session.add(version)
+
+        # Update page
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data

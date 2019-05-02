@@ -204,6 +204,34 @@ class Page(db.Model):
     def __repr__(self):
         return f"Page({self.id}, {self.title}, {self.path})"
 
+class PageVersion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_id = db.Column('Page', db.ForeignKey('page.id'), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(200), nullable=True)
+    dir_path = db.Column(db.String(500), nullable=True)
+    path = db.Column(db.String(500), nullable=True)
+    parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
+    child = db.relationship('Page', remote_side=[id], backref='children')
+    template = db.Column(db.String(100))
+    banner = db.Column(db.String(500), nullable=True)
+    body = db.Column(db.String(10000000))
+    tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
+            backref=db.backref('pages', lazy=True))
+    summary = db.Column(db.String(300), nullable=True)
+    sidebar = db.Column(db.String(1000), nullable=True)
+    user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
+    sort = db.Column(db.Integer(), nullable=False, default=75)
+    pub_date = db.Column(db.DateTime(), nullable=True)
+    published = db.Column(db.Boolean(), default=False)
+    edit_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+
+    def __str__(self):
+        return f"Ver. {self.id} - {self.title} ({self.path})"
+
+    def __repr__(self):
+        return f"PageVersion({self.id}, {self.title}, {self.path})"
+
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75), nullable=False)
