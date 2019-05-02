@@ -93,7 +93,7 @@ $(document).ready(function() {
 	});
 
 	$(function () {
-		$('[data-toggle="tooltip"]').tooltip
+		$('[data-toggle="tooltip"]').tooltip();
 	})
 
 	if (postType == "chapter" || postType == "post") {
@@ -105,7 +105,7 @@ $(document).ready(function() {
 	}
 
 	$(function () {
-		$('[data-toggle="tooltip"]').tooltip
+		$('[data-toggle="tooltip"]').tooltip();
 	})
 
 		/*

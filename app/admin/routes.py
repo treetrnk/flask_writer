@@ -104,7 +104,6 @@ def edit_page(id):
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
-        Page.set_nav(True)
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data

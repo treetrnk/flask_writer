@@ -45,9 +45,7 @@
 		<style>
 			div.jumbotron {
 				{% if not page or page.template == 'page' or page.template == 'blog' %}
-					height: 0px;
-					padding: 0px;
-					margin: 50px;
+					height: 225px;
 				{% else %}
 					background-image: url({{ page.banner_path() }});
 				{% endif %}
@@ -149,87 +147,14 @@
 			</div>
 		</nav>
 
-		<!--
-		<header>
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-sm-10 col-xs-10 site-title">
-						<a href="/">
-						<span class="small">Stories by</span>
-							<h2>Houston Hare</h2>
-						</a>
-					</div>
-					<nav class="col-md-8 col-sm-2 col-xs-2 navlinks small text-right">
-						<i class="glyphicon glyphicon-menu-hamburger nav-menu hidden-lg hidden-md"></i>
-						<ul class="navlinks hidden-sm hidden-xs">
-              <li><a href="#" data-toggle="modal" data-target="#searchMod" id="searchbtn"> &nbsp;&nbsp; <i class="glyphicon glyphicon-search"></i> &nbsp;&nbsp; </a></li>
-							{# topnav #}
-							{% for topnav in session["nav"] %}
-								<li>
-									<a href="#{# topnav.path #}"class="dropdown-toggle" data-toggle="dropdown">{{ topnav.title }}</a>
-									{% if topnav.children %}
-										<ul class="dropdown-menu multi-level">
-											{% for child in topnav.children %}
-												<li>
-													<a href="{{ child.path }}">{{ child.title }}</a>
-													{% if child.children %}
-														<ul class="dropdown-submenu">
-															{% for grandchild in child.children %}
-																<li>
-																	<a href="{{ grandchild.path }}">{{ grandchild.title }}</a>
-																</li>
-															{% endfor %}
-														</ul>
-													{% endif %}
-											{% endfor %}
-										</ul>
-									{% endif %}
-								</li>
-							{% endfor %}
-							{# for link in nav #}
-								{# if link.title == 'Home' #}
-									<li><a href="/">{# link.title #}</a></li>
-								{# else #}
-									<li><a href="{# link.path #}">{# link.title #}</a></li>
-								{# endif #}
-							{# endfor #}
-            </ul>
-					</nav>
-				</div>
-			</div>
-		</header>
-		--->
-
-		<!--
-    <nav class="toggle-nav hidden" id="toggle-nav">
-      <form action="/search/" method="get">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="input-group" id="searchtoggle">
-              <input type="text" name="s" class="form-control" placeholder="Search" />
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </form>
-			<ul>
-				{# sidenav #}
-			</ul>
-		</nav>
-		-->
-
 		<div class="jumbotron banner">
 			<div class="container">
 				<br /><br /><br /><br />
 				{% if page %}
-					{% if page.template == 'story' %}
-						<h1 class="display-4">{{ page.title }}</h1>
+					{% if page.template != 'page' and page.template != 'blog' %}
+						<h1 class="display-4">{{ page.section_name() }}</h1>
 					{% endif %}
 				{% endif %}
-        <!--
-        -->
 			</div>
     </div>
 
@@ -307,12 +232,14 @@
 
 		<section class="container content-wrapper">
 			{% if page and page.parent_id %}
-				<ol class="breadcrumb">
+				<ol class="breadcrumb mb-5">
 					{% for parent in page.ancestors()[::-1] %}
 						<li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
 					{% endfor %}
 					<li class="breadcrumb-item active">{{ page.title }}</li>
 				</ol>
+			{% else %}
+				<br />
 			{% endif %}
 			{# $page->breadcrumbs() #}
 

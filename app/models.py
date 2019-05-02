@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from datetime import datetime
 from markdown import markdown
+from sqlalchemy import desc
 import re
 
 tags = db.Table('tags',
@@ -90,15 +91,34 @@ class Page(db.Model):
         return markdown(self.body)
 
     def html_sidebar(self):
+        if self.template == 'chapter' or self.template == 'post':
+            if self.parent_id:
+                return markdown(self.parent().sidebar)
         return markdown(self.sidebar)
     
     def banner_path(self):
-        if not self.banner and (self.template is 'chapter' or self.template is 'post'):
-            return self.parent().banner
+        if not self.banner and (self.template == 'chapter' or self.template == 'post'):
+            if self.parent_id:
+                return self.parent().banner
         return self.banner
 
+    def section_name(self):
+        if self.template == 'chapter' or self.template == 'post':
+            if self.parent_id:
+                return self.parent().title
+        return self.title
+
     def pub_children(self):
-        return Page.query.filter_by(parent_id=self.id,published=True).order_by('sort','pub_date','title').all()
+        return Page.query.filter_by(parent_id=self.id,published=True).order_by('sort',desc('pub_date'),'title').all()
+
+    def pub_siblings(self):
+        return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort',desc('pub_date'),'title').all()
+
+    def next_pub_child(self):
+        return True
+
+    def prev_pub_child(self):
+        return True
 
     def ancestors(self):
         ancestors = []
@@ -122,7 +142,7 @@ class Page(db.Model):
         try:
             return self.words
         except:
-            words = len(re.findall("[a-zA-Z]+", self.body))
+            words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
             read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
             self.words = words
         return self.words
@@ -151,7 +171,7 @@ class Page(db.Model):
 
     def set_nav():
         nav = []
-        top_pages = Page.query.filter_by(published=True,parent_id=0).order_by('sort','pub_date','title').all()
+        top_pages = Page.query.filter_by(published=True,parent_id=0).order_by('sort',desc('pub_date'),'title').all()
         for top_page in top_pages:
             page = {
                     'id': top_page.id,

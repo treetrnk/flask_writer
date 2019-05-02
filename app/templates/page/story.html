@@ -8,24 +8,33 @@
 
     <h1>{{ page.title }}</h1>
     <p>
-      <small>
-        <span class="text-muted">
-          <span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
-          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.child_read_time() }}</span>
-        </span>
-
-      </small>
+			<span class="text-muted">
+				<span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
+				<span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.child_read_time() }}</span>
+			</span>
     </p>
-    <p class="text-muted"><small>{{ page.pub_date }}</small></p>
-    <div class="content">
+
+		{% if page.pub_date %}
+			<p class="text-muted"><small>{{ page.pub_date.strftime("%B %-d, %Y - %-I:%M %p") }}</small></p>
+		{% endif %}    
+
+		<div class="content">
 			{{ page.html_body()|safe }}
+			{% if page.pub_children() %}
+				<div class="text-center">
+					<a href='{{ page.pub_children()[-1].path }}' class="btn btn-primary btn-lg">
+						<i class="fas fa-book"></i>
+						Start Reading
+					</a>
+				</div>
+			{% endif %}
     </div>
   
     <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
-				{% for tag in page.tags.all %}
+				{% for tag in page.tags %}
 					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 				{% endfor %}
       </div>
@@ -44,8 +53,7 @@
   </div>
   <aside class="col-md-3 col-12">
 		{{ page.html_sidebar()|safe }}
-		{{ page.table_of_contents|safe }}
-		{{ page.full_sidebar|safe }}
+		{% include 'page/table-of-contents.html' %}
   </aside>
 </div>
 <div class="row justify-content-md-center">

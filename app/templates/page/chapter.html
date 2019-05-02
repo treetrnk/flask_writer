@@ -8,26 +8,29 @@
 
 		<h1>{{ page.title }}</h1>
     <p>
-      <small>
         <span class="text-muted">
           <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count() }}</span> <!--&#8226;-->
           <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.read_time() }}</span>
         </span>
-
-      </small>
     </p>
-		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
-		<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
-		<a href="#" class="btn btn-light float-right border-secondary">Next Page</a></li>
+
+		{% if page.pub_date %}
+			<p class="text-muted"><small>{{ page.pub_date.strftime("%B %-d, %Y - %-I:%M %p") }}</small></p>
+		{% endif %}
+		
+		<div class="mb-4 mt-4">
+			<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
+			<a href="#" class="btn btn-light float-right border-secondary">Next. Page</a></li>
+		</div>
+
     <div class="content">
 			{{ page.html_body()|safe }}
     </div>
 
-    <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
-				{% for tag in page.tags.all %}
+				{% for tag in page.tags %}
 					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 				{% endfor %}
       </div>
@@ -36,15 +39,16 @@
 				{# share buttons #}
       </div>
     </div>
-		<br />
-		<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
+
+		<div class="mb-4 mt-4">
+			<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
 			<a href="#" class="btn btn-light float-right border-secondary">Next. Page</a></li>
-		<br />
-		<br />
+		</div>
+
   </div>
   <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
-		{{ page.table_of_contents|safe }}
-		{{ page.full_sidebar|safe }}
+		{{ page.html_sidebar()|safe }}
+		{% include 'page/table-of-contents.html' %}
   </aside>
 </div>
 <div class="row justify-content-md-center">
