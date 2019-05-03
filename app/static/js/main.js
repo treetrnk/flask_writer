@@ -22,11 +22,21 @@ $(document).ready(function() {
 
 	$('#versionSelect').on('change', function() {
 		var $this = $(this);
+		var host = window.location.hostname;
 		var path = window.location.pathname;
 		var path_list = path.split('/');
-		if ($this.val() != '') {
+		if ($this.val() != 'current') {
 			if (path_list[path_list.length - 2] == 'edit') {
 				window.location = path + '/version/' + $this.val();
+			} else {
+				path_list.pop();
+				window.location = "/" + path_list.join("/") + "/" + $this.val();
+			}
+		} else {
+			if (path_list[path_list.length - 2] == 'version') {
+				path_list.pop();
+				path_list.pop();
+				window.location = "/" + path_list.join("/");
 			}
 		}
 	});
