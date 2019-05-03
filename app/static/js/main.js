@@ -134,8 +134,10 @@ $(document).ready(function() {
 		var currentScrollPos = window.pageYOffset;
 		if (prevScrollpos > currentScrollPos) {
 			$("#topNavbar").css("top","0");
+			$("#sub-btn").css("bottom","15px");
 		} else {
 			$("#topNavbar").css("top","-80px");
+			$("#sub-btn").css("bottom","-80px");
 		}
 		prevScrollpos = currentScrollPos;
 	}

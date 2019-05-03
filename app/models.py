@@ -156,11 +156,36 @@ class Page(db.Model):
     def pub_siblings(self):
         return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort',desc('pub_date'),'title').all()
 
-    def next_pub_child(self):
-        return True
+    def prev_pub_sibling(self):
+        try:
+            return self.prev_sibling
+        except:
+            siblings = self.pub_siblings()
+            current = False
+            for sibling in siblings:
+                if current:
+                    if sibling.id != self.id:
+                        self.prev_sibling = sibling
+                        return self.prev_sibling
+                if sibling.id == self.id:
+                    current = True
+            self.prev_sibling = None
+            return None
 
-    def prev_pub_child(self):
-        return True
+    def next_pub_sibling(self):
+        try:
+            return self.next_sibling
+        except:
+            siblings = self.pub_siblings()
+            next = None
+            for sibling in siblings:
+                if sibling.id == self.id:
+                    if next and next.id != self.id: 
+                        self.next_sibling = next
+                        return self.next_sibling
+                next = sibling
+            self.next_sibling = None
+            return None
 
     def ancestors(self):
         ancestors = []
