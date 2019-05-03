@@ -30,13 +30,13 @@ $(document).ready(function() {
 				window.location = path + '/version/' + $this.val();
 			} else {
 				path_list.pop();
-				window.location = "/" + path_list.join("/") + "/" + $this.val();
+				window.location = path_list.join("/") + "/" + $this.val();
 			}
 		} else {
 			if (path_list[path_list.length - 2] == 'version') {
 				path_list.pop();
 				path_list.pop();
-				window.location = "/" + path_list.join("/");
+				window.location = path_list.join("/");
 			}
 		}
 	});
