@@ -29,7 +29,7 @@
 				height: 68px;
 				*/
 			}
-			nav a.nav-link:link, nav a.nav-link:visited, nav a.nav-link:active {
+			nav#topNavbar a.nav-link:link, nav#topNavbar a.nav-link:visited, nav#topNavbar a.nav-link:active {
 				color: #fff;
 				text-decoration: none;
 				text-transform: uppercase;
