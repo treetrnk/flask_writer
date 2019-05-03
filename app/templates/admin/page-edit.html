@@ -3,9 +3,22 @@
 
 {% include 'admin/nav.html' %}
 
+{% if action == 'Edit' %}
+	<div class="col-sm-3 float-right">
+		<select name='versions' id='versionSelect' class="form-control">
+			<option value=''>--- Versions ---</option>
+			{% for ver in versions %}
+				<option value="{{ ver.id }}">
+					{{ ver.edit_date.strftime("%b. %-d, %Y - %-I:%M %p") }} (#{{ ver.word_count() }})
+				</option>
+			{% endfor %}
+		</select>
+	</div>
+{% endif %}
+
 <h2 id="page_title">{{ action }} Page</h2>
 {% if action == 'Edit' %}
-	<a href="{{ url_for('page.index', path=edit_page.path) }}">
+	<a href="{{ url_for('page.index', path=edit_page.path) }}" target="viewpage">
 		<i class="fas fa-eye"></i> View page
 	</a>
 {% endif %}

@@ -63,6 +63,15 @@ class PageVersion(db.Model):
     published = db.Column(db.Boolean(), default=False)
     edit_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
 
+    def word_count(self):
+        try:
+            return self.words
+        except:
+            words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
+            read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+            self.words = words
+        return self.words
+
     def __str__(self):
         return f"Ver. {self.id} - {self.title} ({self.path})"
 

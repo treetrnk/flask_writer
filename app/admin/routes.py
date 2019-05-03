@@ -1,9 +1,10 @@
 from flask import render_template, redirect, flash, url_for
 from app import db
 from app.admin import bp
-from app.models import Page, User, Tag
+from app.models import Page, User, Tag, PageVersion
 from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 
 @bp.route('/admin/users')
 @login_required
@@ -95,6 +96,7 @@ def add_page():
 @login_required
 def edit_page(id):
     page = Page.query.filter_by(id=id).first()
+    versions = PageVersion.query.filter_by(original_id=id).order_by(desc('edit_date')).all()
     print(f"ANCESTORS: {page.ancestors()}")
     for anc in page.ancestors():
         print(f"ANCESTOR: {anc}")
@@ -107,6 +109,7 @@ def edit_page(id):
         
         # Create version from current
         version = PageVersion(
+            original_id = id,
             title = page.title,
             slug = page.slug,
             template = page.template,
@@ -120,7 +123,7 @@ def edit_page(id):
             pub_date = page.pub_date,
             published = page.published,
             path = page.path,
-            dir_pat = page.dir_path,
+            dir_path = page.dir_path,
         )
         db.session.add(version)
 
@@ -159,7 +162,8 @@ def edit_page(id):
             form=form, 
             tab='pages', 
             action='Edit',
-            edit_page=page
+            edit_page=page,
+            versions=versions,
         )
 
 
