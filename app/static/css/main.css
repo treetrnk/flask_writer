@@ -15,7 +15,7 @@
         font-family: "Yesteryear";
         src: url(../fonts/Yesteryear-Regular.ttf);
       }
-			nav {
+			nav.navbar.bg-blue {
 				background-color: #0b5394; /*let user set*/
 				/*position: fixed;
         top: 0;
@@ -24,6 +24,7 @@
 				-webkit-box-shadow: 3px 3px 25px 1px #222;
 				box-shadow:         3px 3px 25px 1px #222;
 				z-index: 4;
+				transition: top 0.3s;
 				/*
 				height: 68px;
 				*/
@@ -195,7 +196,7 @@
         color: #222222;
 				font-size: 17.5px;
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        padding-top: 68px;
+        //padding-top: 68px;
 			}
       h1, h2, h3, h4 {
         font-family: "Montserrat SemiBold", "Arial Black", Arial, sans-serif;

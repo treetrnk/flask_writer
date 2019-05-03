@@ -129,6 +129,17 @@ $(document).ready(function() {
 	});
 		 */
 
+	var prevScrollpos = window.pageYOffset;
+	window.onscroll = function() {
+		var currentScrollPos = window.pageYOffset;
+		if (prevScrollpos > currentScrollPos) {
+			$("#topNavbar").css("top","0");
+		} else {
+			$("#topNavbar").css("top","-80px");
+		}
+		prevScrollpos = currentScrollPos;
+	}
+
 });
 
 function readProgress() {
