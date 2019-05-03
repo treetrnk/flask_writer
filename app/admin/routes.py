@@ -61,7 +61,7 @@ def add_page():
     form = AddPageForm()
     for field in form:
         print(f"{field.name}: {field.data}")
-    form.parent_id.choices = [(0,'---')] + [(p.id, p.title) for p in Page.query.all()]
+    form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
     if form.validate_on_submit():
         page = Page(
@@ -101,7 +101,7 @@ def edit_page(id, ver_id=None):
     for anc in page.ancestors():
         print(f"ANCESTOR: {anc}")
     form = AddPageForm()
-    form.parent_id.choices = [(0,'---')] + [(p.id, p.title) for p in Page.query.filter(Page.id != id)]
+    form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
     for field in form:
         print(f"{field.name}: {field.data}")
