@@ -20,6 +20,17 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#versionSelect').on('change', function() {
+		var $this = $(this);
+		var path = window.location.pathname;
+		var path_list = path.split('/');
+		if ($this.val() != '') {
+			if (path_list[path_list.length - 2] == 'edit') {
+				window.location = path + '/version/' + $this.val();
+			}
+		}
+	});
+
 	$("#page_slug_input").on('blur', function(e) {
 		var slug = $(this);
 		slug.val( slugify(slug.val()) );

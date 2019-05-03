@@ -306,6 +306,8 @@
 			
 			{% if page %}
 				var postType = "{{ page.template }}";
+			{% else %}
+				var postType = "page";
 			{% endif %}
 
 		</script>

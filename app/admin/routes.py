@@ -93,10 +93,10 @@ def add_page():
         )
 
 @bp.route('/admin/page/edit/<int:id>', methods=['GET', 'POST'])
+@bp.route('/admin/page/edit/<int:id>/version/<int:ver_id>', methods=['GET', 'POST'])
 @login_required
-def edit_page(id):
+def edit_page(id, ver_id=None):
     page = Page.query.filter_by(id=id).first()
-    versions = PageVersion.query.filter_by(original_id=id).order_by(desc('edit_date')).all()
     print(f"ANCESTORS: {page.ancestors()}")
     for anc in page.ancestors():
         print(f"ANCESTOR: {anc}")
@@ -146,24 +146,41 @@ def edit_page(id):
         flash("Page updated successfully.", "success")
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
-    form.title.data = page.title
-    form.slug.data = page.slug
-    form.template.data = page.template
-    form.parent_id.data = page.parent_id 
-    form.banner.data = page.banner
-    form.body.data = page.body
-    form.summary.data = page.summary
-    form.sidebar.data = page.sidebar
-    form.tags.data = page.tags
-    form.user_id.data = page.user_id
-    form.pub_date.data = page.pub_date
-    form.published.data = page.published
+    versions = PageVersion.query.filter_by(original_id=id).order_by(desc('edit_date')).all()
+    version = PageVersion.query.filter_by(id=ver_id).first() if ver_id else None
+    if version:
+        form.title.data = version.title
+        form.slug.data = version.slug
+        form.template.data = version.template
+        form.parent_id.data = version.parent_id 
+        form.banner.data = version.banner
+        form.body.data = version.body
+        form.summary.data = version.summary
+        form.sidebar.data = version.sidebar
+        form.tags.data = version.tags
+        form.user_id.data = version.user_id
+        form.pub_date.data = version.pub_date
+        form.published.data = version.published
+    else:
+        form.title.data = page.title
+        form.slug.data = page.slug
+        form.template.data = page.template
+        form.parent_id.data = page.parent_id 
+        form.banner.data = page.banner
+        form.body.data = page.body
+        form.summary.data = page.summary
+        form.sidebar.data = page.sidebar
+        form.tags.data = page.tags
+        form.user_id.data = page.user_id
+        form.pub_date.data = page.pub_date
+        form.published.data = page.published
     return render_template('admin/page-edit.html', 
             form=form, 
             tab='pages', 
             action='Edit',
             edit_page=page,
             versions=versions,
+            version=version,
         )
 
 
