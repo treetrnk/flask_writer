@@ -22,8 +22,6 @@ def create_app(config_class=Config):
     login.init_app(app)
     moment.init_app(app)
 
-    print(app.config['SQLALCHEMY_DATABASE_URI'])
-
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
