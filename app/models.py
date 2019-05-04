@@ -138,6 +138,11 @@ class Page(db.Model):
                 return markdown(self.parent().sidebar)
         return markdown(self.sidebar)
     
+    def description(self):
+        if self.summary:
+            return self.summary
+        return self.body[0:250] + '...'
+
     def view_code(self):
         return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
 
