@@ -13,8 +13,8 @@
 
       <br />
       <br />
-			{% for child in page.children %}
-				<div class='card'>
+			{% for child in page.pub_children()[::-1] %}
+				<div class='card mb-4'>
 					<div class='card-body'>
 						<p class='text-muted pull-right'><small>{{ child.pub_date }}</small></p>
 						<h3><a href='{{ child.path }}'>{{ child.title }}</a></h3>
