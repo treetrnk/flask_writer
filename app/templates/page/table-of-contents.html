@@ -1,12 +1,18 @@
 <ul>
 	{% if page.template == "chapter" or page.template == "post" %}
-		{% for child in page.pub_siblings()[::-1] %}
+		{% for child in page.pub_siblings() %}
+			<li>
+				<a href='{{ child.path }}'>{{ child.title }}</a>
+			</li>
+		{% endfor %}
+	{% elif page.template == "blog" %}
+	{% for child in page.pub_children()[::-1] %}
 			<li>
 				<a href='{{ child.path }}'>{{ child.title }}</a>
 			</li>
 		{% endfor %}
 	{% else %}
-		{% for child in page.pub_children()[::-1] %}
+		{% for child in page.pub_children() %}
 			<li>
 				<a href='{{ child.path }}'>{{ child.title }}</a>
 			</li>

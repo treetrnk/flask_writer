@@ -51,6 +51,7 @@ def edit_user(id):
 @bp.route('/admin/pages')
 @login_required
 def pages():
+    Page.set_nav()
     pub_pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
     unpub_pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
     return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages)
