@@ -33,7 +33,8 @@ def index(path):
         code = request.args['code'] if 'code' in request.args else None
         if page.published or page.check_view_code(code):
             return render_template(f'page/{page.template}.html', page=page)    
-    return redirect(url_for('page.home'))
+    page = Page.query.filter_by(slug='404-error').first()
+    return render_template(f'page/{page.template}.html', page=page)    
 
 @bp.before_app_first_request
 def set_nav():
