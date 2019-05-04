@@ -138,6 +138,17 @@ class Page(db.Model):
                 return markdown(self.parent().sidebar)
         return markdown(self.sidebar)
     
+    def view_code(self):
+        return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
+
+    def gen_view_code(self):
+        if self.published:
+            return ''
+        return '?code=' + generate_password_hash(self.view_code())
+
+    def check_view_code(self, code):
+        return check_password_hash(code, self.view_code())
+        
     def banner_path(self):
         if not self.banner and (self.template == 'chapter' or self.template == 'post'):
             if self.parent_id:

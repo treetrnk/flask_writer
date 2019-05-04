@@ -26,12 +26,14 @@ def set_theme(theme=None):
 @bp.route('/<path:path>')
 def index(path):
     path = f"/{path}"
-    page = Page.query.filter_by(path=path,published=True).first()
+    page = Page.query.filter_by(path=path).first()
     print(f"path: {path}")
     print(f"page: {page}")
     if page:
-        return render_template(f'page/{page.template}.html', page=page)    
-    return redirect(url_for('page.index'))
+        code = request.args['code'] if 'code' in request.args else None
+        if page.published or page.check_view_code(code):
+            return render_template(f'page/{page.template}.html', page=page)    
+    return redirect(url_for('page.home'))
 
 @bp.before_app_first_request
 def set_nav():

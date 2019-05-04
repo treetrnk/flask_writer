@@ -22,7 +22,7 @@
 
 <h2 id="page_title">{{ action }} Page</h2>
 {% if action == 'Edit' %}
-	<a href="{{ url_for('page.index', path=edit_page.path) }}" target="viewpage">
+<a href="{{ url_for('page.index', path=edit_page.path) }}{{ edit_page.gen_view_code() }}" target="viewpage">
 		<i class="fas fa-eye"></i> View page
 	</a>
 {% endif %}

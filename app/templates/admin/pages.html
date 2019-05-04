@@ -34,7 +34,7 @@
 					</small>
 				</td>
 				<td class="text-center">
-					<a href="{{ url_for('admin.edit_page', id=page.id) }}" class="btn btn-primary btn-sm">
+					<a href="{{ url_for('admin.edit_page', id=page.id) }}" target="viewpage" class="btn btn-primary btn-sm">
 						<i class="fas fa-edit"></i>
 					</a>
 				</td>
@@ -59,7 +59,7 @@
 		{% for page in unpub_pages %}
 			<tr>
 				<td>{{ page.title }}</td>
-				<td><a href="{{ page.path }}" target="viewpage"><i class="fas fa-eye"></i> {{ page.path }}</a></td>
+				<td><a href="{{ page.path }}{{ page.gen_view_code() }}" target="viewpage"><i class="fas fa-eye"></i> {{ page.path }}</a></td>
 				<td class="text-center">{{ page.word_count() }}</td>
 				<td class="text-success text-center">
 					{% if page.published %}
