@@ -4,32 +4,32 @@
 		<title>{% if page %}{{ page.title }} - {% endif %}Houston Hare stories</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		{% if page %}
-			<meta name="description" content="{{ page.body }}" />
+			<meta name="description" content="{{ page.description() }}" />
 
 			<!-- Schema.org markup for Google+ -->
 			<meta itemprop="name" content="{{ page.title }}">
-			<meta itemprop="description" content="{{ page.body }}">
-			<meta itemprop="image" content="{{ page.banner }}">
+			<meta itemprop="description" content="{{ page.description() }}">
+			<meta itemprop="image" content="{{ page.banner_path() }}">
 
 			<!-- Twitter Card data -->
 			<meta name="twitter:card" content="summary_large_image">
 			<meta name="twitter:site" content="@treetrnk">
 			<meta name="twitter:title" content="{{ page.title }}">
-			<meta name="twitter:description" content="{{ page.body }}">
+			<meta name="twitter:description" content="{{ page.description() }}">
 			<meta name="twitter:creator" content="@treetrnk">
 			<!-- Twitter summary card with large image must be at least 280x150px -->
-			<meta name="twitter:image:src" content="{{ page.banner }}">
+			<meta name="twitter:image:src" content="{{ page.banner_path() }}">
 
 			<!-- Open Graph data -->
 			<meta property="og:title" content="{{ page.title }}" />
 			<meta property="og:type" content="article" />
 			<meta property="og:url" content="http://houstonhare.com" />
-			<meta property="og:image" content="{{ page.banner }}" />
-			<meta property="og:description" content="{{ page.body }}" />
+			<meta property="og:image" content="{{ page.banner_path() }}" />
+			<meta property="og:description" content="{{ page.description() }}" />
 			<meta property="og:site_name" content="Stories by Houston Hare" />
 			<meta property="article:published_time" content="{{ page.pub_date }}" />
 			<meta property="article:modified_time" content="{{ page.pub_date }}" />
-			<meta property="article:section" content="{{ page.parent.title }}" />
+			<meta property="article:section" content="{{ page.section_name() }}" />
 			<meta property="article:tag" content="{{ page.tags }}" />
 			<meta property="fb:admins" content="Facebook numberic ID" />
 		{% endif %}

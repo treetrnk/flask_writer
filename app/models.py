@@ -141,7 +141,7 @@ class Page(db.Model):
     def description(self):
         if self.summary:
             return self.summary
-        return self.body[0:250] + '...'
+        return self.body[0:247] + '...'
 
     def view_code(self):
         return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
