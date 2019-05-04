@@ -11,6 +11,32 @@ $(document).ready(function() {
 		$('#display_count').text(words+" words");
 	});
 
+	$("input#pub_date").on("focus", function() {
+		if ($(this).val() == '') {
+			var d = new Date();
+			var day = d.getDate();
+			if (day < 10) {
+				day = '0' + day;
+			}
+			var month = d.getMonth() + 1;
+			if (month < 10) {
+				month = '0' + month;
+			}
+			var year = d.getFullYear();
+			var hour = d.getHours();
+			var minute = d.getMinutes();
+			if (minute < 10) {
+				minute = '0' + minute;
+			}
+			var seconds = d.getSeconds();
+			if (seconds < 10) {
+				seconds = '0' + seconds;
+			}
+			var date = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + seconds;
+			$(this).val(date);
+		}
+	});
+
 	$("#page_title_input").on('keyup', function(e) {
 		console.log("fart");
 		var title = $(this).val();
