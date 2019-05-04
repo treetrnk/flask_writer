@@ -1,43 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <div class="row">
   <div class="col-md-7 col-md-offset-1 col-sm-12 col-xs-12 content">
     
 		{% include 'theme-chooser.html' %}
 
-    <h1><?=$page->title;?></h1>
-    <p class="text-muted"><small><?=$page->date;?></small></p>
-    <nav class="clearfix">
-      <ul class="pager">
-        <?=$page->nextPrev();?> 
-      </ul>
-    </nav>
+		<h1>{{ page.title }}</h1>
+
+    <p>
+        <span class="text-muted">
+          <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count() }}</span> <!--&#8226;-->
+          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.read_time() }}</span>
+        </span>
+    </p>
+
+		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
+
+		<div class="mb-4 mt-4">
+			{% if page.prev_pub_sibling() %}
+				<a href="{{ page.prev_sibling.path }}" class="btn btn-secondary">Prev. Page</a></li>
+			{% else %}
+				<a href="#" class="btn btn-secondary" disabled>Prev. Page</a></li>
+			{% endif %}
+			{% if page.next_pub_sibling() %}
+				<a href="{{ page.next_sibling.path }}" class="btn btn-secondary float-right">Next. Page</a></li>
+			{% else %}
+				<a href="#" class="btn btn-secondary float-right" disabled>Next Page</a></li>
+			{% endif %}
+		</div>
+
     <div class="content">
-      <?=$page->formattedBody;?>
+			{{ page.html_body()|safe }}
     </div>
   
-    <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
-        <p>
-        <?=$page->tags();?>
-        </p>
+				<i class="fa fa-tags"></i> Tags:
+				{% for tag in page.tags %}
+					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
         <small class="text-muted">Share:</small>
-        <?=getShareButtons($page->url);?>
+				{# share buttons #}
       </div>
     </div>
-    <nav aria-label="...">
-      <ul class="pager">
-        <?=$page->nextPrev();?> 
-      </ul>
-    </nav>
+
+		<div class="mb-4 mt-4">
+			{% if page.prev_pub_sibling() %}
+				<a href="{{ page.prev_sibling.path }}" class="btn btn-secondary">Prev. Page</a></li>
+			{% else %}
+				<a href="#" class="btn btn-secondary" disabled>Prev. Page</a></li>
+			{% endif %}
+			{% if page.next_pub_sibling() %}
+				<a href="{{ page.next_sibling.path }}" class="btn btn-secondary float-right">Next. Page</a></li>
+			{% else %}
+				<a href="#" class="btn btn-secondary float-right" disabled>Next Page</a></li>
+			{% endif %}
+		</div>
+
   </div>
   <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
-		{{ page.table_of_contents|safe }}
+		{{ page.html_sidebar()|safe }}
+		{% include 'page/table-of-contents.html' %}
   </aside>
 </div>
-<div class="row">
-  <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+<div class="row justify-content-md-center">
+  <div class="col-md-8 col">
     <h2>Comments</h2>
 
     <div id="disqus_thread"></div>
@@ -46,16 +76,15 @@
     /**
     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    
-    var disqus_config = function () {
-      this.page.url = <?="'http://nathanhare.net$page->location'";?>;  // Replace PAGE_URL with your page's canonical URL variable
-      this.page.identifier = "<?=$page->id;?>"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 
+    var disqus_config = function () {
+			this.page.url = "https://houstonhare.com{{ page.path }}";  // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = "{{ page.id }}{{ page.slug }}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
-    s.src = 'https://the-writings-of-nathan-hare.disqus.com/embed.js';
+    s.src = 'https://houstonhare.disqus.com/embed.js';
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
     })();
@@ -64,4 +93,4 @@
 
   </div>
 </div>
-
+{% endblock %}
