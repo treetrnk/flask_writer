@@ -1,5 +1,6 @@
 from flask import render_template, redirect, url_for, flash, session, request, current_app
 from app.page import bp
+from app.page.forms import SearchForm
 from app.models import Page, Tag
 
 @bp.route('/')
@@ -25,10 +26,23 @@ def set_theme(theme=None):
 
 @bp.route('/search/tag/<string:tag>')
 @bp.route('/search/keyword/<string:keyword>')
+@bp.route('/search/keyword/', methods=['GET','POST'])
 def search(tag=None,keyword=None):
+    tags = Tag.query.all()
+    form = SearchForm()
+    results = None
+    if keyword != None:
+        form.keyword.data = keyword
+    print(keyword)
+    if form.validate_on_submit():
+        print(keyword)
+        keyword = form.keyword.data
+    if form.errors:
+        for error in form.errors:
+            print(error)
     if tag:
         results = Page.query.filter(
-                tag in Page.tags, 
+                Page.tags.any(name=tag), 
                 Page.published == True
             ).order_by('sort','pub_date','title').all()
     if keyword:
@@ -37,8 +51,10 @@ def search(tag=None,keyword=None):
                 Page.published == True
             ).order_by('sort','pub_date','title').all()
     return render_template('page/search.html',
+            form=form,
             keyword=keyword,
             tag=tag,
+            tags=tags,
             results=results)
 
 @bp.route('/<path:path>')

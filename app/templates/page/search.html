@@ -1,46 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row">
-  <div class="col-md-10 col-md-offset-1 col-sm-12">
-    <p class="pull-right text-muted" id="theme-select">
-      <small class="hidden-xs">Theme:</small>
-      <small>
-        <a href="<?=$page->urlkeyword;?>&theme=light" id="light-theme" title="Light Theme">
-          <img src="/resources/images/light-theme.png" />
-        </a>
-        <a href="<?=$page->urlkeyword;?>&theme=dark" id="dark-theme" title="Dark Theme">
-          <img src="/resources/images/dark-theme.png" />
-        </a>
-      </small>
-    </p>
+<div class="row justify-content-md-center">
+  <div class="col-md-10 col-sm-12">
+		{% include 'theme-chooser.html' %}
     <h1>Search</h1>
     <br />
-    <form class="form" action="/search/" method="get">
+		<form class="form" action="{{ url_for('page.search') }}" data-url="{{ url_for('page.search') }}" method="post">
+			{{ form.hidden_tag() }}
       <div class="input-group">
-        <input type="text" name="s" value="<?=$page->s;?>" placeholder="Search" class="form-control" />
-        <div class="input-group-btn">
-          <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+				{{ form.keyword(class="form-control form-control-lg", placeholder="Search") }}
+        <div class="input-group-append">
+					<button type="submit" class="btn btn-lg btn-primary">
+						<i class="fas fa-search"></i>
+					</button>
         </div>
       </div>
     </form>
     <br />
-    <?=getAllTags($page->tag);?>
+		{% for t in tags %}
+			<a href="{{ url_for('page.search', tag=t.name) }}">
+				{% if t.name == tag %}
+					<span class="badge badge-primary">{{ t.name }}</span>
+				{% else %}
+					<span class="badge badge-secondary">{{ t.name }}</span>
+				{% endif %}
+			</a>
+		{% endfor %}
     <br />
     <hr />
     <br />
-		{% for result in results %}
-				<div class='card mb-4'>
-					<div class='card-body'>
-						<p class='text-muted pull-right'><small>{{ result.pub_date }}</small></p>
-						<h3><a href='{{ result.path }}'>{{ result.title }}</a></h3>
-						<p>{{ result.description() }}</p>
-						<i class="fa fa-tags"></i> Tags:
-						{% for tag in result.tags %}
-							<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
-						{% endfor %}
+		{% if results %}
+			{% for result in results %}
+					<div class='card mb-4'>
+						<div class='card-body'>
+							<p class='text-muted pull-right'><small>{{ result.pub_date }}</small></p>
+							<h3><a href='{{ result.path }}'>{{ result.title }}</a></h3>
+							<p>{{ result.description() }}</p>
+							<i class="fa fa-tags"></i> Tags:
+							{% for tag in result.tags %}
+								<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+							{% endfor %}
+						</div>
 					</div>
-				</div>
-		{% endfor %}
+			{% endfor %}
+		{% endif %}
   </div>
 </div>
 {% endblock %}
