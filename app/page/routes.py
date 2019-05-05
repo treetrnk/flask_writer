@@ -24,9 +24,10 @@ def set_theme(theme=None):
         return redirect(prev_path)
     return redirect(url_for('page.home'))
 
+@bp.route('/search', methods=['GET','POST'])
 @bp.route('/search/tag/<string:tag>')
 @bp.route('/search/keyword/<string:keyword>')
-@bp.route('/search/keyword/', methods=['GET','POST'])
+@bp.route('/search/keyword', methods=['GET','POST'])
 def search(tag=None,keyword=None):
     tags = Tag.query.all()
     form = SearchForm()
