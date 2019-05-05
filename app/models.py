@@ -35,7 +35,7 @@ class User(UserMixin, db.Model):
         return self.username
 
     def __repr__(self):
-        return f"User({self.username})"
+        return f"<User({self.username})>"
 
 
 @login.user_loader
@@ -76,7 +76,7 @@ class PageVersion(db.Model):
         return f"Ver. {self.id} - {self.title} ({self.path})"
 
     def __repr__(self):
-        return f"PageVersion({self.id}, {self.title}, {self.path})"
+        return f"<PageVersion({self.id}, {self.title}, {self.path})>"
 
 class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -285,7 +285,7 @@ class Page(db.Model):
         return f"{self.title} ({self.path})"
 
     def __repr__(self):
-        return f"Page({self.id}, {self.title}, {self.path})"
+        return f"<Page({self.id}, {self.title}, {self.path})>"
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -295,4 +295,24 @@ class Tag(db.Model):
         return self.name
 
     def __repr__(self):
-        return f"Tag({self.name})"
+        return f"<Tag({self.name})>"
+
+class Subscriber(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True) 
+    first_name = db.Column(db.String(75), nullable=True)
+    last_name = db.Column(db.String(75), nullable=True)
+    subscription = db.Column(db.String(100), nullable=False, default='all')
+
+    SUBSCRIPTION_CHOICES = [
+            ('all','All'),
+            ('sprig','Sprig'),
+            ('blog','Blog'),
+        ]
+
+    def __str__(self):
+        return f"{self.email} ({self.first_name} {self.last_name})"
+
+    def __repr__(self):
+        return f"<Subscriber({self.email}, {self.first_name} {self.last_name})>"
+
