@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, session, request, current_app
 from app.page import bp
-from app.models import Page
+from app.models import Page, Tag
 
 @bp.route('/')
 def home():
@@ -22,6 +22,24 @@ def set_theme(theme=None):
     if prev_path:
         return redirect(prev_path)
     return redirect(url_for('page.home'))
+
+@bp.route('/search/tag/<string:tag>')
+@bp.route('/search/keyword/<string:keyword>')
+def search(tag=None,keyword=None):
+    if tag:
+        results = Page.query.filter(
+                tag in Page.tags, 
+                Page.published == True
+            ).order_by('sort','pub_date','title').all()
+    if keyword:
+        results = Page.query.filter(
+                Page.body.ilike(f'%{keyword}%'),
+                Page.published == True
+            ).order_by('sort','pub_date','title').all()
+    return render_template('page/search.html',
+            keyword=keyword,
+            tag=tag,
+            results=results)
 
 @bp.route('/<path:path>')
 def index(path):

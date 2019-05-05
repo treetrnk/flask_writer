@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <div class="row">
   <div class="col-md-10 col-md-offset-1 col-sm-12">
     <p class="pull-right text-muted" id="theme-select">
@@ -26,6 +28,19 @@
     <br />
     <hr />
     <br />
-    <?=$page->searchResults();?>
+		{% for result in results %}
+				<div class='card mb-4'>
+					<div class='card-body'>
+						<p class='text-muted pull-right'><small>{{ result.pub_date }}</small></p>
+						<h3><a href='{{ result.path }}'>{{ result.title }}</a></h3>
+						<p>{{ result.description() }}</p>
+						<i class="fa fa-tags"></i> Tags:
+						{% for tag in result.tags %}
+							<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+						{% endfor %}
+					</div>
+				</div>
+		{% endfor %}
   </div>
 </div>
+{% endblock %}
