@@ -35,7 +35,7 @@
 				text-transform: uppercase;
 			}
 			nav a.nav-link.dropdown-toggle {
-				margin-left: -8px;
+				margin-left: -15px;
 			}
 			nav div.dropdown-menu a.dropdown-item {
 				color: #222;

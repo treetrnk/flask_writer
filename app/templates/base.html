@@ -127,7 +127,9 @@
 									<a href="{{ topnav.path }}" class="nav-link">{{ topnav.title }}</a>
 								</li>
 								<li class="nav-item dropdown">
-									<a href="{{ topnav.path }}" class="nav-link dropdown-toggle" data-toggle="dropdown"></a>
+									<a href="{{ topnav.path }}" class="nav-link dropdown-toggle" data-toggle="dropdown">
+										<span class="d-inline d-sm-inline d-md-none pl-3"></span>
+									</a>
 									<div class="dropdown-menu dropdown-menu-right">
 										{% for child in topnav.children %}
 											<a href="{{ child.path }}" class="dropdown-item">{{ child.title }}</a>
@@ -151,6 +153,11 @@
 								</li>
 							{% endif %}
 						{% endfor %}
+						<li class="nav-item">
+							<a href="{{ url_for('page.search') }}" class="nav-link">
+								<i class="fas fa-search"></i>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
