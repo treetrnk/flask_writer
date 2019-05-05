@@ -22,7 +22,7 @@
 			{{ page.html_body()|safe }}
 			{% if page.pub_children() %}
 				<div class="text-center">
-					<a href='{{ page.pub_children()[-1].path }}' class="btn btn-primary btn-lg">
+					<a href='{{ page.pub_children()[0].path }}' class="btn btn-primary btn-lg">
 						<i class="fas fa-book"></i>
 						Start Reading
 					</a>
@@ -43,13 +43,6 @@
         {# getShareButtons($page->url) #}
       </div>
     </div><br />
-    <nav aria-label="...">
-      <ul class="pager">
-<!--
-				{# <?=$page->nextPrev();?> #}
--->
-      </ul>
-    </nav>
   </div>
   <aside class="col-md-3 col-12">
 		{{ page.html_sidebar()|safe }}

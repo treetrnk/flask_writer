@@ -59,7 +59,7 @@ def search(tag=None,keyword=None):
 
 @bp.route('/<path:path>')
 def index(path):
-    Page.set_nav(True)
+    Page.set_nav()
     path = f"/{path}"
     page = Page.query.filter_by(path=path).first()
     print(f"path: {path}")

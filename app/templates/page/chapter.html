@@ -18,18 +18,7 @@
 			<p class="text-muted"><small>{{ page.pub_date.strftime("%B %-d, %Y - %-I:%M %p") }}</small></p>
 		{% endif %}
 		
-		<div class="mb-4 mt-4">
-			{% if page.prev_pub_sibling() %}
-				<a href="{{ page.prev_sibling.path }}" class="btn btn-secondary">Prev. Page</a></li>
-			{% else %}
-				<a href="#" class="btn btn-secondary" disabled>Prev. Page</a></li>
-			{% endif %}
-			{% if page.next_pub_sibling() %}
-				<a href="{{ page.next_sibling.path }}" class="btn btn-secondary float-right">Next. Page</a></li>
-			{% else %}
-				<a href="#" class="btn btn-secondary float-right" disabled>Next Page</a></li>
-			{% endif %}
-		</div>
+		{% include 'page/next_prev.html' %}
 
     <div class="content">
 			{{ page.html_body()|safe }}
@@ -48,18 +37,7 @@
       </div>
     </div>
 
-		<div class="mb-4 mt-4">
-			{% if page.prev_pub_sibling() %}
-				<a href="{{ page.prev_sibling.path }}" class="btn btn-secondary">Prev. Page</a></li>
-			{% else %}
-				<a href="#" class="btn btn-secondary" disabled>Prev. Page</a></li>
-			{% endif %}
-			{% if page.next_pub_sibling() %}
-				<a href="{{ page.next_sibling.path }}" class="btn btn-secondary float-right">Next. Page</a></li>
-			{% else %}
-				<a href="#" class="btn btn-secondary float-right" disabled>Next Page</a></li>
-			{% endif %}
-		</div>
+		{% include 'page/next_prev.html' %}
 
   </div>
   <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
