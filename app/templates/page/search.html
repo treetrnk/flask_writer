@@ -30,6 +30,7 @@
     <hr />
     <br />
 		{% if results %}
+			<h2>{{ results|length }} Results</h2>
 			{% for result in results %}
 					<div class='card mb-4'>
 						<div class='card-body'>
@@ -43,6 +44,8 @@
 						</div>
 					</div>
 			{% endfor %}
+		{% else %}
+			<h2>0 Results</h2>
 		{% endif %}
   </div>
 </div>
