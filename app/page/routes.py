@@ -26,7 +26,7 @@ def set_theme(theme=None):
 
 @bp.route('/search', methods=['GET','POST'])
 @bp.route('/search/tag/<string:tag>')
-@bp.route('/search/keyword/<string:keyword>')
+@bp.route('/search/keyword/<string:keyword>', methods=['GET', 'POST'])
 @bp.route('/search/keyword', methods=['GET','POST'])
 def search(tag=None,keyword=None):
     tags = Tag.query.all()

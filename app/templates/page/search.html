@@ -5,7 +5,7 @@
 		{% include 'theme-chooser.html' %}
     <h1>Search</h1>
     <br />
-		<form class="form" action="{{ url_for('page.search') }}" data-url="{{ url_for('page.search') }}" method="post">
+		<form class="form" action="{{ url_for('page.search') }}" data-url="{{ url_for('page.search') }}/" method="post">
 			{{ form.hidden_tag() }}
       <div class="input-group">
 				{{ form.keyword(class="form-control form-control-lg", placeholder="Search") }}
