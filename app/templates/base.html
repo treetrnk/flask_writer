@@ -34,10 +34,10 @@
 			<meta property="fb:admins" content="Facebook numberic ID" />
 		{% endif %}
 
-		{% if page %}
-			<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon2.png') }}" type="image/x-icon">
-		{% else %}
+		{% if page and page.slug == "admin" %}
 			<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-admin.png') }}" type="image/x-icon">
+		{% else %}
+			<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon2.png') }}" type="image/x-icon">
 		{% endif %}
 		<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -55,7 +55,7 @@
 				{% else %}
 					height: 500px;
 				{% endif %}
-				{% if page.banner_path() %}
+				{% if page and page.banner_path() %}
 					background-image: url({{ page.banner_path() }});
 				{% endif %}
 			}

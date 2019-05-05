@@ -56,7 +56,9 @@ def search(tag=None,keyword=None):
             keyword=keyword,
             tag=tag,
             tags=tags,
-            results=results)
+            results=results,
+            page=Page.query.filter_by(slug='search').first()
+        )
 
 @bp.route('/<path:path>')
 def index(path):
