@@ -194,7 +194,7 @@ def edit_page(id, ver_id=None):
 @bp.route('/admin/tags')
 @login_required
 def tags():
-    page = Page.query.filter_by(slug='home').first()
+    page = Page.query.filter_by(slug='admin').first()
     tags = Tag.query.order_by('name')
     return render_template('admin/tags.html', tab='tags', tags=tags, page=page)
 
