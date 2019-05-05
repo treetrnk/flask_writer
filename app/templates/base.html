@@ -54,9 +54,9 @@
 					height: 280px;
 				{% else %}
 					height: 500px;
-					{% if page.banner_path() %}
-						background-image: url({{ page.banner_path() }});
-					{% endif %}
+				{% endif %}
+				{% if page.banner_path() %}
+					background-image: url({{ page.banner_path() }});
 				{% endif %}
 			}
 

@@ -9,12 +9,14 @@ from sqlalchemy import desc
 @bp.route('/admin/users')
 @login_required
 def users():
+    page = Page.query.filter_by(slug='admin').first()
     users = User.query.order_by('username')
-    return render_template('admin/users.html', tab='users', users=users)
+    return render_template('admin/users.html', tab='users', users=users, page=page)
 
 @bp.route('/admin/user/add', methods=['GET', 'POST'])
 @login_required
 def add_user():
+    page = Page.query.filter_by(slug='home').first()
     form = AddUserForm()
     if form.validate_on_submit():
         user = User(
@@ -27,11 +29,12 @@ def add_user():
         db.session.commit()
         flash(f"{user.username.upper()} was added successfully!", "success")
         return redirect(url_for('main.home'))
-    return render_template('admin/user-edit.html', form=form, tab='users', action='Add')
+    return render_template('admin/user-edit.html', form=form, tab='users', action='Add', page=page)
 
 @bp.route('/admin/user/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):
+    page = Page.query.filter_by(slug='admin').first()
     user = User.query.filter_by(id=id).first()
     form = EditUserForm()
     if form.validate_on_submit():
@@ -46,15 +49,16 @@ def edit_user(id):
     form.username.data = user.username
     form.email.data = user.email
     form.about_me.data = user.about_me
-    return render_template('admin/user-edit.html', form=form, tab='users', action='Edit', user=user)
+    return render_template('admin/user-edit.html', form=form, tab='users', action='Edit', user=user,page=page)
 
 @bp.route('/admin/pages')
 @login_required
 def pages():
+    page = Page.query.filter_by(slug='admin').first()
     Page.set_nav()
     pub_pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
     unpub_pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
-    return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages)
+    return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages,page=page)
 
 @bp.route('/admin/page/add', methods=['GET', 'POST'])
 @login_required
@@ -90,7 +94,8 @@ def add_page():
     return render_template('admin/page-edit.html', 
             form=form, 
             tab='pages',
-            action='Add'
+            action='Add',
+            page = Page.query.filter_by(slug='admin').first()
         )
 
 @bp.route('/admin/page/edit/<int:id>', methods=['GET', 'POST'])
@@ -182,18 +187,21 @@ def edit_page(id, ver_id=None):
             edit_page=page,
             versions=versions,
             version=version,
+            page = Page.query.filter_by(slug='admin').first()
         )
 
 
 @bp.route('/admin/tags')
 @login_required
 def tags():
+    page = Page.query.filter_by(slug='home').first()
     tags = Tag.query.order_by('name')
-    return render_template('admin/tags.html', tab='tags', tags=tags)
+    return render_template('admin/tags.html', tab='tags', tags=tags, page=page)
 
 @bp.route('/admin/tag/add', methods=['GET', 'POST'])
 @login_required
 def add_tag():
+    page = Page.query.filter_by(slug='admin').first()
     form = AddTagForm()
     if form.validate_on_submit():
         if form.validate_tag(form.name.data):
@@ -206,11 +214,12 @@ def add_tag():
             return redirect(url_for('admin.tags'))
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
-    return render_template('admin/tag-edit.html', form=form, tab='tags', action='Add')
+    return render_template('admin/tag-edit.html', form=form, tab='tags', action='Add', page=page)
 
 @bp.route('/admin/tag/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_tag(id):
+    page = Page.query.filter_by(slug='admin').first()
     tag = Tag.query.filter_by(id=id).first()
     form = AddTagForm()
     if form.validate_on_submit():
@@ -222,5 +231,5 @@ def edit_tag(id):
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
     form.name.data = tag.name
-    return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit')
+    return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit', page=page)
 
