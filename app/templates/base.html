@@ -197,38 +197,38 @@
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade" id="subscribeMod" tabindex="-1" role="dialog" aria-labelledby="subscribeModLabel">
+		<div class="modal" id="subscribeMod" tabindex="-1" role="dialog" aria-labelledby="subscribeModLabel">
 			<form class="form" action="" method="post" id="subForm">
         <input type="hidden" name="subscribe" value="yes" />
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h3 class="modal-title" id="subscribeModLabel"><i class="glyphicon glyphicon-envelope"></i> Subscribe!</h3>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</div>
 						<div class="modal-body">
 							<small><p>Subscribe now to receive updates every time a new chapter is posted.</p></small>
 							<div class="row">
-								<div class="col-xs-12">
+								<div class="col-12">
 									<small><label class="control-label">Email <span class="text-danger"><b>*</b></span></label></small>
 									<input type="email" placeholder="example@email.com" name="email" class="form-control" maxlength="200" required />
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-12">
+								<div class="col-12">
 									<small><label class="control-label">Name</label> (Optional)</small>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-6">
+								<div class="col-6">
 									<input type="text" name="fname" placeholder="First" class="form-control" maxlength="50" />
 								</div>
-								<div class="col-xs-6">
+								<div class="col-6">
 									<input type="text" name="lname" placeholder="Last" class="form-control" maxlength="50" />
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-12">
+								<div class="col-12">
 									<small><label class="control-label">&nbsp;</label></small>
 									<div class="coinhive-captcha" data-hashes="512" data-key="{# config('coinhive-public') #}">
 										<div class="g-recaptcha" data-sitekey="{# config('google-public') #}"></div>
@@ -247,7 +247,7 @@
 
     <button type="button" class="close" id="sub-btn-close"><small><i class="glyphicon glyphicon-remove"></i></small></button>
 
-		{% if page %}
+		{% if not page or page.slug != 'admin' %}
 			<button type="button" class="btn btn-primary" id="sub-btn" data-toggle="modal" data-target="#subscribeMod" title="Subscribe"><i class="fas fa-envelope"></i><span class="hidden-xs"> Subscribe</span></button>
 		{% endif %}
 
