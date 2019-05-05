@@ -248,7 +248,7 @@
     <button type="button" class="close" id="sub-btn-close"><small><i class="glyphicon glyphicon-remove"></i></small></button>
 
 		{% if not page or page.slug != 'admin' %}
-			<button type="button" class="btn btn-primary" id="sub-btn" data-toggle="modal" data-target="#subscribeMod" title="Subscribe"><i class="fas fa-envelope"></i><span class="hidden-xs"> Subscribe</span></button>
+			<button type="button" class="btn btn-primary" id="sub-btn" data-toggle="modal" data-target="#subscribeMod" title="Subscribe"><i class="fas fa-envelope" data-toggle="tooltip" title="Subscribe"></i><span class="d-none d-md-inline"> Subscribe</span></button>
 		{% endif %}
 
 		<section class="container content-wrapper">
