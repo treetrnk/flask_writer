@@ -130,7 +130,7 @@ class Page(db.Model):
             self.dir_path = "/"
 
     def html_body(self):
-        return markdown(self.body)
+        return markdown(self.body.replace('--', '&#8212;'))
 
     def html_sidebar(self):
         if self.template == 'chapter' or self.template == 'post':
