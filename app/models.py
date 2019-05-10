@@ -130,7 +130,7 @@ class Page(db.Model):
             self.dir_path = "/"
 
     def html_body(self):
-        return markdown(self.body)
+        return markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
 
     def html_sidebar(self):
         if self.template == 'chapter' or self.template == 'post':
@@ -141,7 +141,7 @@ class Page(db.Model):
     def description(self):
         if self.summary:
             return self.summary
-        return self.body[0:247].replace('#','').replace('*','') + '...'
+        return self.body[0:247].replace('#','').replace('*','').replace('--', '&#8212;').replace('_', '') + '...'
 
     def view_code(self):
         return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
