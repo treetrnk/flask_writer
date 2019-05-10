@@ -236,14 +236,15 @@ class Page(db.Model):
         words = self.word_count()
         return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
 
-    def child_word_count(self):
-        try:
-            return self.child_words
-        except:
-            words = 0
-            for child in self.children:
-                words += child.word_count()
-            self.child_words = words
+    def child_word_count(self, published_only=True):
+        #try:
+        #    return self.child_words
+        #except:
+        words = 0
+        children = self.pub_children() if published_only else self.children
+        for child in children:
+            words += child.word_count()
+        self.child_words = words
         return self.child_words
 
     def child_read_time(self):

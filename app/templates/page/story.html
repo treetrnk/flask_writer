@@ -10,6 +10,9 @@
     <p>
 			<span class="text-muted">
 				<span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
+				{% if current_user.is_authenticated %}
+					<span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count(False) }}</span> <!--&#8226;-->
+				{% endif %}
 				<span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.child_read_time() }}</span>
 			</span>
     </p>
