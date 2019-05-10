@@ -16,6 +16,11 @@
 		</a>
 	</li>
 	<li class="nav-item">
+		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}">
+			<i class="fas fa-envelope"></i> Subscribers
+		</a>
+	</li>
+	<li class="nav-item">
 		<a href="{{ url_for('page.set_theme') }}?path={{ request.path }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
 			<i class="fas fa-fill-drip"></i> Theme
 		</a>
