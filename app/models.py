@@ -306,6 +306,7 @@ class Subscriber(db.Model):
     first_name = db.Column(db.String(75), nullable=True)
     last_name = db.Column(db.String(75), nullable=True)
     subscription = db.Column(db.String(100), nullable=False, default='all')
+    sub_date = db.Column(db.DateTime(), default=datetime.utcnow)
 
     SUBSCRIPTION_CHOICES = [
             ('all','All'),

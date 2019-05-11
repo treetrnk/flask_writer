@@ -1,7 +1,7 @@
 from flask import render_template, redirect, flash, url_for
 from app import db
 from app.admin import bp
-from app.models import Page, User, Tag, PageVersion
+from app.models import Page, User, Tag, PageVersion, Subscriber
 from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -232,4 +232,11 @@ def edit_tag(id):
             flash("<b>Error!</b> That tag already exists.", "danger")
     form.name.data = tag.name
     return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit', page=page)
+
+@bp.route('/admin/subscribers')
+@login_required
+def subscribers():
+    page = Page.query.filter_by(slug='admin').first()
+    subscribers = Subscriber.query.order_by('email').all()
+    return render_template('admin/subscribers.html', tab='subscribers', subscribers=subscribers, page=page)
 

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('page.subscribe') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Subscriber
+</a>
+
+<h2>Subscribers</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Subscription</th>
+			<th width="100">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for subscriber in subscribers %}
+			<tr>
+				<td>{{ subscriber.first_name }} {{ subscriber.last_name }}</td>
+				<td>{{ subscriber.email }}</td>
+				<td>{{ subscriber.subscription }}</td>
+				<td class="text-center">
+					<a href="#{# url_for('admin.edit_tag', id=tag.id) #}" class="btn btn-primary btn-sm">
+						<i class="fas fa-edit"></i>
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

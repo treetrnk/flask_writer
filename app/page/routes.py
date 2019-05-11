@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, flash, session, request, current_app
 from app.page import bp
-from app.page.forms import SearchForm
-from app.models import Page, Tag
+from app.page.forms import SearchForm, SubscribeForm
+from app.models import Page, Tag, Subscriber
+from app import db
 
 @bp.route('/')
 def home():
@@ -58,6 +59,26 @@ def search(tag=None,keyword=None):
             tags=tags,
             results=results,
             page=Page.query.filter_by(slug='search').first()
+        )
+
+@bp.route('/subscribe', methods=['GET','POST'])
+def subscribe():
+    form = SubscribeForm()
+    for field in form:
+        print(f"{field.name}: {field.data}")
+    if form.validate_on_submit():
+        print("Validated")
+        sub = Subscriber(
+            email=form.email.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+        )
+        db.session.add(sub)
+        db.session.commit()
+        flash('You have subscribed successfully!', 'success')
+        return redirect(url_for('page.home'))
+    return render_template('subscribe.html',
+            form=form
         )
 
 @bp.route('/<path:path>')
