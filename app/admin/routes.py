@@ -69,11 +69,12 @@ def add_page():
     form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
     if form.validate_on_submit():
+        parentid = form.parent_id.data if form.parent_id.data else None
         page = Page(
                 title = form.title.data,
                 slug = form.slug.data,
                 template = form.template.data,
-                parent_id = form.parent_id.data,
+                parent_id = parentid,
                 banner = form.banner.data,
                 body = form.body.data,
                 summary = form.summary.data,
@@ -113,13 +114,14 @@ def edit_page(id, ver_id=None):
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
         
+        prev_parentid = page.parent_id if page.parent_id else None
         # Create version from current
         version = PageVersion(
             original_id = id,
             title = page.title,
             slug = page.slug,
             template = page.template,
-            parent_id = page.parent_id,
+            parent_id = prev_parentid,
             banner = page.banner,
             body = page.body,
             summary = page.summary,
@@ -134,10 +136,11 @@ def edit_page(id, ver_id=None):
         db.session.add(version)
 
         # Update page
+        parentid = form.parent_id.data if form.parent_id.data else None
         page.title = form.title.data
         page.slug = form.slug.data
         page.template = form.template.data
-        page.parent_id = form.parent_id.data
+        page.parent_id = parentid
         page.banner = form.banner.data
         page.body = form.body.data
         page.summary = form.summary.data
