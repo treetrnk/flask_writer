@@ -59,6 +59,23 @@
 		</div>
 	</div>
 
+	<!--TIMEZONE-->
+	<div class="form-group row">
+		{{ form.timezone.label(class="col-sm-2 control-from-label text-right") }} 
+		<div class="col-sm-8">
+			{% if form.timezone.errors %}
+				{{ form.timezone(class="form-control is-invalid mkSelect2") }}
+				<div class="invalid-feedback">
+					{% for error in form.timezone.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.timezone(class="form-control mkSelect2") }}
+			{% endif %}
+		</div>
+	</div>
+
 	{% if action == 'Edit' %}
 		<h3 class="mt-4">Change Password</h3>
 		<hr class="mb-4" />

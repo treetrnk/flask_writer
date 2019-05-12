@@ -15,7 +15,9 @@
         </span>
     </p>
 
-		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
+		{% if page.pub_date %}
+			<p class="text-muted"><small>{{ moment(page.pub_date).format("LLL") }}</small></p>
+		{% endif %}
 
 		{% include 'page/next_prev.html' %}
 

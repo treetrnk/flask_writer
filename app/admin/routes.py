@@ -5,6 +5,7 @@ from app.models import Page, User, Tag, PageVersion, Subscriber
 from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
 from flask_login import login_required, current_user
 from sqlalchemy import desc
+import pytz
 
 @bp.route('/admin/users')
 @login_required
@@ -18,17 +19,19 @@ def users():
 def add_user():
     page = Page.query.filter_by(slug='home').first()
     form = AddUserForm()
+    form.timezone.choices = [(t, t) for t in pytz.common_timezones]
     if form.validate_on_submit():
         user = User(
                 username=form.username.data, 
                 email=form.email.data,
                 about_me=form.about_me.data,
+                about_me=form.timezone.data,
             )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash(f"{user.username.upper()} was added successfully!", "success")
-        return redirect(url_for('main.home'))
+        return redirect(url_for('admin.users'))
     return render_template('admin/user-edit.html', form=form, tab='users', action='Add', page=page)
 
 @bp.route('/admin/user/edit/<int:id>', methods=['GET', 'POST'])
@@ -37,18 +40,21 @@ def edit_user(id):
     page = Page.query.filter_by(slug='admin').first()
     user = User.query.filter_by(id=id).first()
     form = EditUserForm()
+    form.timezone.choices = [(t, t) for t in pytz.common_timezones]
     if form.validate_on_submit():
         user.username = form.username.data
         user.email = form.email.data
         user.about_me = form.about_me.data
-        if user.check_password(form.password.data):
+        user.timezone = form.timezone.data
+        if form.password.data and user.check_password(form.password.data):
             user.set_password(form.new_password.data)
         db.session.commit()
-        flash(f"{user.username.upper()} was added successfully!", "success")
-        return redirect(url_for('main.home'))
+        flash(f"User {user.username} was updated successfully!", "success")
+        return redirect(url_for('admin.users'))
     form.username.data = user.username
     form.email.data = user.email
     form.about_me.data = user.about_me
+    form.timezone.data = user.timezone
     return render_template('admin/user-edit.html', form=form, tab='users', action='Edit', user=user,page=page)
 
 @bp.route('/admin/pages')

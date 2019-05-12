@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (
         StringField, TextAreaField, SelectField, IntegerField, SubmitField, 
         BooleanField, SubmitField, DateTimeField, SelectMultipleField, 
-        PasswordField
+        PasswordField, HiddenField
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError
@@ -14,6 +14,7 @@ class AddUserForm(FlaskForm):
     username = StringField(f'Username{required}', validators=[DataRequired()])
     email = StringField('Email', validators=[Email(), Optional()])
     about_me = TextAreaField('About Me')
+    timezone = SelectField('Timezone')
     password = PasswordField(f'Password{required}', validators=[DataRequired()])
     confirm_password = PasswordField(f'Confirm Password{required}', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField("Add User")
@@ -22,10 +23,11 @@ class EditUserForm(FlaskForm):
     username = StringField(f'Username{required}', validators=[DataRequired()])
     email = StringField('Email', validators=[Email(), Optional()])
     about_me = TextAreaField('About Me')
+    timezone = SelectField('Timezone')
 
     password = PasswordField('Password')
-    new_password = PasswordField(f'New Password', validators=[DataRequired()])
-    confirm_password = PasswordField(f'Confirm Password{required}', validators=[DataRequired(), EqualTo('password')])
+    new_password = PasswordField(f'New Password')
+    confirm_password = PasswordField(f'Confirm Password{required}', validators=[EqualTo('password')])
     submit = SubmitField("Update User")
 
 def all_tags():
@@ -44,6 +46,7 @@ class AddPageForm(FlaskForm):
    user_id = SelectField(f'Author{required}', coerce=int, validators=[DataRequired()])
    pub_date = DateTimeField('Published Date', validators=[Optional()])
    published = BooleanField('Published?')
+   timezone = HiddenField('Timezone')
    submit = SubmitField('Submit Post')
 
 class AddTagForm(FlaskForm):

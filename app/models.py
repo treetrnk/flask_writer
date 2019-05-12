@@ -6,6 +6,7 @@ from datetime import datetime
 from markdown import markdown
 from sqlalchemy import desc
 import re
+import pytz
 
 tags = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
@@ -24,6 +25,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     pages = db.relationship('Page', backref='user', lazy='dynamic')
     about_me = db.Column(db.String(140))
+    timezone = db.Column(db.String(150))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -251,6 +253,10 @@ class Page(db.Model):
         words = self.child_word_count()
         return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
     
+    def local_pub_date(self, tz):
+        local_tz.pytz.timezone(tz)
+        return self.pub_date.astimezone(tz=local_tz)
+
     def nav_list(self):
         nav = []
         return nav
