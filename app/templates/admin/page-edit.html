@@ -212,16 +212,38 @@
 	<!--PUBLISHED DATE-->
 	<div class="form-group row">
 		{{ form.pub_date.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
+		<div class="col-sm-4 input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text">
+					<i class="fas fa-calendar"></i>
+				</span>
+			</div>
 			{% if form.pub_date.errors %}
-				{{ form.pub_date(class="form-control is-invalid") }}
+				{{ form.pub_date(class="form-control is-invalid", type="date") }}
 				<div class="invalid-feedback">
 					{% for error in form.pub_date.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.pub_date(class="form-control") }}
+				{{ form.pub_date(class="form-control", type="date") }}
+			{% endif %}
+		</div>
+		<div class="col-sm-4 input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text">
+					<i class="fas fa-clock"></i>
+				</span>
+			</div>
+			{% if form.pub_time.errors %}
+				{{ form.pub_time(class="form-control is-invalid", type="time") }}
+				<div class="invalid-feedback">
+					{% for error in form.pub_time.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.pub_time(class="form-control", type="time") }}
 			{% endif %}
 		</div>
 	</div>

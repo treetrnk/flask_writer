@@ -25,7 +25,7 @@ def add_user():
                 username=form.username.data, 
                 email=form.email.data,
                 about_me=form.about_me.data,
-                about_me=form.timezone.data,
+                timezone=form.timezone.data,
             )
         user.set_password(form.password.data)
         db.session.add(user)
@@ -87,9 +87,13 @@ def add_page():
                 sidebar = form.sidebar.data,
                 tags = form.tags.data,
                 user_id = current_user.id,
-                pub_date = form.pub_date.data,
                 published = form.published.data,
             )
+        pdate = form.pub_date.data
+        ptime = form.pub_time.data
+        local_tz = form.timezone.data if form.timezone.data else current_user.timezone
+        if pdate and ptime:
+            page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
         db.session.add(page)
         db.session.commit()
@@ -153,8 +157,13 @@ def edit_page(id, ver_id=None):
         page.sidebar = form.sidebar.data
         page.tags = form.tags.data
         page.user_id = form.user_id.data
-        page.pub_date = form.pub_date.data
         page.published = form.published.data
+
+        pdate = form.pub_date.data
+        ptime = form.pub_time.data
+        local_tz = form.timezone.data if form.timezone.data else current_user.timezone
+        if pdate and ptime:
+            page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
         db.session.commit()
         Page.set_nav()
@@ -174,7 +183,8 @@ def edit_page(id, ver_id=None):
         form.sidebar.data = version.sidebar
         form.tags.data = version.tags
         form.user_id.data = version.user_id
-        form.pub_date.data = version.pub_date
+        form.pub_date.data = version.local_pub_date(current_user.timezone)
+        form.pub_time.data = version.local_pub_date(current_user.timezone)
         form.published.data = version.published
     else:
         form.title.data = page.title
@@ -187,7 +197,8 @@ def edit_page(id, ver_id=None):
         form.sidebar.data = page.sidebar
         form.tags.data = page.tags
         form.user_id.data = page.user_id
-        form.pub_date.data = page.pub_date
+        form.pub_date.data = page.local_pub_date(current_user.timezone)
+        form.pub_time.data = page.local_pub_date(current_user.timezone)
         form.published.data = page.published
     return render_template('admin/page-edit.html', 
             form=form, 

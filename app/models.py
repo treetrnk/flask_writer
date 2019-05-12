@@ -254,8 +254,20 @@ class Page(db.Model):
         return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
     
     def local_pub_date(self, tz):
-        local_tz.pytz.timezone(tz)
-        return self.pub_date.astimezone(tz=local_tz)
+        if self.pub_date:
+            utc = pytz.timezone('utc')
+            local_tz = pytz.timezone(tz)
+            pub_date = datetime.strptime(str(self.pub_date), '%Y-%m-%d %H:%M:%S')
+            utcdate = pytz.UTC.localize(self.pub_date)
+            return utcdate.astimezone(tz=local_tz)
+        return None
+
+    def set_local_pub_date(self, date, tz):
+        pub_date = datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S')
+        local_tz = pytz.timezone(tz)
+        pub_date = local_tz.localize(pub_date)
+        self.pub_date = pub_date.astimezone(pytz.utc) 
+                
 
     def nav_list(self):
         nav = []

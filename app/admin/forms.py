@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (
         StringField, TextAreaField, SelectField, IntegerField, SubmitField, 
         BooleanField, SubmitField, DateTimeField, SelectMultipleField, 
-        PasswordField, HiddenField
+        PasswordField, HiddenField, DateField, TimeField
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError
@@ -44,7 +44,8 @@ class AddPageForm(FlaskForm):
    body = TextAreaField(f'Body{required}', validators=[DataRequired()])
    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
    user_id = SelectField(f'Author{required}', coerce=int, validators=[DataRequired()])
-   pub_date = DateTimeField('Published Date', validators=[Optional()])
+   pub_date = DateField('Published Date', validators=[Optional()])
+   pub_time = TimeField('Published Date', validators=[Optional()])
    published = BooleanField('Published?')
    timezone = HiddenField('Timezone')
    submit = SubmitField('Submit Post')
