@@ -1,33 +1,33 @@
 
 <ul class="nav nav-pills mb-4 float-right">
 	<li class="nav-item">
-		<a href="{{ url_for('admin.pages') }}" class="nav-link {% if tab == 'pages' %}active{% endif %}">
-			<i class="fas fa-file-alt"></i> Pages
+		<a href="{{ url_for('admin.pages') }}" class="nav-link {% if tab == 'pages' %}active{% endif %}" data-toggle='tooltip' title='Pages'>
+			<i class="fas fa-file-alt"></i><span class="d-none d-sm-none d-md-inline"> Pages</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('admin.users') }}" class="nav-link {% if tab == 'users' %}active{% endif %}">
-			<i class="fas fa-users"></i> Users
+		<a href="{{ url_for('admin.users') }}" class="nav-link {% if tab == 'users' %}active{% endif %}" data-toggle='tooltip' title='Users'>
+			<i class="fas fa-users"></i><span class="d-none d-sm-none d-md-inline"> Users</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('admin.tags') }}" class="nav-link {% if tab == 'tags' %}active{% endif %}">
-			<i class="fas fa-tags"></i> Tags
+		<a href="{{ url_for('admin.tags') }}" class="nav-link {% if tab == 'tags' %}active{% endif %}" data-toggle='tooltip' title='Tags'>
+			<i class="fas fa-tags"></i><span class="d-none d-sm-none d-md-inline"> Tags</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}">
-			<i class="fas fa-envelope"></i> Subscribers
+		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}" data-toggle='tooltip' title='Subscribers'>
+			<i class="fas fa-envelope"></i><span class="d-none d-sm-none d-md-inline"> Subscribers</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('page.set_theme') }}?path={{ request.path }}" class="nav-link {% if tab == 'tab' %}active{% endif %}">
-			<i class="fas fa-fill-drip"></i> Theme
+		<a href="{{ url_for('page.set_theme') }}?path={{ request.path }}" class="nav-link {% if tab == 'tab' %}active{% endif %}" data-toggle='tooltip' title='Theme'>
+			<i class="fas fa-fill-drip"></i><span class="d-none d-sm-none d-md-inline"> Theme</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('auth.logout') }}" class="nav-link">
-			<i class="fas fa-lock"></i> Logout
+		<a href="{{ url_for('auth.logout') }}" class="nav-link" data-toggle='tooltip' title='Logout'>
+			<i class="fas fa-unlock"></i><span class="d-none d-sm-none d-md-inline"> Logout</span>
 		</a>
 	</li>
 </ul>	
