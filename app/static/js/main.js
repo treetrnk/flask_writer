@@ -5,6 +5,8 @@ $(document).ready(function() {
 		var words = $('#page_body_input').val().match(/[^*#\s]+/g).length;
 		$('#display_count').text(words+" words");
 	}
+
+	$("blockquote").addClass("blockquote");
 	
 	$("#page_body_input").on('keyup', function(e) {
 		var words = this.value.match(/[^*$\s]+/g).length;
