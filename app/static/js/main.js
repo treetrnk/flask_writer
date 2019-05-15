@@ -13,6 +13,17 @@ $(document).ready(function() {
 		$('#display_count').text(words+" words");
 	});
 
+	$('.page-toggle').click(function(e) {
+		e.stopPropigation;
+		e.preventDefault();
+		var $this = $(this);
+		var target = $this.data('target');
+		$('.page-list').hide();
+		$('.page-toggle').removeClass('active');
+		$(target).show();
+		$this.addClass('active');
+	});
+
 	$("input#pub_date").on("focus", function() {
 		if ($(this).val() == '') {
 			var d = new Date();

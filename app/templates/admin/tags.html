@@ -13,17 +13,16 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th width="100">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for tag in tags %}
 			<tr>
-				<td>{{ tag.name }}</td>
-				<td class="text-center">
-					<a href="{{ url_for('admin.edit_tag', id=tag.id) }}" class="btn btn-primary btn-sm">
+				<td>
+					<a href="{{ url_for('admin.edit_tag', id=tag.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
+					{{ tag.name }}
 				</td>
 			</tr>
 		{% endfor %}

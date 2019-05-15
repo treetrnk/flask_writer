@@ -10,7 +10,7 @@
 	
 	<!--USERNAME-->
 	<div class="form-group row">
-		{{ form.username.label(class="col-sm-2 control-from-label text-right") }} 
+		{{ form.username.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.username.errors %}
 				{{ form.username(class="form-control is-invalid") }}
@@ -27,7 +27,7 @@
 
 	<!--EMAIL-->
 	<div class="form-group row">
-		{{ form.email.label(class="col-sm-2 control-from-label text-right") }} 
+		{{ form.email.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.email.errors %}
 				{{ form.email(class="form-control is-invalid") }}
@@ -44,7 +44,7 @@
 
 	<!--ABOUT ME-->
 	<div class="form-group row">
-		{{ form.about_me.label(class="col-sm-2 control-from-label text-right") }} 
+		{{ form.about_me.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.about_me.errors %}
 				{{ form.about_me(class="form-control is-invalid") }}
@@ -61,7 +61,7 @@
 
 	<!--TIMEZONE-->
 	<div class="form-group row">
-		{{ form.timezone.label(class="col-sm-2 control-from-label text-right") }} 
+		{{ form.timezone.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.timezone.errors %}
 				{{ form.timezone(class="form-control is-invalid mkSelect2") }}
@@ -83,7 +83,7 @@
 
 	<!--PASSWORD-->
 	<div class="form-group row">
-		{{ form.password.label(class="col-sm-2 control-from-label text-right") }} 
+		{{ form.password.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.password.errors %}
 				{{ form.password(class="form-control is-invalid", placeholder="Password") }}

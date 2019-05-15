@@ -15,20 +15,19 @@
 			<th>Name</th>
 			<th>Email</th>
 			<th>Subscription</th>
-			<th width="100">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for subscriber in subscribers %}
 			<tr>
-				<td>{{ subscriber.first_name }} {{ subscriber.last_name }}</td>
-				<td>{{ subscriber.email }}</td>
-				<td>{{ subscriber.subscription }}</td>
-				<td class="text-center">
-					<a href="#{# url_for('admin.edit_tag', id=tag.id) #}" class="btn btn-primary btn-sm">
+				<td>
+					<a href="#{# url_for('admin.edit_tag', id=tag.id) #}">
 						<i class="fas fa-edit"></i>
 					</a>
+					{{ subscriber.first_name }} {{ subscriber.last_name }}
 				</td>
+				<td>{{ subscriber.email }}</td>
+				<td>{{ subscriber.subscription }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>

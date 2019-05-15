@@ -15,20 +15,19 @@
 			<th>Name</th>
 			<th>Email</th>
 			<th>Timezone</th>
-			<th width="100">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for user in users %}
 			<tr>
-				<td>{{ user.username }}</td>
-				<td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-				<td>{{ user.timezone }}</td>
-				<td class="text-center">
-					<a href="{{ url_for('admin.edit_user', id=user.id) }}" class="btn btn-primary btn-sm">
+				<td>
+					<a href="{{ url_for('admin.edit_user', id=user.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
+					{{ user.username }}
 				</td>
+				<td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+				<td>{{ user.timezone }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>

@@ -9,75 +9,83 @@
 
 <h2>Pages</h2>
 
-<h3>Published</h3>
-<table class="table table-sm table-striped table-hover table-responsive-sm datatable">
-	<thead>
-		<tr>
-			<th>Title</th>
-			<th>Path</th>
-			<th width="125">Word Count</th>
-			<th width="100">Published</th>
-			<th width="100">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for page in pub_pages %}
-			<tr>
-				<td>{{ page.title }}</td>
-				<td class="text-center">
-					<a href="{{ page.path }}" data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
-						<i class="fas fa-eye"></i> 
-						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
-					</a>
-				</td>
-				<td class="text-center">{{ page.word_count() }}</td>
-				<td class="text-center">
-					<small>
-						{% if page.pub_date %}
-							{{ page.pub_date.strftime('%-m/%-d/%Y') }}
-						{% endif %}
-					</small>
-				</td>
-				<td class="text-center">
-					<a href="{{ url_for('admin.edit_page', id=page.id) }}" class="btn btn-primary btn-sm">
-						<i class="fas fa-edit"></i>
-					</a>
-				</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table>
-<br />
+<ul class="nav nav-tabs mb-4">
+	<li class="nav-item">
+		<a href="#" class="nav-link active page-toggle" data-target="#published">Published</a>
+	</li>
+	<li class="nav-item">
+			<a href="#" class="nav-link page-toggle" data-target="#unpublished">Unpublished</a>
+	</li>
+</ul>
 
-<h3>Unpublished</h3>
-<table class="table table-sm table-striped table-hover table-responsive-sm datatable">
-	<thead>
-		<tr>
-			<th>Title</th>
-			<th>Path</th>
-			<th width="125">Word Count</th>
-			<th width="100">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for page in unpub_pages %}
+<div id="published" class="page-list">
+	<table class="table table-sm table-striped table-hover table-responsive-sm datatable">
+		<thead>
 			<tr>
-				<td>{{ page.title }}</td>
-				<td class="text-center">
-					<a href="{{ page.path }}{{ page.gen_view_code() }}"  data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
-						<i class="fas fa-eye"></i> 
-						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
-					</a>
-				</td>
-				<td class="text-center">{{ page.word_count() }}</td>
-				<td class="text-center">
-					<a href="{{ url_for('admin.edit_page', id=page.id) }}" class="btn btn-primary btn-sm">
-						<i class="fas fa-edit"></i>
-					</a>
-				</td>
+				<th>Title</th>
+				<th>Path</th>
+				<th width="125">Word Count</th>
+				<th width="100">Published</th>
 			</tr>
-		{% endfor %}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{% for page in pub_pages %}
+				<tr>
+					<td>
+						<a href="{{ url_for('admin.edit_page', id=page.id) }}">
+							<i class="fas fa-edit"></i>
+						</a>
+						{{ page.title }}
+					</td>
+					<td>
+						<a href="{{ page.path }}" data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
+							<i class="fas fa-eye"></i> 
+						</a>
+						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
+					</td>
+					<td class="text-center">{{ page.word_count() }}</td>
+					<td class="text-center">
+						<small>
+							{% if page.pub_date %}
+								{{ page.pub_date.strftime('%-m/%-d/%Y') }}
+							{% endif %}
+						</small>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<div id="unpublished" class="page-list" style="display:none;">
+	<table class="table table-sm table-striped table-hover table-responsive-sm datatable">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Path</th>
+				<th width="25">Word Count</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for page in unpub_pages %}
+				<tr>
+					<td>
+						<a href="{{ url_for('admin.edit_page', id=page.id) }}">
+							<i class="fas fa-edit"></i>
+						</a>
+							{{ page.title }}
+					</td>
+					<td>
+						<a href="{{ page.path }}{{ page.gen_view_code() }}"  data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
+							<i class="fas fa-eye"></i> 
+						</a>
+						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
+					</td>
+					<td class="text-center">{{ page.word_count() }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 
 {% endblock %}
