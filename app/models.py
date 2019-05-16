@@ -249,8 +249,8 @@ class Page(db.Model):
         self.child_words = words
         return self.child_words
 
-    def child_read_time(self):
-        words = self.child_word_count()
+    def child_read_time(self, published_only=True):
+        words = self.child_word_count(published_only)
         return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
     
     def local_pub_date(self, tz):
