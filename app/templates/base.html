@@ -156,8 +156,15 @@
 								</li>
 							{% endif %}
 						{% endfor %}
+						{% if current_user.is_authenticated %}
+							<li class="nav-item">
+								<a href="{{ url_for('admin.pages') }}" class="nav-link" data-toggle='tooltip' title="Admin Panel">
+									<i class="fas fa-hat-wizard"></i>
+								</a>
+							</li>
+						{% endif %}
 						<li class="nav-item">
-							<a href="{{ url_for('page.search') }}" class="nav-link">
+							<a href="{{ url_for('page.search') }}" class="nav-link" data-toggle='tooltip' title='Search'>
 								<i class="fas fa-search"></i>
 							</a>
 						</li>
