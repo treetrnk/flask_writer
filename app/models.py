@@ -236,7 +236,9 @@ class Page(db.Model):
 
     def read_time(self):
         words = self.word_count()
-        return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+        if words / 200 < 120:
+            return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+        return str(round(words / 200 / 60)) + " - " + str(round(words / 150 / 60)) + " hrs."
 
     def child_word_count(self, published_only=True):
         #try:
@@ -251,7 +253,10 @@ class Page(db.Model):
 
     def child_read_time(self, published_only=True):
         words = self.child_word_count(published_only)
-        return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+        if words / 200 < 120:
+            return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+        return str(round(words / 200 / 60)) + " - " + str(round(words / 150 / 60)) + " hrs."
+
     
     def local_pub_date(self, tz):
         if self.pub_date:
