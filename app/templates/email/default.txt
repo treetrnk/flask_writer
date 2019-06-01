@@ -1,0 +1,13 @@
+{{ subscriber.display_name }},
+
+A new post of {{ page.title }} has been published. Follow the link below to read
+it at HoustonHare.com!
+
+{{ page.link }}
+
+Thanks for reading!
+
+Sincerley,
+Houston Hare
+
+Unsubscribe
