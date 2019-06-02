@@ -159,19 +159,16 @@ class Page(db.Model):
         return False
         
     def banner_path(self):
-        banner = None
+        banner = self.banner 
         if not self.banner and (self.template == 'chapter' or self.template == 'post'):
             if self.parent_id:
-                if 'http' in self.parent().banner:
-                    banner = self.parent().banner 
-                else:
-                    banner = f'https://houstonhare.com/{self.parent().banner}' 
-        if not banner:
-            if 'http' in self.banner:
-                banner = self.banner 
+                banner = self.parent().banner 
+        if banner:
+            if 'http' in banner:
+                return banner
             else:
-                banner = f'https://houstonhare.com/{self.banner}' 
-        return banner
+                return f'https://houstonhare.com/{banner}'
+        return False
 
     def section_name(self):
         if self.template == 'chapter' or self.template == 'post':
