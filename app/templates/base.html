@@ -257,7 +257,8 @@
     <button type="button" class="close" id="sub-btn-close"><small><i class="glyphicon glyphicon-remove"></i></small></button>
 
 		{% if not page or page.slug != 'admin' %}
-		<a href='{{ url_for('page.subscribe') }}' class="btn btn-primary" id="sub-btn" title="Subscribe"><i class="fas fa-envelope" data-toggle="tooltip" title="Subscribe"></i><span class="d-none d-md-inline"> Subscribe</span></a>
+		<!--<a href='{{ url_for('page.subscribe') }}' class="btn btn-primary" id="sub-btn" title="Subscribe"><i class="fas fa-envelope" data-toggle="tooltip" title="Subscribe"></i><span class="d-none d-md-inline"> Subscribe</span></a>-->
+		<a href='https://feedburner.google.com/fb/a/mailverify?uri=Sprig&amp;loc=en_US' class="btn btn-primary" id="sub-btn" title="Subscribe" target="_blank"><i class="fas fa-envelope" data-toggle="tooltip" title="Subscribe"></i><span class="d-none d-md-inline"> Subscribe</span></a>
 		{% endif %}
 
 		<section class="container content-wrapper">
