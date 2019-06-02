@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+		<channel>
+			<title>{{ page.title }}</title>
+				<description>{{ page.description() }}</description>
+				<link>https://houstonhare.com/{{ page.path }}</link>
+					{% for child in page.pub_children() %}
+						<item>
+								<title>{{ child.title }}</title>
+								<pubDate>{{ child.published_date }}</pubDate>
+								<description>
+									<![CDATA[
+									<a href="https://houstonhare.com/{{ child.path }}"><img src='{{ child.banner_path() }}' width="100" style="float:left;"></img></a>
+										{{ child.description() }}
+									]]>
+								</description>
+								<link>https://houstonhare.com/{{ child.path }}</link>
+								{% for tag in child.tags %}
+									<category>{{ tag }}</category>
+								{% endfor %}
+						</item>
+					{% endfor %}
+		</channel>
+</rss>

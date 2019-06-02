@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, session, request, current_app
+from flask import render_template, redirect, url_for, flash, session, request, current_app, make_response
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
 from app.models import Page, Tag, Subscriber
@@ -80,6 +80,19 @@ def subscribe():
     return render_template('subscribe.html',
             form=form
         )
+
+@bp.route('/rss/<path:path>')
+def rss(path):
+    path = f"/{path}"
+    page = Page.query.filter_by(path=path,published=True).first()
+    if page:
+        return render_template(f'page/rss.xml', page=page)
+        #rss_xml = render_template(f'page/rss.xml', page=page)
+        #response = make_response(rss_xml)
+        #response.headers['Content-Type'] = 'application/rss+xml'
+        #return response
+    page = Page.query.filter_by(slug='404-error').first()
+    return render_template(f'page/{page.template}.html', page=page)    
 
 @bp.route('/<path:path>')
 def index(path):
