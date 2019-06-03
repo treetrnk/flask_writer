@@ -45,32 +45,7 @@
 		{% include 'page/table-of-contents.html' %}
   </aside>
 </div>
-<div class="row justify-content-md-center">
-  <div class="col-md-8 col">
-    <h2>Comments</h2>
 
-    <div id="disqus_thread"></div>
-    <script>
-
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-
-    var disqus_config = function () {
-			this.page.url = "https://houstonhare.com{{ page.path }}";  // Replace PAGE_URL with your page's canonical URL variable
-			this.page.identifier = "{{ page.id }}{{ page.slug }}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://houstonhare.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-  </div>
-</div>
+{% include 'page/comments.html' %}
 
 {% endblock %}
