@@ -19,12 +19,12 @@
 						<p class='text-muted float-right'><small>{{ moment(child.pub_date).format('llll') }}</small></p>
 						<h3><a href='{{ child.path }}'>{{ child.title }}</a></h3>
 						<p>{{ child.description() }}</p>
-						{% if child.template in ['chapter', 'post', 'story'] %}
+						{# if child.template in ['chapter', 'post', 'story'] %}
 							<small class='float-right text-muted'>
 								<i class="fas fa-comment-alt"></i>
 								<a href='{{ child.path }}#disqus_thread'>Post a comment</a>
 							</small>
-						{% endif %}
+						{% endif #}
 						<i class="fa fa-tags"></i> Tags:
 						{% for tag in child.tags %}
 							<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
