@@ -5,6 +5,7 @@ from app.models import Page, User, Tag, PageVersion, Subscriber
 from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
 from flask_login import login_required, current_user
 from sqlalchemy import desc
+from datetime import datetime
 import pytz
 
 @bp.route('/admin/users')
@@ -158,6 +159,7 @@ def edit_page(id, ver_id=None):
         page.tags = form.tags.data
         page.user_id = form.user_id.data
         page.published = form.published.data
+        page.edit_date = datetime.utcnow()
 
         pdate = form.pub_date.data
         ptime = form.pub_time.data
