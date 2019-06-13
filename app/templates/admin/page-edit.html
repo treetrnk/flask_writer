@@ -6,7 +6,9 @@
 {% if action == 'Edit' %}
 	<div class="col-sm-3 float-right">
 		<select name='versions' id='versionSelect' class="form-control">
-			<option value='current'>Current Version (#{{ edit_page.word_count() }})</option>
+			<option value='current'>
+				{{ edit_page.edit_date.strftime("%b. %-d, %Y - %-I:%M %p") }} (#{{ edit_page.word_count() }}) Current
+			</option>
 			{% for ver in versions %}
 				{% if version and version.id == ver.id %}
 				<option value="{{ ver.id }}" selected>

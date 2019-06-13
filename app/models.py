@@ -74,6 +74,15 @@ class PageVersion(db.Model):
             self.words = words
         return self.words
 
+    def local_pub_date(self, tz):
+        if self.pub_date:
+            utc = pytz.timezone('utc')
+            local_tz = pytz.timezone(tz)
+            pub_date = datetime.strptime(str(self.pub_date), '%Y-%m-%d %H:%M:%S')
+            utcdate = pytz.UTC.localize(self.pub_date)
+            return utcdate.astimezone(tz=local_tz)
+        return None
+
     def __str__(self):
         return f"Ver. {self.id} - {self.title} ({self.path})"
 
