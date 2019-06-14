@@ -295,7 +295,7 @@ class Page(db.Model):
 
     def set_nav():
         nav = []
-        top_pages = Page.query.filter_by(published=True,parent_id=0).order_by('sort','pub_date','title').all()
+        top_pages = Page.query.filter_by(published=True,parent_id=None).order_by('sort','pub_date','title').all()
         for top_page in top_pages:
             page = {
                     'id': top_page.id,
