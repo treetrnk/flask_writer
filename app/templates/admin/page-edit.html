@@ -253,7 +253,7 @@
 	<!--PUBLISHED-->
 	<div class="form-group row">
 		{{ form.published.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
+		<div class="col-sm-1">
 			{% if form.published.errors %}
 				{{ form.published(class="is-invalid") }}
 				<div class="invalid-feedback">
@@ -265,12 +265,10 @@
 				{{ form.published() }}
 			{% endif %}
 		</div>
-	</div>
 
-	<!--NOTIFY SUBS-->
-	<div class="form-group row">
-		{{ form.notify_subs.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
+		<!--NOTIFY SUBS-->
+		{{ form.notify_subs.label(class="col-sm-3 control-from-label text-md-right") }} 
+		<div class="col-sm-6">
 			{% if form.notify_subs.errors %}
 				{{ form.notify_subs(class="is-invalid") }}
 				<div class="invalid-feedback">
