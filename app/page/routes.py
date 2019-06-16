@@ -84,6 +84,17 @@ def subscribe():
             form=form
         )
 
+@bp.route('/unsubscribe/<string:email>')
+def unsubscribe(email):
+    sub = Subscriber.query.filter_by(email=email).first()
+    if sub:
+        db.session.delete(sub)
+        db.session.commit()
+        flash(f"{email} has been unsubscribed successfully. If you'd like to resubscribe, click the subscribe button in the bottom right of the screen.", "success")
+    else:
+        flash(f"Subscriber email not found. You are not subscribed.", "danger")
+    return redirect(url_for('page.home'))
+
 @bp.route('/rss/<path:path>')
 def rss(path):
     path = f"/{path}"

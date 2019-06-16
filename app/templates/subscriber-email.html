@@ -1,0 +1,22 @@
+<html>
+	<h1>Stories by Houston Hare</h1>
+	<a href='https://houstonhare.com{{ page.path }}'>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td align="center" height="250" style="height:250px;overflow:hidden;background:url({{ page.banner_path() }}) no-repeat center center;background-size:cover;">&nbsp;
+						</td>
+				</tr>
+		</table>
+		{% if page.parent() %}
+		<h2>{{ page.parent().title }}: {{ page.title }}</h2>
+		{% else %}
+			<h2>{{ page.title }}</h2>
+		{% endif %}
+	</a>
+	<p>{{ page.description() }}</p>
+	<p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
+	<br /><br />
+	<p style="color:#ccc;"><small>
+		You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>. If you no longer wish to receive these emails, please <a href="https://houstonhare.com/unsubscribe/{{ recipient.email }}">unsubscribe here</a>.
+	</small></p>
+</html>

@@ -1,4 +1,4 @@
-from flask import current_app, url_for, session, jsonify
+from flask import current_app, url_for, session, jsonify, render_template
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
@@ -295,18 +295,6 @@ class Page(db.Model):
         recipients = Subscriber.all_subscribers()
         sender='no-reply@houstonhare.com'
         subject=f"New Post: {self.parent().title} - {self.title}"
-        html=f"""<h1>Stories by Houston Hare</h1>
-            <a href='https://houstonhare.com{self.path}'>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td align="center" height="250" style="height:250px;overflow:hidden;background:url({self.banner_path()}) no-repeat center center;background-size:cover;">&nbsp;
-                    </td>
-                </tr>
-            </table>
-            </a>
-            <h3>New Post: {self.title}</h3>
-            <p>{self.description()}</p>
-            <p><a href='https://houstonhare.com{self.path}'>Read more...</a></p>"""
         body=f"Stories by Houston Hare\nNew Post: {self.parent().title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
         for recipient in Subscriber.query.all():
             msg = Message(
@@ -314,7 +302,7 @@ class Page(db.Model):
                     sender=sender,
                     recipients=[recipient.email],
                     body=body,
-                    html=html,
+                    html=render_template('subscriber-email.html', page=self, recipient=recipient),
                 )
             mail.send(msg)
 
