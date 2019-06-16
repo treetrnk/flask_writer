@@ -6,6 +6,7 @@ from app import db
 
 @bp.route('/')
 def home():
+    Page.set_nav()
     page = Page.query.filter_by(path='/home',published=True).first()
     if page:
         return render_template(f'page/{page.template}.html', page=page)
@@ -30,6 +31,7 @@ def set_theme(theme=None):
 @bp.route('/search/keyword/<string:keyword>', methods=['GET', 'POST'])
 @bp.route('/search/keyword', methods=['GET','POST'])
 def search(tag=None,keyword=None):
+    Page.set_nav()
     tags = Tag.query.all()
     form = SearchForm()
     results = None
@@ -63,6 +65,7 @@ def search(tag=None,keyword=None):
 
 @bp.route('/subscribe', methods=['GET','POST'])
 def subscribe():
+    Page.set_nav()
     form = SubscribeForm()
     for field in form:
         print(f"{field.name}: {field.data}")
