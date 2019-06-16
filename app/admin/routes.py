@@ -115,6 +115,7 @@ def add_page():
 @login_required
 def edit_page(id, ver_id=None):
     page = Page.query.filter_by(id=id).first()
+    was_published = page.published
     print(f"ANCESTORS: {page.ancestors()}")
     for anc in page.ancestors():
         print(f"ANCESTOR: {anc}")
@@ -167,6 +168,8 @@ def edit_page(id, ver_id=None):
         if pdate and ptime:
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
+        if not was_published and page.published:
+            page.notify_subscribers()
         db.session.commit()
         Page.set_nav()
         flash("Page updated successfully.", "success")

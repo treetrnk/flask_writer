@@ -5,6 +5,8 @@ from app import db, login
 from datetime import datetime
 from markdown import markdown
 from sqlalchemy import desc
+from flask_mail import Mail, Message
+from app import mail
 import re
 import pytz
 
@@ -288,6 +290,33 @@ class Page(db.Model):
         pub_date = local_tz.localize(pub_date)
         self.pub_date = pub_date.astimezone(pytz.utc) 
                 
+    def notify_subscribers(self):
+        from flask_writer import app
+        recipients = Subscriber.all_subscribers()
+        sender='no-reply@houstonhare.com'
+        subject=f"New Post: {self.parent().title} - {self.title}"
+        html=f"""<h1>Stories by Houston Hare</h1>
+            <a href='https://houstonhare.com{self.path}'>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="center" height="250" style="height:250px;overflow:hidden;background:url({self.banner_path()}) no-repeat center center;background-size:cover;">&nbsp;
+                    </td>
+                </tr>
+            </table>
+            </a>
+            <h3>New Post: {self.title}</h3>
+            <p>{self.description()}</p>
+            <p><a href='https://houstonhare.com{self.path}'>Read more...</a></p>"""
+        body=f"Stories by Houston Hare\nNew Post: {self.parent().title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
+        for recipient in Subscriber.query.all():
+            msg = Message(
+                    subject=subject,
+                    sender=sender,
+                    recipients=[recipient.email],
+                    body=body,
+                    html=html,
+                )
+            mail.send(msg)
 
     def nav_list(self):
         nav = []
@@ -351,6 +380,9 @@ class Subscriber(db.Model):
             ('sprig','Sprig'),
             ('blog','Blog'),
         ]
+
+    def all_subscribers():
+        return [s.email for s in Subscriber.query.all()]
 
     def __str__(self):
         return f"{self.email} ({self.first_name} {self.last_name})"
