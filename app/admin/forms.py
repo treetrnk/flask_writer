@@ -47,6 +47,7 @@ class AddPageForm(FlaskForm):
    pub_date = DateField('Published Date', validators=[Optional()])
    pub_time = TimeField('Published Date', validators=[Optional()])
    published = BooleanField('Published?')
+   notify_subs = BooleanField('Notify Subscribers?')
    timezone = HiddenField('Timezone')
    submit = SubmitField('Submit Post')
 

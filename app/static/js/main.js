@@ -95,6 +95,14 @@ $(document).ready(function() {
 		$("#searchInput").focus();
 	});
 
+	$('#published').change(function() {
+		if ($(this).prop("checked")) {
+			$('#notify_subs').prop("checked", true);
+		} else {
+			$('#notify_subs').prop("checked", false);
+		}
+	});
+
 	$(document).on('keydown', function(e) {
 		//console.log(e.type);
 		if (e.which == 37) {

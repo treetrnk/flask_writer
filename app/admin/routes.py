@@ -96,6 +96,8 @@ def add_page():
         if pdate and ptime:
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
+        if form.notify_subs.data:
+            page.notify_subscribers()
         db.session.add(page)
         db.session.commit()
         Page.set_nav()
@@ -168,7 +170,7 @@ def edit_page(id, ver_id=None):
         if pdate and ptime:
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
-        if not was_published and page.published:
+        if form.notify_subs.data:
             page.notify_subscribers()
         db.session.commit()
         Page.set_nav()

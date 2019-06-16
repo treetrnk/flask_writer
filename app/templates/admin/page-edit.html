@@ -257,12 +257,29 @@
 			{% if form.published.errors %}
 				{{ form.published(class="is-invalid") }}
 				<div class="invalid-feedback">
-					{% for error in form.pub_date.errors %}
+					{% for error in form.published.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
 				{{ form.published() }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--NOTIFY SUBS-->
+	<div class="form-group row">
+		{{ form.notify_subs.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.notify_subs.errors %}
+				{{ form.notify_subs(class="is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.notify_subs.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.notify_subs() }}
 			{% endif %}
 		</div>
 	</div>
