@@ -151,10 +151,10 @@ class Page(db.Model):
                 return markdown(self.parent().sidebar)
         return markdown(self.sidebar)
     
-    def description(self):
+    def description(self, length=247):
         if self.summary:
             return self.summary
-        return self.body[0:247].replace('#','').replace('*','').replace('--', '&#8212;').replace('_', '') + '...'
+        return self.body[0:length].replace('#','').replace('*','').replace('--', '&#8212;').replace('_', '') + '...'
 
     def view_code(self):
         return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
