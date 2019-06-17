@@ -1,22 +1,45 @@
 <html>
-	<h1>Stories by Houston Hare</h1>
-	<a href='https://houstonhare.com{{ page.path }}'>
+	<body style="background-color:#eee;">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr style="background-color:#0b5394; color:#fff;">
+				<td>
+				</td>
+				<td width="700" style="padding:20px;">
+					<h1>Stories by Houston Hare</h1>
+				</td>
+				<td></td>
+			</tr>
+
+			<a href='https://houstonhare.com{{ page.path }}'>
 				<tr>
-					<td align="center" height="250" style="height:250px;overflow:hidden;background:url({{ page.banner_path() }}) no-repeat center center;background-size:cover;">&nbsp;
-						</td>
+					<td colspan="3" align="center" height="250" style="height:250px;overflow:hidden;background:url({{ page.banner_path() }}) no-repeat center center;background-size:cover;">&nbsp;
+					</td>
 				</tr>
+			</a>
+
+			<tr>
+				<td></td>
+				<td style="padding:20px; box-shadow:0 30px 50px 0 rgba(1,1,1,.15);background-color:#fff;">
+					<a href='https://houstonhare.com{{ page.path }}'>
+						{% if page.parent() %}
+							<h2>{{ page.parent().title }}: {{ page.title }}</h2>
+						{% else %}
+							<h2>{{ page.title }}</h2>
+						{% endif %}
+					</a>
+					<p>{{ page.description() }}</p>
+					<p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
+					<br />
+					<p style="color:#666;text-align:center;"><small>
+						You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>. If you no longer wish to receive these emails, please <a href="https://houstonhare.com/unsubscribe/{{ recipient.email }}">unsubscribe here</a>.<br />
+						"<a href="http://www.newgrounds.com/art/view/llamareaper/fantasy-landscape-2">Fantasy Landscape</a>" by Jason Coates is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a> license.<br />
+						&copy; Houston Hare, 2019<br />
+					</small></p>
+				</td>
+				<td></td>
+			</tr>
+
 		</table>
-		{% if page.parent() %}
-		<h2>{{ page.parent().title }}: {{ page.title }}</h2>
-		{% else %}
-			<h2>{{ page.title }}</h2>
-		{% endif %}
-	</a>
-	<p>{{ page.description() }}</p>
-	<p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
-	<br /><br />
-	<p style="color:#ccc;"><small>
-		You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>. If you no longer wish to receive these emails, please <a href="https://houstonhare.com/unsubscribe/{{ recipient.email }}">unsubscribe here</a>.
-	</small></p>
+		<br /><br />
+	</body>
 </html>
