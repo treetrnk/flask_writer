@@ -270,4 +270,4 @@ def subscribers():
 @bp.route('/admin/logs')
 @login_required
 def logs():
-    return render_template('logs.html')
+    return render_template('admin/logs.html')
