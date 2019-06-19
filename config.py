@@ -2,6 +2,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 datadir = os.path.join(os.path.dirname(basedir), 'data/flask_writer/')
+templatedir = os.path.join(basedir, 'app/templates/')
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
@@ -16,3 +17,6 @@ class Config(object):
     MAIL_USERNAME = os.environ['MAIL_USERNAME']
     MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
     MAIL_DEFAULT_SENDER = os.environ['MAIL_PASSWORD']
+    BASE_DIR = basedir
+    DATA_DIR = datadir
+    TEMPLATE_DIR = templatedir

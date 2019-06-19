@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for
+from flask import render_template, redirect, flash, url_for, send_from_directory, current_app
 from app import db
 from app.admin import bp
 from app.models import Page, User, Tag, PageVersion, Subscriber
@@ -270,4 +270,4 @@ def subscribers():
 @bp.route('/admin/logs')
 @login_required
 def logs():
-    return render_template('admin/logs.html')
+    return send_from_directory(current_app.config['TEMPLATE_DIR'] + 'admin','logs.html')
