@@ -267,3 +267,7 @@ def subscribers():
     subscribers = Subscriber.query.order_by('email').all()
     return render_template('admin/subscribers.html', tab='subscribers', subscribers=subscribers, page=page)
 
+@bp.route('/admin/logs')
+@login_required
+def logs():
+    return render_template('logs.html')
