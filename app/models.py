@@ -98,7 +98,7 @@ class Page(db.Model):
     dir_path = db.Column(db.String(500), nullable=True)
     path = db.Column(db.String(500), nullable=True)
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
-    child = db.relationship('Page', remote_side=[id], backref='children')
+    parent = db.relationship('Page', remote_side=[id], backref='children')
     template = db.Column(db.String(100))
     banner = db.Column(db.String(500), nullable=True)
     body = db.Column(db.String(10000000))
@@ -123,8 +123,8 @@ class Page(db.Model):
         ('blog', 'Blog'),
     ]
 
-    def parent(self):
-        return Page.query.filter_by(id=self.parent_id).first()
+    #def parent(self):
+    #    return Page.query.filter_by(id=self.parent_id).first()
 
     def set_path(self):
         if self.parent_id:
@@ -148,7 +148,7 @@ class Page(db.Model):
     def html_sidebar(self):
         if self.template == 'chapter' or self.template == 'post':
             if self.parent_id:
-                return markdown(self.parent().sidebar)
+                return markdown(self.parent.sidebar)
         return markdown(self.sidebar)
     
     def description(self, length=247):
@@ -173,7 +173,7 @@ class Page(db.Model):
         banner = self.banner 
         if not self.banner and (self.template == 'chapter' or self.template == 'post'):
             if self.parent_id:
-                banner = self.parent().banner 
+                banner = self.parent.banner 
         if banner:
             if 'http' in banner:
                 return banner
@@ -184,7 +184,7 @@ class Page(db.Model):
     def section_name(self):
         if self.template == 'chapter' or self.template == 'post':
             if self.parent_id:
-                return self.parent().title
+                return self.parent.title
         return self.title
 
     def pub_children(self):
@@ -294,8 +294,8 @@ class Page(db.Model):
         from flask_writer import app
         recipients = Subscriber.all_subscribers()
         sender='no-reply@houstonhare.com'
-        subject=f"New Post: {self.parent().title} - {self.title}"
-        body=f"Stories by Houston Hare\nNew Post: {self.parent().title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
+        subject=f"New Post: {self.parent.title} - {self.title}"
+        body=f"Stories by Houston Hare\nNew Post: {self.parent.title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
         for recipient in Subscriber.query.all():
             msg = Message(
                     subject=subject,
