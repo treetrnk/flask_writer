@@ -193,6 +193,12 @@ class Page(db.Model):
     def pub_siblings(self):
         return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort','pub_date','title').all()
 
+    def child_count(self, include_unpublished=False):
+        if include_unpublished:
+            return len(self.children)
+        else:
+            return len(self.pub_children())
+
     def next_pub_sibling(self):
         try:
             return self.next_sibling

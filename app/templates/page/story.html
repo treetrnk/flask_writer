@@ -10,10 +10,14 @@
     <p>
 			<span class="text-muted">
 				<span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
-				<span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.child_read_time() }}</span>
+				<span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time() }}</span>
+				<span title="Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count() }}</span>
 				{% if current_user.is_authenticated %}
-					<span title="Total Word Count (+Unpublished)" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count(False) }}</span> <!--&#8226;-->
-				<span title="Reading Time (200-150 wpm) (+Unpublished)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.child_read_time(False) }}</span>
+				<br />
+				<i class="fas fa-eye-slash"></i>
+				<span title="Total Word Count (+Unpublished)" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count(False) }}</span> <!--&#8226;-->
+				<span title="Reading Time (200-150 wpm) (+Unpublished)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time(False) }}</span>
+				<span title="Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count(True) }}</span>
 				{% endif %}
 			</span>
     </p>
