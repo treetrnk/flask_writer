@@ -3,6 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 datadir = os.path.join(os.path.dirname(basedir), 'data/flask_writer/')
 templatedir = os.path.join(basedir, 'app/templates/')
+uploaddir = os.path.join(basedir, 'uploads/')
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
@@ -20,3 +21,4 @@ class Config(object):
     BASE_DIR = basedir
     DATA_DIR = datadir
     TEMPLATE_DIR = templatedir
+    UPLOAD_DIR = uploaddir

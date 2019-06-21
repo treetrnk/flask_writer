@@ -59,3 +59,4 @@ target/
 
 # App Specific
 app/templates/admin/logs.html
+uploads/

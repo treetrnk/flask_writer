@@ -1,4 +1,7 @@
-from flask import render_template, redirect, url_for, flash, session, request, current_app, make_response
+from flask import (
+        render_template, redirect, url_for, flash, session, request, 
+        current_app, make_response, send_from_directory
+    )
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
 from app.models import Page, Tag, Subscriber
@@ -94,6 +97,10 @@ def unsubscribe(email):
     else:
         flash(f"Subscriber email not found. You are not subscribed.", "danger")
     return redirect(url_for('page.home'))
+
+@bp.route('/uploads/<string:filename>')
+def uploads(filename):
+    return send_from_directory(current_app.config['UPLOAD_DIR'], filename)
 
 @bp.route('/rss/<path:path>')
 def rss(path):
