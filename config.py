@@ -17,7 +17,7 @@ class Config(object):
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ['MAIL_USERNAME']
     MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
-    MAIL_DEFAULT_SENDER = os.environ['MAIL_PASSWORD']
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or MAIL_USERNAME
     BASE_DIR = basedir
     DATA_DIR = datadir
     TEMPLATE_DIR = templatedir
