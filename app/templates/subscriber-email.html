@@ -56,8 +56,8 @@
 					<td style="padding:20px; box-shadow:0 30px 50px 0 rgba(1,1,1,.15);background-color:#fff;">
 						<a href='https://houstonhare.com{{ page.path }}'>
 							<h2>
-								{% if page.parent() %}
-									{{ page.parent().title }}: {{ page.title }}
+								{% if page.parent %}
+									{{ page.parent.title }}: {{ page.title }}
 								{% else %}
 									{{ page.title }}
 								{% endif %}
