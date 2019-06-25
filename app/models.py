@@ -7,6 +7,7 @@ from markdown import markdown
 from sqlalchemy import desc
 from flask_mail import Mail, Message
 from app import mail
+from app.email import send_email
 import re
 import pytz
 
@@ -28,6 +29,7 @@ class User(UserMixin, db.Model):
     pages = db.relationship('Page', backref='user', lazy='dynamic')
     about_me = db.Column(db.String(140))
     timezone = db.Column(db.String(150))
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -297,20 +299,17 @@ class Page(db.Model):
         self.pub_date = pub_date.astimezone(pytz.utc) 
                 
     def notify_subscribers(self):
-        from flask_writer import app
-        recipients = Subscriber.all_subscribers()
         sender='no-reply@houstonhare.com'
         subject=f"New Post: {self.parent.title} - {self.title}"
         body=f"Stories by Houston Hare\nNew Post: {self.parent.title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
         for recipient in Subscriber.query.all():
-            msg = Message(
-                    subject=subject,
-                    sender=sender,
-                    recipients=[recipient.email],
-                    body=body,
-                    html=render_template('subscriber-email.html', page=self, recipient=recipient),
+            send_email(
+                    subject,
+                    sender,
+                    [recipient.email],
+                    body,
+                    render_template('subscriber-email.html', page=self, recipient=recipient),
                 )
-            mail.send(msg)
 
     def nav_list(self):
         nav = []
@@ -383,4 +382,3 @@ class Subscriber(db.Model):
 
     def __repr__(self):
         return f"<Subscriber({self.email}, {self.first_name} {self.last_name})>"
-
