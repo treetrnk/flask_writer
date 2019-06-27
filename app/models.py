@@ -30,6 +30,8 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     timezone = db.Column(db.String(150))
 
+    def total_subscribers(self):
+        return len(Subscriber.query.all())
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

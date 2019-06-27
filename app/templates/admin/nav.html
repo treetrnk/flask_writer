@@ -16,8 +16,11 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}" data-toggle='tooltip' title='Subscribers'>
+		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}" data-toggle='tooltip' title='Subscribers ({{ current_user.total_subscribers() }})'>
 			<i class="fas fa-envelope"></i><span class="d-none d-sm-none d-md-inline"> Subscribers</span>
+			{% if current_user.is_authenticated %}
+				({{ current_user.total_subscribers() }})
+			{% endif %}
 		</a>
 	</li>
 	<li class="nav-item">
