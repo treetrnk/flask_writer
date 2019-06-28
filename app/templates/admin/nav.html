@@ -19,7 +19,7 @@
 		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}" data-toggle='tooltip' title='Subscribers ({{ current_user.total_subscribers() }})'>
 			<i class="fas fa-envelope"></i><span class="d-none d-sm-none d-md-inline"> Subscribers</span>
 			{% if current_user.is_authenticated %}
-				({{ current_user.total_subscribers() }})
+			<small><span class="badge badge-secondary">{{ current_user.total_subscribers() }}</span></small>
 			{% endif %}
 		</a>
 	</li>

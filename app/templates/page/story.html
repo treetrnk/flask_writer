@@ -29,9 +29,14 @@
 			{{ page.html_body()|safe }}
 			{% if page.pub_children() %}
 				<div class="text-center">
-					<a href='{{ page.pub_children()[0].path }}' class="btn btn-primary btn-lg">
+					<a href='{{ page.pub_children()[0].path }}' class="btn btn-primary btn-lg mt-3">
 						<i class="fas fa-book"></i>
 						Start Reading
+					</a>
+					&nbsp;&nbsp;
+					<a href='{{ page.pub_children()[::-1][0].path }}' class="btn btn-primary btn-lg mt-3">
+						<i class="fas fa-seedling"></i>
+						Latest Chapter
 					</a>
 				</div>
 			{% endif %}
@@ -46,8 +51,7 @@
 				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
-        <small class="text-muted">Share:</small>
-        {# getShareButtons($page->url) #}
+				{% include 'share.html' %}
       </div>
     </div><br />
   </div>

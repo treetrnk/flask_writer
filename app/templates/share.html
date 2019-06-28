@@ -1,0 +1,10 @@
+<small class="text-muted">Share:</small>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https://houstonhare.com{{ url_for('page.index', path=page.path) }}" target="_blank">
+	<img src="{{ url_for('static', filename='images/facebook-share.png') }}" />
+</a>
+<a href="http://www.reddit.com/submit?url=https://houstonhare.com{{ url_for('page.index', path=page.path) }}" target="_blank">
+	<img src="{{ url_for('static', filename='images/reddit-share.png') }}" />
+</a>
+<a href="https://twitter.com/home?status=https://houstonhare.com{{ url_for('page.index', path=page.path) }}" target="_blank">
+	<img src="{{ url_for('static', filename='images/twitter-share.png') }}" />
+</a>
