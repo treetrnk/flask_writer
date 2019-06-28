@@ -179,10 +179,10 @@ class Page(db.Model):
             if self.parent_id:
                 banner = self.parent.banner 
         if banner:
-            if 'http' in banner:
+            if 'http' in banner[0:5]:
                 return banner
             else:
-                return f'https://houstonhare.com/{banner}'
+                return str(current_app.config['BASE_URL']) + banner
         return False
 
     def section_name(self):
@@ -303,14 +303,14 @@ class Page(db.Model):
     def notify_subscribers(self):
         sender='no-reply@houstonhare.com'
         subject=f"New Post: {self.parent.title} - {self.title}"
-        body=f"Stories by Houston Hare\nNew Post: {self.parent.title} - {self.title}\n{self.description()}\nRead more: https://houstonhare.com{self.path}"
+        body=f"Stories by Houston Hare\nNew Post: {self.parent.title} - {self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
         for recipient in Subscriber.query.all():
             send_email(
                     subject,
                     sender,
                     [recipient.email],
                     body,
-                    render_template('subscriber-email.html', page=self, recipient=recipient),
+                    render_template('email/subscriber-notification.html', page=self, recipient=recipient),
                 )
 
     def nav_list(self):

@@ -46,25 +46,22 @@
 
 				<a href='https://houstonhare.com{{ page.path }}'>
 					<tr>
-						<td colspan="3" align="center" height="225" style="height:225px;overflow:hidden;background:url({{ page.banner_path() }}) no-repeat center center;background-size:cover;">&nbsp;
-						</td>
+						{% if page.banner_path() %}
+							<td colspan="3" align="center" height="225" style="height:225px;overflow:hidden;background:url({{ page.banner_path() }}) no-repeat center center;background-size:cover;">&nbsp;
+							</td>
+						{% else %}
+							<td colspan="3" align="center" height="225" style="height:225px;overflow:hidden;background:url(https://houstonhare.com{{ url_for('static', filename='/images/forest.png') }}) no-repeat center center;background-size:cover;">&nbsp;
+							</td>
+						{% endif %}
 					</tr>
 				</a>
 
 				<tr>
 					<td></td>
 					<td style="padding:20px; box-shadow:0 30px 50px 0 rgba(1,1,1,.15);background-color:#fff;">
-						<a href='https://houstonhare.com{{ page.path }}'>
-							<h2>
-								{% if page.parent %}
-									{{ page.parent.title }}: {{ page.title }}
-								{% else %}
-									{{ page.title }}
-								{% endif %}
-							</h2>
-						</a>
-						<p>{{ page.description(400) }}</p>
-						<p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
+
+						{% block content %}{% endblock %}
+
 						<p style="color:#666;text-align:center;"><small>
 							You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>.<br /> 
 							If you no longer wish to receive these emails, please <a href="https://houstonhare.com/unsubscribe/{{ recipient.email }}">unsubscribe here</a>.<br />

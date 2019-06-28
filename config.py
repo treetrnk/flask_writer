@@ -22,3 +22,4 @@ class Config(object):
     DATA_DIR = datadir
     TEMPLATE_DIR = templatedir
     UPLOAD_DIR = uploaddir
+    BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'

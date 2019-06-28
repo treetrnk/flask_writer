@@ -1,0 +1,16 @@
+{% extends 'email/base.html' %}
+{% block content %}
+
+<a href='https://houstonhare.com{{ page.path }}'>
+	<h2>
+		{% if page.parent %}
+			{{ page.parent.title }}: {{ page.title }}
+		{% else %}
+			{{ page.title }}
+		{% endif %}
+	</h2>
+</a>
+<p>{{ page.description(400) }}</p>
+<p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
+
+{% endblock %}
