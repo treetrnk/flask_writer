@@ -6,9 +6,11 @@ from app import mail
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
+        print("EMAILS SENT TO: " + ", ".join(msg.recipients))
 
 def send_email(subject, sender, recipients, text_body, html_body, 
             attachments=None, sync=False):
+    emails_sent_to = []
     for recipient in recipients:
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = text_body
@@ -18,3 +20,5 @@ def send_email(subject, sender, recipients, text_body, html_body,
                 msg.attach(*attachment)
         Thread(target=send_async_email, 
                 args=(current_app._get_current_object(), msg)).start()
+        emails_sent_to += [recipient]
+    print("EMAILS SENT TO: " + ", ".join(emails_sent_to))
