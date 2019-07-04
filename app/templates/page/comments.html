@@ -2,6 +2,7 @@
   <div class="col-md-8 col">
     <h2>Comments</h2>
 
+		{% if page.published %}
     <div id="disqus_thread"></div>
     <script>
 
@@ -22,6 +23,7 @@
     })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		{% endif %}
 
   </div>
 </div>
