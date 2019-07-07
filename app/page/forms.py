@@ -17,8 +17,6 @@ class SubscribeForm(FlaskForm):
     submit = SubmitField('Subscribe')
 
     def validate_email(self, email):
-        print("VALIDATING EMAIL ADDRESS")
         subscriber = Subscriber.query.filter_by(email=email.data).first()
-        print(subscriber)
         if subscriber is not None:
             raise ValidationError(f"{email.data} is already subscribed.")

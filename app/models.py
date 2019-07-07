@@ -390,7 +390,7 @@ class Subscriber(db.Model):
             <p>Hi {self.name_if_given()},
             <p>
                 Thank you for subscribing to 
-                <a href="https://houstonhare.com">HoustonHare.com</a>.
+                <a href="https://houstonhare.com">HoustonHare.com</a>!
             </p>
             <p>
                 To show my gratidue, here are some printable 
@@ -407,7 +407,7 @@ class Subscriber(db.Model):
                 Thanks again,<br />
                 <span style='font-family: Yesteryear;font-size:26px;'>Houston Hare</span>
             </p>"""
-        body = f"Hi {self.name_if_given()},\n\nThank you for subscribing to HoustonHare.com.\n\nTo show my gratitude, here are some printable Sprig bookmarks: https://houstonhare.com/uploads/sprig-bookmarks.pdf\nJust print, cut them out, and they're ready to be used in whatever book you'd like.\n\nI do appreciate your support and hope that you continue to enjoy the stories, but if you would like to unsubscribe at any point, you can find the link at the  bottom of any of these emails.\n\nThanks again,\nHouston Hare"
+        body = f"Hi {self.name_if_given()},\n\nThank you for subscribing to HoustonHare.com!\n\nTo show my gratitude, here are some printable Sprig bookmarks: https://houstonhare.com/uploads/sprig-bookmarks.pdf\nJust print, cut them out, and they're ready to be used in whatever book you'd like.\n\nI do appreciate your support and hope that you continue to enjoy the stories, but if you would like to unsubscribe at any point, you can find the link at the  bottom of any of these emails.\n\nThanks again,\nHouston Hare"
         send_email(
                 subject,
                 sender,
