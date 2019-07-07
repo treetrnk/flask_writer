@@ -379,6 +379,48 @@ class Subscriber(db.Model):
     def all_subscribers():
         return [s.email for s in Subscriber.query.all()]
 
+    def name_if_given(self):
+        return self.first_name if self.first_name else ''
+
+    def welcome(self):
+        page=Page.query.filter_by(slug='home').order_by('pub_date').first()
+        sender='no-reply@houstonhare.com'
+        subject=f"HoustonHare.com Subscription - Welcome!"
+        html = f"""
+            <p>Hi {self.name_if_given()},
+            <p>
+                Thank you for subscribing to 
+                <a href="https://houstonhare.com">HoustonHare.com</a>.
+            </p>
+            <p>
+                To show my gratidue, here are some printable 
+                <a href="https://houstonhare.com/uploads/sprig-bookmarks.pdf"><i>Sprig</i> bookmarks</a>. 
+                Just print, cut them out, and they're ready to be used in whatever book 
+                you'd like. 
+            </p>
+            <p>
+                I do appreciate your support and hope that you continue to enjoy
+                the stories, but if you would like to unsubscribe at any point, 
+                you can find the link at the bottom of any of these emails.
+            </p>
+            <p>
+                Thanks again,<br />
+                <span style='font-family: Yesteryear;font-size:26px;'>Houston Hare</span>
+            </p>"""
+        body = f"Hi {self.name_if_given()},\n\nThank you for subscribing to HoustonHare.com.\n\nTo show my gratitude, here are some printable Sprig bookmarks: https://houstonhare.com/uploads/sprig-bookmarks.pdf\nJust print, cut them out, and they're ready to be used in whatever book you'd like.\n\nI do appreciate your support and hope that you continue to enjoy the stories, but if you would like to unsubscribe at any point, you can find the link at the  bottom of any of these emails.\n\nThanks again,\nHouston Hare"
+        send_email(
+                subject,
+                sender,
+                [self.email],
+                body,
+                render_template('email/subscriber-welcome.html', 
+                        page=page, 
+                        html=html,
+                        recipient=self,
+                    ),
+            )
+
+
     def __str__(self):
         return f"{self.email} ({self.first_name} {self.last_name})"
 

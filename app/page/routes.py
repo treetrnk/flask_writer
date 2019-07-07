@@ -81,6 +81,7 @@ def subscribe():
         )
         db.session.add(sub)
         db.session.commit()
+        sub.welcome()
         flash('You have subscribed successfully!', 'success')
         return redirect(url_for('page.home'))
     return render_template('subscribe.html',
