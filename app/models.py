@@ -393,7 +393,7 @@ class Subscriber(db.Model):
                 <a href="https://houstonhare.com">HoustonHare.com</a>!
             </p>
             <p>
-                To show my gratidue, here are some printable 
+                To show my gratitude, here are some printable 
                 <a href="https://houstonhare.com/uploads/sprig-bookmarks.pdf"><i>Sprig</i> bookmarks</a>. 
                 Just print, cut them out, and they're ready to be used in whatever book 
                 you'd like. 
