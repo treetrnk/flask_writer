@@ -1,0 +1,14 @@
+{% extends 'email/base.html' %}
+{% block content %}
+
+<p>
+	{% if recipient.first_name %}
+		Hello {{ recipient.name_if_given() }},
+	{% else %}
+		Hello,
+	{% endif %} 
+</p>
+
+{{ html|safe }}
+
+{% endblock %}
