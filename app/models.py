@@ -165,7 +165,8 @@ class Page(db.Model):
         return self.body[0:length].replace('#','').replace('*','').replace('--', '&#8212;').replace('_', '') + '...'
 
     def view_code(self):
-        return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
+        #return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
+        return str(datetime.now().year) + str(datetime.now().month) + self.path + current_app.config['SECRET_KEY']
 
     def gen_view_code(self):
         if not self.published:
