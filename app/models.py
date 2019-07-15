@@ -314,8 +314,10 @@ class Page(db.Model):
                 
     def notify_subscribers(self):
         sender='no-reply@houstonhare.com'
-        subject=f"New Post: {self.parent.title} - {self.title}"
-        body=f"Stories by Houston Hare\nNew Post: {self.parent.title} - {self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
+        parent_title = self.parent.title + ' - ' if self.parent else ''
+        parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
+        subject=f"[New Post] {parent_title}{self.title}"
+        body=f"Stories by Houston Hare\nNew Post: {parent_title}{self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
         for recipient in Subscriber.query.all():
             send_email(
                     subject,
