@@ -147,6 +147,24 @@ $(document).ready(function() {
 		});
 	}
 
+	$(".toggled-div.hidden").slideUp();
+
+	$(".div-toggler").click(function(e) {
+		e.preventDefault()
+		e.stopPropagation
+		var $this = $(this);
+		var div = $this.parent().find(".toggled-div");
+		console.log("DIV:");
+		console.log(div);
+		if (div.is(":hidden")) {
+			$this.find("i.fas.fa-chevron-down").removeClass('fa-chevron-down').removeClass('.d-none').addClass('fa-chevron-up');
+			div.slideDown();
+		} else {
+			$this.find("i.fas.fa-chevron-up").removeClass('fa-chevron-up').removeClass('.d-none').addClass('fa-chevron-down');
+			div.slideUp();
+		}
+	});
+
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 	})
