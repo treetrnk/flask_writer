@@ -157,10 +157,10 @@ $(document).ready(function() {
 		console.log("DIV:");
 		console.log(div);
 		if (div.is(":hidden")) {
-			$this.find("i.fas.fa-chevron-down").removeClass('fa-chevron-down').removeClass('.d-none').addClass('fa-chevron-up');
+			$this.find("i.fas.fa-chevron-down").removeClass('fa-chevron-down').addClass('fa-chevron-up');
 			div.slideDown();
 		} else {
-			$this.find("i.fas.fa-chevron-up").removeClass('fa-chevron-up').removeClass('.d-none').addClass('fa-chevron-down');
+			$this.find("i.fas.fa-chevron-up").removeClass('fa-chevron-up').addClass('fa-chevron-down');
 			div.slideUp();
 		}
 	});
