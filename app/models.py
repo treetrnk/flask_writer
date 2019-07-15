@@ -289,6 +289,13 @@ class Page(db.Model):
             return str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
         return str(round(words / 200 / 60)) + " - " + str(round(words / 150 / 60)) + " hrs."
 
+    def child_write_time(self, published_only=True):
+        words = self.child_word_count(published_only)
+        print(words)
+        print(published_only)
+        if words / 600 < 2:
+            return str(round(words / 600 * 60)) + " mins."
+        return str(round(words / 600)) + " hrs."
     
     def local_pub_date(self, tz):
         if self.pub_date:
