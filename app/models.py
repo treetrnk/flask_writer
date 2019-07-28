@@ -21,6 +21,11 @@ ver_tags = db.Table('ver_tags',
     db.Column('page_version_id', db.Integer, db.ForeignKey('page_version.id'), primary_key=True)
 )
 
+tags_defs = db.Table('tags_defs',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
+    db.Column('definition_id', db.Integer, db.ForeignKey('definition.id'), primary_key=True)
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -416,3 +421,33 @@ class Subscriber(db.Model):
 
     def __repr__(self):
         return f"<Subscriber({self.email}, {self.first_name} {self.last_name})>"
+
+class Definition(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    body = db.Column(db.String(5000), nullable=False)
+    hidden_body = db.Column(db.String(5000), nullable=False)
+    tags = db.relationship('Tag', secondary=tags_defs, lazy='subquery', 
+            backref=db.backref('definitions', lazy=True))
+
+    def html_body(self, hidden=False):
+        body = self.hidden_body if hidden else self.body
+        return markdown(body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+
+    def text_body(self, hidden=False):
+        body = self.html_body(hidden)
+        pattern = re.compile(r'<.*?>')
+        return pattern.sub('', body)
+
+    def short_body(self):
+        threshold = 37
+        body = self.text_body()
+        if len(body) > threshold:
+            return body[0:threshold] + '...'
+        return body
+
+    def __str__(self):
+        return f"{self.name} ({self.short_body()})"
+
+    def __repr__(self):
+        return f"<Definition({self.id}, {self.name}, {self.short_body()})>"
