@@ -1,18 +1,46 @@
+function count_words() {
+	var page_body = $('#page_body_input');
+	var words = page_body.val().match(/[^*$\s]+/g).length;
+	$('#display_count').text(words+" words");
+	var matches = {}
+	var patterns = [
+		'beastfolk',
+		' elve',
+		'-elve',
+		' elf',
+		'-elf',
+		'human',
+		'treek',
+		'dwar',
+		'saurian',
+		'avian',
+		'gnome'
+	];
+	for (var i=0;i<patterns.length;i++) {
+		var m = page_body.val().match(patterns[i]);
+		if (m) {
+			matches[m[0]] = m.length;
+		}
+	}
+	for (var k in matches) {
+		var current = $('#display_count').text();
+		$('#display_count').text(k + ': ' + matches[k] + ', ' + current);
+	}
+}
+
 $(document).ready(function() {
 
 	var page_body = $('#page_body_input');
 	if (page_body.val()) {
-		var words = $('#page_body_input').val().match(/[^*#\s]+/g).length;
-		$('#display_count').text(words+" words");
+		count_words();
 	}
 
+	page_body.on('keyup', function() {
+		count_words();
+	});
+	
 	$("blockquote").addClass("blockquote");
 	
-	$("#page_body_input").on('keyup', function(e) {
-		var words = this.value.match(/[^*$\s]+/g).length;
-		$('#display_count').text(words+" words");
-	});
-
 	$('.page-toggle').click(function(e) {
 		e.stopPropigation;
 		e.preventDefault();
