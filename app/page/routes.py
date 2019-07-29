@@ -4,7 +4,7 @@ from flask import (
     )
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
-from app.models import Page, Tag, Subscriber
+from app.models import Page, Tag, Subscriber, Definition
 from app import db
 
 @bp.route('/')
@@ -122,7 +122,7 @@ def glossary(path):
     path = f"/{path}"
     page = Page.query.filter_by(path=path).first()
     if page:
-        definitions = page.definitions
+        definitions = Definition.query.filter_by(parent_id=page.id).order_by('name').all()
         tags = {}
         for definition in definitions:
             print(f"def: {definition}")
@@ -139,6 +139,7 @@ def glossary(path):
                     glossary=True,
                     definitions=definitions,
                     tags=tags,
+                    sorted=sorted,
                 )    
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
