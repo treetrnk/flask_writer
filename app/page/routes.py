@@ -136,6 +136,7 @@ def glossary(path):
         if page.published or page.check_view_code(code):
             return render_template(f'page/glossary.html', 
                     page=page, 
+                    glossary=True,
                     definitions=definitions,
                     tags=tags,
                 )    

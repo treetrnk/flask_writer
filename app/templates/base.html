@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
-		<title>{% if page %}{{ page.title }} - {% endif %}Houston Hare stories</title>
+		<title>{% if page %}{{ page.title }} {% if glossary %}Glossary{% endif %} - {% endif %}Houston Hare Stories</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		{% if page %}
 			<meta name="description" content="{{ page.description() }}" />
@@ -269,7 +269,12 @@
 					{% for parent in page.ancestors()[::-1] %}
 						<li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
 					{% endfor %}
-					<li class="breadcrumb-item active">{{ page.title }}</li>
+					{% if glossary %}
+						<li class="breadcrumb-item"><a href="{{ page.path }}">{{ page.title }}</a></li>
+						<li class="breadcrumb-item active">Glossary</li>
+					{% else %}
+						<li class="breadcrumb-item active">{{ page.title }}</li>
+					{% endif %}
 				</ol>
 			{% else %}
 				<br />
