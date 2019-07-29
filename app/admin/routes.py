@@ -265,7 +265,7 @@ def edit_tag(id):
 def definitions():
     page = Page.query.filter_by(slug='admin').first()
     definitions = Definition.query.order_by('name')
-    return render_template('admin/tags.html', 
+    return render_template('admin/definitions.html', 
             tab='definitions', 
             definitions=definitions, 
             page=page,

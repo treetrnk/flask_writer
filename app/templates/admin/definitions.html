@@ -21,7 +21,7 @@
 		{% for definition in definitions %}
 			<tr>
 				<td>
-					<a href="{{ url_for('admin.edit_tag', id=tag.id) }}">
+					<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
 					{{ definition.name }}
