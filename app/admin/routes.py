@@ -275,7 +275,7 @@ def definitions():
 @login_required
 def add_definition():
     page = Page.query.filter_by(slug='admin').first()
-    form = AddDefinitionForm()
+    form = EditDefinitionForm()
     form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
     if form.validate_on_submit():
         definition = Definition(
