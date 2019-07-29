@@ -11,7 +11,8 @@ function count_words() {
 		'-elf',
 		'human',
 		'treek',
-		'dwar',
+		'dwarf',
+		'dwarve',
 		'saurian',
 		'avian',
 		'gnome'
