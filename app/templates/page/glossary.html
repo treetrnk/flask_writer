@@ -6,19 +6,19 @@
 
 		{% include 'theme-chooser.html' %}
 
-		<h1>{{ page.title }} - Glossary</h1>
+		<h1 class="mb-5">{{ page.title }} - Glossary</h1>
 
     <div class="content">
 
 			{% if not tags %}
-				<p class="mb-5">
+				<p>
 					No glossary items added yet...
 				</p>
 			{% endif %}
 
 			{% for tag in tags %}
-				<h2 class="mt-5">{{ tag }}</h2>
-				<div class="accordian">
+				<h2>{{ tag }}</h2>
+				<div class="accordian mb-5">
 					{% for definition in tags[tag] %}
 						<div class="card">
 							<div class="card-header" id="headingOne">
