@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<h2>{{ action }} Definition</h2>
+
+<form class="form" method="post">
+	{{ form.hidden_tag() }}
+	
+	<!--NAME-->
+	<div class="form-group row">
+		{{ form.name.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.name.errors %}
+				{{ form.name(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.name.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.name(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--PARENT-->
+	<div class="form-group row">
+		{{ form.parent_id.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.parent_id.errors %}
+				{{ form.parent_id(class="form-control is-invalid mkSelect2") }}
+				<div class="invalid-feedback">
+					{% for error in form.parent_id.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.parent_id(class="form-control mkSelect2") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--TAGS-->
+	<div class="form-group row">
+		{{ form.tags.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.tags.errors %}
+				{{ form.tags(class="form-control is-invalid mkSelect2") }}
+				<div class="invalid-feedback">
+					{% for error in form.tags.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.tags(class="form-control mkSelect2") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--BODY-->
+	<div class="form-group row">
+		{{ form.body.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.body.errors %}
+				{{ form.body(class="form-control is-invalid", rows='4') }}
+				<div class="invalid-feedback">
+					{% for error in form.body.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.body(class="form-control", rows='4') }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--HIDDEN BODY-->
+	<div class="form-group row">
+		{{ form.hidden_body.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.hidden_body.errors %}
+				{{ form.hidden_body(class="form-control is-invalid", rows='4') }}
+				<div class="invalid-feedback">
+					{% for error in form.hidden_body.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.hidden_body(class="form-control", rows='4') }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			<button type="submit" class="btn btn-primary">
+				<i class="fas fa-save"></i> Save Definition
+			</button>
+			<a href="{{ url_for('admin.tags') }}" class="btn btn-secondary">
+				<i class="fas fa-ban"></i> Cancel
+			</a>
+		</div>
+	</div>
+
+{% endblock %}

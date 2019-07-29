@@ -1,8 +1,8 @@
 from flask import render_template, redirect, flash, url_for, send_from_directory, current_app
 from app import db
 from app.admin import bp
-from app.models import Page, User, Tag, PageVersion, Subscriber
-from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm 
+from app.models import Page, User, Tag, PageVersion, Subscriber, Definition
+from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm 
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from datetime import datetime
@@ -259,6 +259,71 @@ def edit_tag(id):
             flash("<b>Error!</b> That tag already exists.", "danger")
     form.name.data = tag.name
     return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit', page=page)
+
+@bp.route('/admin/definitions')
+@login_required
+def definitions():
+    page = Page.query.filter_by(slug='admin').first()
+    definitions = Definition.query.order_by('name')
+    return render_template('admin/tags.html', 
+            tab='definitions', 
+            definitions=definitions, 
+            page=page,
+        )
+
+@bp.route('/admin/definition/add', methods=['GET', 'POST'])
+@login_required
+def add_definition():
+    page = Page.query.filter_by(slug='admin').first()
+    form = AddDefinitionForm()
+    form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
+    if form.validate_on_submit():
+        definition = Definition(
+                name=form.name.data,
+                body=form.body.data,
+                hidden_body=form.hidden_body.data,
+                parent_id=form.parent_id.data,
+                tags=form.tags.data,
+            )
+        db.session.add(definition)
+        db.session.commit()
+        flash("Definition added successfully.", "success")
+        return redirect(url_for('admin.definitions'))
+    return render_template('admin/definition-edit.html', 
+            form=form, 
+            tab='definitions', 
+            action='Add', 
+            page=page
+        )
+
+@bp.route('/admin/definition/edit/<int:definition_id>', methods=['GET', 'POST'])
+@login_required
+def edit_definition(definition_id):
+    page = Page.query.filter_by(slug='admin').first()
+    definition = Definition.query.filter_by(id=definition_id).first()
+    form = EditDefinitionForm()
+    form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
+    if form.validate_on_submit():
+        definition.name=form.name.data
+        definition.body=form.body.data
+        definition.hidden_body=form.hidden_body.data
+        definition.parent_id=form.parent_id.data
+        definition.tags=form.tags.data
+        db.session.commit()
+        flash("Definition updated successfully.", "success")
+        return redirect(url_for('admin.definitions'))
+    form.name.data = definition.name
+    form.body.data = definition.body
+    form.hidden_body.data = definition.hidden_body
+    form.parent_id.data = definition.parent_id
+    form.tags.data = definition.tags
+    return render_template('admin/definition-edit.html', 
+            form=form, 
+            tab='definitions', 
+            definition=definition, 
+            action='Edit', 
+            page=page
+        )
 
 @bp.route('/admin/subscribers')
 @login_required

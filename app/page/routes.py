@@ -116,6 +116,33 @@ def rss(path):
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
+@bp.route('/<path:path>/glossary')
+def glossary(path):
+    Page.set_nav()
+    path = f"/{path}"
+    page = Page.query.filter_by(path=path).first()
+    if page:
+        definitions = page.definitions
+        tags = {}
+        for definition in definitions:
+            print(f"def: {definition}")
+            for tag in definition.tags:
+                print(f"tag: {tag}")
+                if tag.name in tags:
+                    tags[tag.name] += [definition]
+                else:
+                    tags[tag.name] = [definition]
+        code = request.args['code'] if 'code' in request.args else None
+        if page.published or page.check_view_code(code):
+            return render_template(f'page/glossary.html', 
+                    page=page, 
+                    definitions=definitions,
+                    tags=tags,
+                )    
+    page = Page.query.filter_by(slug='404-error').first()
+    return render_template(f'page/{page.template}.html', page=page)    
+
+
 @bp.route('/<path:path>')
 def index(path):
     Page.set_nav()

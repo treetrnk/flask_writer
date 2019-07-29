@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col content">
+
+		{% include 'theme-chooser.html' %}
+
+		<h1>{{ page.title }} - Glossary</h1>
+
+    <div class="content">
+
+			{% if not tags %}
+				<p class="mb-5">
+					No glossary items added yet...
+				</p>
+			{% endif %}
+
+			{% for tag in tags %}
+				<h2>{{ tag }}</h2>
+				<div class="accordian">
+					{% for definition in tags[tag] %}
+						<div class="card">
+							<div class="card-header" id="headingOne">
+								{% if current_user.is_authenticated %}
+									<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}"
+										 class="btn btn-secondary btn-sm float-right">
+										<i class="fas fa-edit"></i>
+									</a>
+								{% endif %}
+								<a href="#" class="btn btn-link collapsed d-inline-block" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
+									<h3 class="mb-0">
+										{{ definition.name }}
+									</h3>
+								</a>
+							</div>
+
+							<div id="collapse{{ tag }}{{ definition.id }}" class="collapse">
+								<div class="card-body">
+									<p>
+										{{ definition.html_body()|safe }}
+									</p>
+									{% if current_user.is_authenticated and definition.hidden_body %}
+										<div class="card">
+											<div class="card-body">
+												<h4><i class="fas fa-eye-slash"></i> Author's Note</h4>
+												<p>
+													{{ definition.html_body(True)|safe }}
+												</p>
+											</div>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+
+    </div>
+
+  </div>
+  <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
+		{% include 'page/table-of-contents.html' %}
+		{{ page.html_sidebar()|safe }}
+  </aside>
+</div>
+
+{% endblock %}

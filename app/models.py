@@ -426,12 +426,16 @@ class Definition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     body = db.Column(db.String(5000), nullable=False)
-    hidden_body = db.Column(db.String(5000), nullable=False)
+    hidden_body = db.Column(db.String(5000))
     tags = db.relationship('Tag', secondary=tags_defs, lazy='subquery', 
             backref=db.backref('definitions', lazy=True))
+    parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
+    parent = db.relationship('Page', backref='definitions')
 
     def html_body(self, hidden=False):
         body = self.hidden_body if hidden else self.body
+        if body is None:
+            body = ''
         return markdown(body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
 
     def text_body(self, hidden=False):

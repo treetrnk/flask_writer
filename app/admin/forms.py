@@ -6,7 +6,7 @@ from wtforms import (
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError
-from app.models import Page, User, Tag
+from app.models import Page, User, Tag, Definition
 
 required = "<span class='text-danger'>*</span>"
 
@@ -67,3 +67,16 @@ class AddTagForm(FlaskForm):
             else:
                 return False
         return True
+
+class EditDefinitionForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    body = TextAreaField('Body', validators=[DataRequired()])
+    hidden_body = TextAreaField("Author's Notes")
+    parent_id = SelectField('Parent', coerce=int)
+    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
+
+    #def validate_name(self, name):
+    #    definition = Definition.query.filter_by(name=name, parent_id=self.parent_id, tags=self.tags).first()
+    #    if definition is not None:
+    #        raise ValidationError('Definition already exists.', 'Error')
+    #    return True

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_definition') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Definition
+</a>
+
+<h2>Definitions</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Parent</th>
+			<th>Tags</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for definition in definitions %}
+			<tr>
+				<td>
+					<a href="{{ url_for('admin.edit_tag', id=tag.id) }}">
+						<i class="fas fa-edit"></i>
+					</a>
+					{{ definition.name }}
+				</td>
+				<td>
+					{{ definition.parent }}
+				</td>
+				<td>
+					{% for tag in definition.tags %}
+						<span class="badge badge-secondary">
+							{{ tag.name }}
+						</span>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

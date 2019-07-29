@@ -11,6 +11,11 @@
 		</a>
 	</li>
 	<li class="nav-item">
+		<a href="{{ url_for('admin.definitions') }}" class="nav-link {% if tab == 'definitions' %}active{% endif %}" data-toggle='tooltip' title='Definitions'>
+			<i class="fas fa-atlas"></i><span class="d-none d-sm-none d-md-inline"> Definitions</span>
+		</a>
+	</li>
+	<li class="nav-item">
 		<a href="{{ url_for('admin.tags') }}" class="nav-link {% if tab == 'tags' %}active{% endif %}" data-toggle='tooltip' title='Tags'>
 			<i class="fas fa-tags"></i><span class="d-none d-sm-none d-md-inline"> Tags</span>
 		</a>
