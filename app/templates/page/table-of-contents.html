@@ -9,6 +9,14 @@
 					<a href='{{ child.path }}'>{{ child.title }}</a>
 				</li>
 			{% endfor %}
+			{% if page.parent.definitions %}
+				<br />
+				<li>
+					<a href="{{ page.parent.path }}/glossary">
+						Glossary
+					</a>
+				</li>
+			{% endif %}
 		{% elif page.template == "blog" %}
 		{% for child in page.pub_children()[::-1] %}
 				<li>
@@ -21,6 +29,14 @@
 					<a href='{{ child.path }}'>{{ child.title }}</a>
 				</li>
 			{% endfor %}
+			{% if page.definitions %}
+				<br />
+				<li>
+					<a href="{{ page.path }}/glossary">
+						Glossary
+					</a>
+				</li>
+			{% endif %}
 		{% endif %}
 	</ul>
 </div>
