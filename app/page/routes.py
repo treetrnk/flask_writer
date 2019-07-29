@@ -35,7 +35,7 @@ def set_theme(theme=None):
 @bp.route('/search/keyword', methods=['GET','POST'])
 def search(tag=None,keyword=None):
     Page.set_nav()
-    tags = Tag.query.all()
+    tags = Tag.query.filter(Tag.pages != None).order_by('name').all()
     form = SearchForm()
     results = None
     if keyword != None:
