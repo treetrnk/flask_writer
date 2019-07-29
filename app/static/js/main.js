@@ -4,22 +4,23 @@ function count_words() {
 	$('#display_count').text(words+" words");
 	var matches = {}
 	var patterns = [
-		'beastfolk',
-		' elve',
-		'-elve',
-		' elf',
-		'-elf',
-		'human',
-		'treek',
-		'dwarf',
-		'dwarve',
-		'saurian',
-		'avian',
-		'gnome'
+		/beastfolk/g,
+		/ elve/g,
+		/-elve/g,
+		/ elf/g,
+		/-elf/g,
+		/human/g,
+		/treek/g,
+		/dwarf/g,
+		/dwarve/g,
+		/saurian/g,
+		/avian/g,
+		/gnome/g
 	];
 	for (var i=0;i<patterns.length;i++) {
 		var m = page_body.val().match(patterns[i]);
 		if (m) {
+			console.log(m);
 			matches[m[0]] = m.length;
 		}
 	}
