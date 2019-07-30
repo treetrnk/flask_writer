@@ -7,7 +7,6 @@
 		{% include 'theme-chooser.html' %}
 
     <h1>{{ page.title }}</h1>
-		{% include 'page/edit.html' %}
     <p>
 			<span class="text-muted">
         <small>Published:</small>
@@ -28,6 +27,7 @@
 			<p class="text-muted"><small>{{ moment(page.pub_date).format("LLL") }}</small></p>
 		{% endif %}    
 
+		{% include 'page/edit.html' %}
 		<div class="content">
 			{{ page.html_body()|safe }}
 			{% if page.pub_children() %}

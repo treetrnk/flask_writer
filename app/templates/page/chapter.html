@@ -7,7 +7,6 @@
 		{% include 'theme-chooser.html' %}
 
 		<h1>{{ page.title }}</h1>
-		{% include 'page/edit.html' %}
     <p>
         <span class="text-muted">
           <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count() }}</span> <!--&#8226;-->
@@ -21,6 +20,7 @@
 		
 		{% include 'page/next_prev.html' %}
 
+		{% include 'page/edit.html' %}
     <div class="content">
 			{{ page.html_body()|safe }}
     </div>
