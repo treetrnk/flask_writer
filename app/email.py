@@ -6,7 +6,7 @@ from app import mail
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
-        current_app.logger.info("Emails sent to: " + ", ".join(emails_sent_to))
+        app.logger.info("Emails sent to: " + ", ".join(msg.recipients))
 
 def send_email(subject, sender, recipients, text_body, html_body, 
             attachments=None, sync=False):
