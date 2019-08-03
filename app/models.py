@@ -167,7 +167,7 @@ class Page(db.Model):
     def description(self, length=247):
         if self.summary:
             return self.summary
-        return self.body[0:length].replace('#','').replace('*','').replace('--', '&#8212;').replace('_', '') + '...'
+        return self.text_body()[0:length] + '...'
 
     def view_code(self):
         #return str(datetime.now().year) + str(datetime.now().isocalendar()[1]) + self.slug
