@@ -23,3 +23,4 @@ class Config(object):
     TEMPLATE_DIR = templatedir
     UPLOAD_DIR = uploaddir
     BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'
+    ADMINS=os.environ.get('ADMINS')
