@@ -82,6 +82,7 @@ def subscribe():
         db.session.add(sub)
         db.session.commit()
         sub.welcome()
+        current_app.logger.info(f'New Subscriber!\n    {repr(sub)}')
         flash('You have subscribed successfully!', 'success')
         return redirect(url_for('page.home'))
     return render_template('subscribe.html',
@@ -95,8 +96,10 @@ def unsubscribe(email):
         db.session.delete(sub)
         db.session.commit()
         flash(f"{email} has been unsubscribed successfully. If you'd like to resubscribe, click the subscribe button in the bottom right of the screen.", "success")
+        current_app.logger.info(f'User unsubscribed :(\n    {repr(sub)}')
     else:
         flash(f"Subscriber email not found. You are not subscribed.", "danger")
+        current_app.logger.info(f'Failed to unsubscribe:\n    {email}')
     return redirect(url_for('page.home'))
 
 @bp.route('/uploads/<string:filename>')

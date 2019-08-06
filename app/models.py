@@ -120,7 +120,7 @@ class Page(db.Model):
     pub_date = db.Column(db.DateTime(), nullable=True)
     published = db.Column(db.Boolean(), default=False)
     edit_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
-    versions = db.relationship('PageVersion', backref='versions', primaryjoin=
+    versions = db.relationship('PageVersion', backref='current', primaryjoin=
                 id==PageVersion.original_id)
 
     TEMPLATE_CHOICES = [

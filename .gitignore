@@ -62,3 +62,4 @@ app/templates/admin/logs.html
 app/templates/logs.html
 uploads/
 .flaskenv
+.gitignore

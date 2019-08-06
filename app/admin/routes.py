@@ -1,12 +1,13 @@
+import pytz
 from flask import render_template, redirect, flash, url_for, send_from_directory, current_app
 from app import db
 from app.admin import bp
-from app.models import Page, User, Tag, PageVersion, Subscriber, Definition
+from app.admin.functions import log_new, log_change
 from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm 
+from app.models import Page, User, Tag, PageVersion, Subscriber, Definition
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from datetime import datetime
-import pytz
 
 @bp.route('/admin/users')
 @login_required
@@ -32,6 +33,7 @@ def add_user():
         db.session.add(user)
         db.session.commit()
         flash(f"{user.username.upper()} was added successfully!", "success")
+        log_new(user, 'added a user')
         return redirect(url_for('admin.users'))
     return render_template('admin/user-edit.html', form=form, tab='users', action='Add', page=page)
 
@@ -43,12 +45,14 @@ def edit_user(id):
     form = EditUserForm()
     form.timezone.choices = [(t, t) for t in pytz.common_timezones]
     if form.validate_on_submit():
+        log_orig = log_change(user)
         user.username = form.username.data
         user.email = form.email.data
         user.about_me = form.about_me.data
         user.timezone = form.timezone.data
         if form.password.data and user.check_password(form.password.data):
             user.set_password(form.new_password.data)
+        log_change(log_orig, user, 'edited a user')
         db.session.commit()
         flash(f"User {user.username} was updated successfully!", "success")
         return redirect(url_for('admin.users'))
@@ -100,8 +104,9 @@ def add_page():
             page.notify_subscribers()
         db.session.add(page)
         db.session.commit()
-        Page.set_nav()
         flash("Page added successfully.", "success")
+        log_new(page, 'added a page')
+        Page.set_nav()
         return redirect(url_for('admin.pages'))
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
@@ -150,6 +155,7 @@ def edit_page(id, ver_id=None):
         db.session.add(version)
 
         # Update page
+        log_orig = log_change(page)
         parentid = form.parent_id.data if form.parent_id.data else None
         page.title = form.title.data
         page.slug = form.slug.data
@@ -172,9 +178,11 @@ def edit_page(id, ver_id=None):
         page.set_path()
         if form.notify_subs.data:
             page.notify_subscribers()
+        log_change(log_orig, page, 'edited a page')
         db.session.commit()
-        Page.set_nav()
         flash("Page updated successfully.", "success")
+        log_new(version, 'created a new version of a page')
+        Page.set_nav()
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
     versions = PageVersion.query.filter_by(original_id=id).order_by(desc('edit_date')).all()
@@ -238,6 +246,7 @@ def add_tag():
             db.session.add(tag)
             db.session.commit()
             flash("Tag added successfully.", "success")
+            log_new(tag, 'added a tag')
             return redirect(url_for('admin.tags'))
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
@@ -251,7 +260,9 @@ def edit_tag(id):
     form = AddTagForm()
     if form.validate_on_submit():
         if form.validate_tag(form.name.data, id):
+            log_orig = log_change(tag)
             tag.name = form.name.data
+            log_change(log_orig, tag, 'edited a tag')
             db.session.commit()
             flash("Tag updated successfully.", "success")
             return redirect(url_for('admin.tags'))
@@ -287,6 +298,7 @@ def add_definition():
             )
         db.session.add(definition)
         db.session.commit()
+        log_new(definition, 'added a definition')
         flash("Definition added successfully.", "success")
         return redirect(url_for('admin.definitions'))
     return render_template('admin/definition-edit.html', 
@@ -304,11 +316,13 @@ def edit_definition(definition_id):
     form = EditDefinitionForm()
     form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
     if form.validate_on_submit():
+        log_orig = log_change(definition)
         definition.name=form.name.data
         definition.body=form.body.data
         definition.hidden_body=form.hidden_body.data
         definition.parent_id=form.parent_id.data
         definition.tags=form.tags.data
+        log_change(log_orig, definition, 'edited a definition')
         db.session.commit()
         flash("Definition updated successfully.", "success")
         return redirect(url_for('admin.definitions'))
