@@ -181,7 +181,6 @@ def edit_page(id, ver_id=None):
         log_change(log_orig, page, 'edited a page')
         db.session.commit()
         flash("Page updated successfully.", "success")
-        log_new(version, 'created a new version of a page')
         Page.set_nav()
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
