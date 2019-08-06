@@ -61,7 +61,7 @@ def create_app(config_class=Config):
             if not os.path.exists('textlogs'):
                 os.mkdir('textlogs')
             file_handler = RotatingFileHandler('textlogs/flask_writer.log',
-                                       maxBytes=10240, backupCount=10)
+                                       maxBytes=102400, backupCount=10)
             file_handler.setFormatter(logging.Formatter(
                         '%(asctime)s|%(levelname)s|%(pathname)s|%(lineno)d|'
                         '%(message)s'))

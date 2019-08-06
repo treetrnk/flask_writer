@@ -350,3 +350,8 @@ def subscribers():
 @login_required
 def logs():
     return send_from_directory(current_app.config['TEMPLATE_DIR'] + 'admin','logs.html')
+
+@bp.route("/admin/textlogs")
+@login_required
+def textlogs():
+    return send_from_directory('../textlogs', 'flask_writer.log')
