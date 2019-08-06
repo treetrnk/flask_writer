@@ -63,3 +63,4 @@ app/templates/logs.html
 uploads/
 .flaskenv
 .gitignore
+textlogs/
