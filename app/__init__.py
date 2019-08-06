@@ -63,10 +63,18 @@ def create_app(config_class=Config):
             file_handler = RotatingFileHandler('textlogs/flask_writer.log',
                                        maxBytes=102400, backupCount=10)
             file_handler.setFormatter(logging.Formatter(
-                        '%(asctime)s|%(levelname)s|%(pathname)s|%(lineno)d|'
+                    '%(asctime)s|%(levelname)s|%(pathname)s:%(lineno)d|'
                         '%(message)s'))
             file_handler.setLevel(logging.INFO)
             app.logger.addHandler(file_handler)
+
+            error_file_handler = RotatingFileHandler('textlogs/flask_writer_errors.log',
+                maxBytes=10240, backupCount=5)
+            error_file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s|%(levelname)s'
+                '|%(pathname)s:%(lineno)d|%(message)s'))
+            error_file_handler.setLevel(logging.WARNING)
+            app.logger.addHandler(error_file_handler)
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Flask Writer startup')
