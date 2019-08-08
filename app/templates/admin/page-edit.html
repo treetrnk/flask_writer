@@ -139,6 +139,23 @@
 		</div>
 	</div>
 
+	<!--NOTES-->
+	<div class="form-group row">
+		{{ form.notes.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.notes.errors %}
+				{{ form.notes(class="form-control is-invalid", rows="6", id="page_body_input") }}
+				<div class="invalid-feedback">
+					{% for error in form.notes.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.notes(class="form-control", rows="6", id="page_body_input") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--SUMMARY-->
 	<div class="form-group row">
 		<div class="col-sm-2"></div>

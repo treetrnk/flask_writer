@@ -42,6 +42,7 @@ class AddPageForm(FlaskForm):
    summary = TextAreaField('Summary')#, validators=[Length('250')])
    sidebar = TextAreaField('Sidebar')#, validators=[Length('1000')])
    body = TextAreaField(f'Body{required}', validators=[DataRequired()])
+   notes = TextAreaField('Notes')
    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
    user_id = SelectField(f'Author{required}', coerce=int, validators=[DataRequired()])
    pub_date = DateField('Published Date', validators=[Optional()])
