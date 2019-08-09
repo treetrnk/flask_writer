@@ -206,8 +206,10 @@ class Page(db.Model):
     def pub_children(self):
         return Page.query.filter_by(parent_id=self.id,published=True).order_by('sort','pub_date','title').all()
 
-    def pub_siblings(self):
-        return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort','pub_date','title').all()
+    def pub_siblings(self, published_only=True):
+        if published_only: 
+            return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort','pub_date','title').all()
+        return Page.query.filter_by(parent_id=self.parent_id).order_by('sort','title','pub_date').all()
 
     def child_count(self, include_unpublished=False):
         if include_unpublished:
@@ -215,11 +217,14 @@ class Page(db.Model):
         else:
             return len(self.pub_children())
 
-    def next_pub_sibling(self):
+    def next_pub_sibling(self, published_only=True):
         try:
+            if not published_only:
+                raise Exception
             return self.next_sibling
-        except:
-            siblings = self.pub_siblings()
+        except Exception:
+            siblings = self.pub_siblings(published_only)
+            print(siblings)
             current = False
             for sibling in siblings:
                 if current:
@@ -231,11 +236,14 @@ class Page(db.Model):
             self.next_sibling = None
             return None
 
-    def prev_pub_sibling(self):
+    def prev_pub_sibling(self, published_only=True):
         try:
+            if not published_only:
+                raise Exception
             return self.prev_sibling
-        except:
-            siblings = self.pub_siblings()
+        except Exception:
+            siblings = self.pub_siblings(published_only)
+            print(siblings)
             prev = None
             for sibling in siblings:
                 if sibling.id == self.id:

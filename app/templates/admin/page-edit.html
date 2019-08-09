@@ -28,14 +28,32 @@
 		<i class="fas fa-eye"></i> View page
 	</a>
 {% endif %}
-<br />
-<br />
+
+<div class="mb-4 mt-4">
+	{% if edit_page.prev_pub_sibling(False) %}
+		<a href="{{ url_for('admin.edit_page', id=edit_page.prev_sibling.id) }}" class="btn btn-outline-primary">
+	{% else %}
+		<a href="#" class="btn btn-outline-secondary disabled" disabled>
+	{% endif %}
+		<i class="fas fa-caret-left"></i> 
+		Previous
+	</a>
+	{% if edit_page.next_pub_sibling(False) %}
+		<a href="{{ url_for('admin.edit_page', id=edit_page.next_sibling.id) }}" class="btn btn-outline-primary float-right">
+	{% else %}
+		<a href="#" class="btn btn-outline-secondary float-right disabled" disabled>
+	{% endif %}
+			Next
+			<i class="fas fa-caret-right"></i> 
+		</a>
+</div>
+
 
 <form class="form" method="post">
 	{{ form.hidden_tag() }}
 	
 	<!--TITLE-->
-	<div class="form-group row">
+	<div class="form-group row mt-4">
 		{{ form.title.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
 			{% if form.title.errors %}
