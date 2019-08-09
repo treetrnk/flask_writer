@@ -1,7 +1,10 @@
 {% if page and page.notes and current_user.is_authenticated %}
 	<div class="card border-secondary">
+		<h5 class="card-header">
+			<i class="fas fa-sticky-note"></i>
+			Notes
+		<h5>
 		<div class="card-body">
-			<i class="fas fa-sticky-note float-left mr-3 mb-3" data-toggle="tooltip" title="Notes"></i>
 			{{ page.html('notes')|safe }}
 		</div>
 	</div>
