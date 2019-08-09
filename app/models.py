@@ -153,6 +153,12 @@ class Page(db.Model):
             self.path = f"/{self.slug}"
             self.dir_path = "/"
 
+    def html(self, field):
+        if field == 'body':
+            return markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+        if field == 'notes':
+            return markdown(self.notes.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+
     def html_body(self):
         return markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
 

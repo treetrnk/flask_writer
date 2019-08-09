@@ -1,0 +1,8 @@
+{% if page and page.notes and current_user.is_authenticated %}
+	<div class="card border-secondary">
+		<div class="card-body">
+			<i class="fas fa-sticky-note float-left mr-3 mb-3" data-toggle="tooltip" title="Notes"></i>
+			{{ page.html('notes')|safe }}
+		</div>
+	</div>
+{% endif %}
