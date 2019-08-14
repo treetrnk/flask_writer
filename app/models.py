@@ -338,7 +338,7 @@ class Page(db.Model):
         sender='no-reply@houstonhare.com'
         parent_title = self.parent.title + ' - ' if self.parent else ''
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
-        subject=f"New Post - {parent_title}{self.title}"
+        subject=f"New Post: {parent_title}{self.title}"
         body=f"Stories by Houston Hare\nNew Post: {parent_title}{self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
         for recipient in Subscriber.query.all():
             send_email(
