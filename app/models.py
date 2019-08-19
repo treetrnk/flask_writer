@@ -420,7 +420,7 @@ class Subscriber(db.Model):
 
     def welcome(self):
         page=Page.query.filter_by(slug='subscriber-welcome').order_by('pub_date').first()
-        sender='no-reply@houstonhare.com'
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
         send_email(
                 page.title, #subject
                 sender,
