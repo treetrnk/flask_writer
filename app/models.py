@@ -335,7 +335,7 @@ class Page(db.Model):
         self.pub_date = pub_date.astimezone(pytz.utc) 
                 
     def notify_subscribers(self):
-        sender='no-reply@houstonhare.com'
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
         parent_title = self.parent.title + ' - ' if self.parent else ''
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
         subject=f"New Post: {parent_title}{self.title}"
