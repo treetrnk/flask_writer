@@ -81,3 +81,10 @@ class EditDefinitionForm(FlaskForm):
     #    if definition is not None:
     #        raise ValidationError('Definition already exists.', 'Error')
     #    return True
+
+class EmailForm(FlaskForm):
+    subject = StringField('Subject')
+    recipients = SelectMultipleField('Recipients', coerce=int)
+    banner = StringField('Banner URL')
+    body = TextAreaField('Body')
+

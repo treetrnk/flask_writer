@@ -1,13 +1,16 @@
 import pytz
+import re
 from flask import render_template, redirect, flash, url_for, send_from_directory, current_app
 from app import db
 from app.admin import bp
 from app.admin.functions import log_new, log_change
-from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm 
+from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, EmailForm
 from app.models import Page, User, Tag, PageVersion, Subscriber, Definition
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from datetime import datetime
+from markdown import markdown
+from app.email import send_email
 
 @bp.route('/admin/users')
 @login_required
@@ -349,6 +352,32 @@ def subscribers():
     page = Page.query.filter_by(slug='admin').first()
     subscribers = Subscriber.query.order_by('email').all()
     return render_template('admin/subscribers.html', tab='subscribers', subscribers=subscribers, page=page)
+
+@bp.route('/admin/subscriber/email', methods=['GET','POST'])
+@login_required
+def send_mail():
+    page = Page.query.filter_by(slug='admin').first()
+    form = EmailForm()
+    form.recipients.choices = [(s.id, f'{s.name_if_given(True)} ({s.email})') for s in Subscriber.query.all()] 
+    if form.validate_on_submit():
+        html = markdown(form.body.data.replace('--', '&#8212;').replace('---', '<center>&#127793;</center>'))
+        pattern = re.compile(r'<.*?>')
+        body = pattern.sub('', html)
+        banner = form.banner.data if form.banner.data else ''
+        sent_to = []
+        for recipient_id in form.recipients.data:
+            recipient = Subscriber.query.filter_by(id=recipient_id).first()
+            if recipient:
+                send_email(
+                        form.subject.data,
+                        current_app.config['MAIL_DEFAULT_SENDER'],
+                        [recipient.email],
+                        body,
+                        render_template('email/manual.html', body=html, recipient=recipient, banner=banner)
+                    )
+            sent_to += [recipient.email]
+        flash(f'Email(s) sent to: <b>{", ".join(sent_to)}</b>', 'success')
+    return render_template('admin/email-send.html', tab='subscribers', page=page, form=form)
 
 @bp.route('/admin/logs')
 @login_required

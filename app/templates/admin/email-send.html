@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<h2>Send Email</h2>
+
+<form class="form" method="post">
+	{{ form.hidden_tag() }}
+	
+	<!--SUBJECT-->
+	<div class="form-group row mt-4">
+		{{ form.subject.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.subject.errors %}
+				{{ form.subject(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.subject.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.subject(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--RECIPIENTS-->
+	<div class="form-group row mt-4">
+		{{ form.recipients.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.recipients.errors %}
+				{{ form.recipients(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.recipients.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.recipients(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--BANNER-->
+	<div class="form-group row mt-4">
+		{{ form.banner.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.banner.errors %}
+				{{ form.banner(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.banner.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.banner(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--BODY-->
+	<div class="form-group row mt-4">
+		{{ form.body.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.body.errors %}
+				{{ form.body(class="form-control is-invalid", rows=10) }}
+				<div class="invalid-feedback">
+					{% for error in form.body.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.body(class="form-control", rows=10) }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col">
+			<button type="submit" class="btn btn-primary">
+				<i class="fas fa-envelope"></i>
+				Send Email(s)
+			</button>
+			<a href="{{ url_for('admin.subscribers') }}" class="btn btn-secondary">
+				<i class="fas fa-ban"></i>
+				Cancel
+			</a>
+		</div>
+	</div>
+
+</form>
+
+{% endblock %}

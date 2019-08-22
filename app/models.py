@@ -415,7 +415,10 @@ class Subscriber(db.Model):
     def all_subscribers():
         return [s.email for s in Subscriber.query.all()]
 
-    def name_if_given(self):
+    def name_if_given(self, full=False):
+        if full:
+            if self.first_name and self.last_name:
+                return f'{self.first_name} {self.last_name}'
         return self.first_name if self.first_name else ''
 
     def welcome(self):
