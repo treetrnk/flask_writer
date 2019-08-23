@@ -70,7 +70,7 @@ class PageVersion(db.Model):
     tags = db.relationship('Tag', secondary=ver_tags, lazy='subquery', 
             backref=db.backref('page_versions', lazy=True))
     summary = db.Column(db.String(300), nullable=True)
-    sidebar = db.Column(db.String(1000), nullable=True)
+    sidebar = db.Column(db.String(5000), nullable=True)
     user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
     sort = db.Column(db.Integer(), nullable=False, default=75)
     pub_date = db.Column(db.DateTime(), nullable=True)
@@ -116,7 +116,7 @@ class Page(db.Model):
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
             backref=db.backref('pages', lazy=True))
     summary = db.Column(db.String(300), nullable=True)
-    sidebar = db.Column(db.String(1000), nullable=True)
+    sidebar = db.Column(db.String(5000), nullable=True)
     user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
     sort = db.Column(db.Integer(), nullable=False, default=75)
     pub_date = db.Column(db.DateTime(), nullable=True)
