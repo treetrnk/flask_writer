@@ -24,6 +24,7 @@
 			<tr>
 				<th>Title</th>
 				<th>Path</th>
+				<th>Template</th>
 				<th width="125">Word Count</th>
 				<th width="100">Published</th>
 			</tr>
@@ -43,6 +44,7 @@
 						</a>
 						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
 					</td>
+					<td>{{ page.template.title() }}</td>
 					<td class="text-center">{{ page.word_count() }}</td>
 					<td class="text-center">
 						<small>
@@ -63,6 +65,7 @@
 			<tr>
 				<th>Title</th>
 				<th>Path</th>
+				<th>Template</th>
 				<th width="25">Word Count</th>
 			</tr>
 		</thead>
@@ -81,6 +84,7 @@
 						</a>
 						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
 					</td>
+					<td>{{ page.template.title() }}</td>
 					<td class="text-center">{{ page.word_count() }}</td>
 				</tr>
 			{% endfor %}

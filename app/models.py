@@ -209,19 +209,55 @@ class Page(db.Model):
                 return self.parent.title
         return self.title
 
-    def pub_children(self):
-        return Page.query.filter_by(parent_id=self.id,published=True).order_by('sort','pub_date','title').all()
+    def pub_children(self, published_only=True, chapter_post_only=False):
+        if published_only:
+            if chapter_post_only:
+                return Page.query.filter(
+                        Page.template.in_(['chapter','post'])
+                    ).filter_by(
+                            parent_id=self.id,
+                            published=True
+                    ).order_by('sort','pub_date','title').all()
+            return Page.query.filter_by(
+                        parent_id=self.id,
+                        published=True
+                ).order_by('sort','pub_date','title').all()
+        if chapter_post_only:
+            return Page.query.filter(
+                    Page.template.in_(['chapter','post'])
+                ).filter_by(
+                        parent_id=self.id,
+                ).order_by('sort','pub_date','title').all()
+        return Page.query.filter_by(
+                    parent_id=self.id,
+            ).order_by('sort','pub_date','title').all()
 
-    def pub_siblings(self, published_only=True):
+    def pub_siblings(self, published_only=True, chapter_post_only=False):
         if published_only: 
-            return Page.query.filter_by(parent_id=self.parent_id,published=True).order_by('sort','pub_date','title').all()
+            if chapter_post_only:
+                return Page.query.filter(
+                        Page.template.in_(['chapter','post'])
+                    ).filter_by(
+                        parent_id=self.parent_id,
+                        published=True
+                    ).order_by('sort','pub_date','title').all()
+            return Page.query.filter_by(
+                    parent_id=self.parent_id,
+                    published=True
+                ).order_by('sort','pub_date','title').all()
+        if chapter_post_only:
+            return Page.query.filter(
+                    Page.template.in_(['chapter','post'])
+                ).filter_by(
+                    parent_id=self.parent_id
+                ).order_by('sort','title','pub_date').all()
         return Page.query.filter_by(parent_id=self.parent_id).order_by('sort','title','pub_date').all()
 
     def child_count(self, include_unpublished=False):
         if include_unpublished:
-            return len(self.children)
+            return len(self.pub_children(published_only=False,chapter_post_only=True))
         else:
-            return len(self.pub_children())
+            return len(self.pub_children(chapter_post_only=True))
 
     def next_pub_sibling(self, published_only=True):
         try:
@@ -298,7 +334,7 @@ class Page(db.Model):
         #    return self.child_words
         #except:
         words = 0
-        children = self.pub_children() if published_only else self.children
+        children = self.pub_children(chapter_post_only=True) if published_only else self.children
         for child in children:
             words += child.word_count()
         self.child_words = words
