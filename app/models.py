@@ -256,8 +256,7 @@ class Page(db.Model):
     def child_count(self, include_unpublished=False):
         if include_unpublished:
             return len(self.pub_children(published_only=False,chapter_post_only=True))
-        else:
-            return len(self.pub_children(chapter_post_only=True))
+        return len(self.pub_children(chapter_post_only=True))
 
     def next_pub_sibling(self, published_only=True):
         try:
@@ -334,11 +333,18 @@ class Page(db.Model):
         #    return self.child_words
         #except:
         words = 0
-        children = self.pub_children(chapter_post_only=True) if published_only else self.children
+        children = self.pub_children(published_only=published_only, chapter_post_only=True)
         for child in children:
             words += child.word_count()
         self.child_words = words
         return self.child_words
+
+    def avg_child_word_count(self, published_only=True):
+        total = 0
+        children = self.pub_children(published_only=published_only, chapter_post_only=True)
+        for child in children:
+            total += child.word_count()
+        return int(total / len(children))
 
     def child_read_time(self, published_only=True):
         words = self.child_word_count(published_only)
