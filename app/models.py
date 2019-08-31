@@ -258,13 +258,13 @@ class Page(db.Model):
             return len(self.pub_children(published_only=False,chapter_post_only=True))
         return len(self.pub_children(chapter_post_only=True))
 
-    def next_pub_sibling(self, published_only=True):
+    def next_pub_sibling(self, published_only=True, chapter_post_only=True):
         try:
             if not published_only:
                 raise Exception
             return self.next_sibling
         except Exception:
-            siblings = self.pub_siblings(published_only)
+            siblings = self.pub_siblings(published_only, chapter_post_only=True)
             print(siblings)
             current = False
             for sibling in siblings:
@@ -277,13 +277,13 @@ class Page(db.Model):
             self.next_sibling = None
             return None
 
-    def prev_pub_sibling(self, published_only=True):
+    def prev_pub_sibling(self, published_only=True, chapter_post_only=True):
         try:
             if not published_only:
                 raise Exception
             return self.prev_sibling
         except Exception:
-            siblings = self.pub_siblings(published_only)
+            siblings = self.pub_siblings(published_only, chapter_post_only=chapter_post_only)
             print(siblings)
             prev = None
             for sibling in siblings:
