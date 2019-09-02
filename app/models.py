@@ -339,6 +339,10 @@ class Page(db.Model):
         self.child_words = words
         return self.child_words
 
+    def page_count(self, published_only=True):
+        words_per_page = 275
+        return round(self.child_word_count(published_only) / words_per_page)
+
     def avg_child_word_count(self, published_only=True):
         total = 0
         children = self.pub_children(published_only=published_only, chapter_post_only=True)
