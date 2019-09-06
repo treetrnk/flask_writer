@@ -18,6 +18,7 @@
 			<th>Name</th>
 			<th>Email</th>
 			<th>Subscription</th>
+			<th width="75">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,6 +32,11 @@
 				</td>
 				<td>{{ subscriber.email }}</td>
 				<td>{{ subscriber.subscription }}</td>
+				<td class="text-center">
+					<a href="{{ url_for('page.unsubscribe', email=subscriber.email) }}" class="btn btn-danger btn-sm" data-toggle='tooltip' title='Remove' target='unsubscribe'>
+						<i class="fas fa-times"></i>
+					</a>
+				</td>
 			</tr>
 		{% endfor %}
 	</tbody>
