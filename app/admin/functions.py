@@ -36,6 +36,8 @@ def log_new(obj, message=''):
     data = convert_to_dict(obj)
     output = f'{current_user.username} {message}:\n'
     for key, value in data.items():
+        char_cap = 1000
+        value = value if type(value) is not str or len(value) < char_cap else f"{value[0:100]}...{value[-100:]}"
         output += f"    {key}: {value}\n"
     #print(output)
     current_app.logger.info(output)
@@ -50,7 +52,11 @@ def log_change(original, updated=None, message='changed something'):
         for key, value in original_data.items():
             if key != 'repr':
                 if key not in updated_data or value != updated_data[key]:
-                    output += f'    {key}: {value}  ===CHANGED TO===>  {updated_data[key]}\n'
+                    char_cap = 1000
+                    value = value if type(value) is not str or len(value) < char_cap else f"{value[0:100]}...{value[-100:]}"
+                    new_value = updated_data[key] 
+                    new_value = new_value if type(new_value) is not str or len(new_value) < char_cap else f"{new_value[0:100]}...{new_value[-100:]}"
+                    output += f'    {key}: {value}  ===CHANGED TO===>  {new_value}\n'
         #print(output)
         current_app.logger.info(output)
         return True
