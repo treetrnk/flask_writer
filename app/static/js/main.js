@@ -169,6 +169,11 @@ $(document).ready(function() {
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
 	});
 
+	$('.datatable-sort3d').DataTable({
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+		"order": [[ 2, "desc"]]
+	});
+
 	if (postType == "chapter" || postType == "post") {
 		readProgress();
 
