@@ -126,12 +126,11 @@
 					<ul class="navbar-nav ml-auto">
 						{% for topnav in session["nav"] %}
 							{% if topnav.children %}
-								<li class="nav-item">
-									<a href="{{ topnav.path }}" class="nav-link">{{ topnav.title }}</a>
+								<li class="nav-item float-left">
+									<a href="{{ topnav.path }}" class="nav-link pr-0">{{ topnav.title }}</a>
 								</li>
 								<li class="nav-item dropdown">
-									<a href="{{ topnav.path }}" class="nav-link dropdown-toggle" data-toggle="dropdown">
-										<span class="d-inline d-sm-inline d-md-none pl-3"></span>
+									<a href="{{ topnav.path }}" class="nav-link dropdown-toggle text-sm-left pb-0 pt-0 pb-md-2 pt-md-2 pl-1" data-toggle="dropdown">
 									</a>
 									<div class="dropdown-menu dropdown-menu-right">
 										{% for child in topnav.children %}
