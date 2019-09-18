@@ -1,11 +1,14 @@
 <div class="mb-4 mt-4">
 	{% if page.prev_pub_sibling() %}
 		<a href="{{ page.prev_sibling.path }}" class="btn btn-outline-primary">
-	{% else %}
-		<a href="#" class="btn btn-outline-secondary disabled" disabled>
-	{% endif %}
 		<i class="fas fa-caret-left"></i> 
 		Previous
+	{% else %}
+		<!--<a href="#" class="btn btn-outline-secondary disabled" disabled>-->
+		<a href="{{ page.parent.path }}" class="btn btn-outline-primary">
+			<i class="fas fa-caret-left"></i> 
+			Back to {{ page.parent.title }}
+	{% endif %}
 	</a>
 	{% if page.next_pub_sibling() %}
 		<a href="{{ page.next_sibling.path }}" class="btn btn-outline-primary float-right">

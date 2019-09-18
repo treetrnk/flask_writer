@@ -47,6 +47,37 @@
 					</a>
 				</div>
 			{% endif %}
+
+			<br /><br />
+
+			<h2>Table of Contents</h2>
+			<table class="datatable-sort3d table table-striped table-sm table-hover mt-5">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Word Count</th>
+						<th>Published</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for child in page.pub_children(chapter_post_only=True) %}
+						<tr>
+							<th>
+								<a href="{{ child.path }}">
+									{{ child.title }}
+								</a>
+							</th>
+							<td>
+								{{ child.word_count() }}
+							</td>
+							<td>
+								<span class='d-none'>{{ child.pub_date }}</span>
+								{{ moment(child.pub_date).fromNow() }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
     </div>
   
     <br /><br />
