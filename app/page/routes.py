@@ -160,7 +160,7 @@ def index(path):
         if page.published or page.check_view_code(code):
             return render_template(f'page/{page.template}.html', page=page)    
     page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
+    return render_template(f'page/{page.template}.html', page=page), 404
 
 @bp.before_app_first_request
 def set_nav():
