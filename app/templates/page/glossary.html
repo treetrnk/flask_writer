@@ -51,6 +51,17 @@
 												</div>
 											</div>
 										{% endif %}
+
+										{% if definition.tag_id and definition.tag.pages %}
+											<h4>Mentioned In:</h4>
+											<ul>
+												{% for page in definition.tag.pages %}
+													{% if page.published %}
+														<li><a href='{{ page.path }}'>{{ page.title }}</a></li>
+													{% endif %}
+												{% endfor %}
+											</ul>
+										{% endif %}
 									</div>
 								</div>
 							</div>

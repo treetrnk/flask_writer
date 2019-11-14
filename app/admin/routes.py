@@ -335,7 +335,7 @@ def edit_definition(definition_id):
         definition.hidden_body=form.hidden_body.data
         definition.parent_id=form.parent_id.data
         if form.tag_id.data > 0:
-            definition.tag_id=definition.tag_id.data
+            definition.tag_id=form.tag_id.data
         #definition.tags=form.tags.data
         log_change(log_orig, definition, 'edited a definition')
         db.session.commit()
