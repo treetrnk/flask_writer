@@ -439,6 +439,7 @@ class Page(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75), nullable=False)
+    definitions = db.relationship('Definition', backref='tag', lazy='dynamic')
 
     def __str__(self):
         return self.name
@@ -491,12 +492,23 @@ class Subscriber(db.Model):
         return f"<Subscriber({self.email}, {self.first_name} {self.last_name})>"
 
 class Definition(db.Model):
+    
+    TYPE_CHOICES = [
+        ('locations', 'Locations'),
+        ('people', 'People'),
+        ('places', 'Places'),
+        ('races', 'Races'),
+        ('other', 'Other'),
+    ]
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     body = db.Column(db.String(5000), nullable=False)
     hidden_body = db.Column(db.String(5000))
-    tags = db.relationship('Tag', secondary=tags_defs, lazy='subquery', 
-            backref=db.backref('definitions', lazy=True))
+    type = db.Column(db.String(20), nullable=False, default='other')
+    #tags = db.relationship('Tag', secondary=tags_defs, lazy='subquery', 
+    #        backref=db.backref('definitions', lazy=True))
+    tag_id = db.Column(db.Integer(), db.ForeignKey('tag.id'), nullable=True)
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     parent = db.relationship('Page', backref='definitions')
 

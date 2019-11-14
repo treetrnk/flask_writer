@@ -70,11 +70,13 @@ class AddTagForm(FlaskForm):
         return True
 
 class EditDefinitionForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    body = TextAreaField('Body', validators=[DataRequired()])
+    name = StringField(f'Name{required}', validators=[DataRequired()])
+    type = SelectField(f'Type{required}', validators=[DataRequired()])
+    body = TextAreaField(f'Body{required}', validators=[DataRequired()])
     hidden_body = TextAreaField("Author's Notes")
     parent_id = SelectField('Parent', coerce=int)
-    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
+    tag_id = SelectField(f'Linked Tag', coerce=int)
+    #tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
 
     #def validate_name(self, name):
     #    definition = Definition.query.filter_by(name=name, parent_id=self.parent_id, tags=self.tags).first()

@@ -295,13 +295,16 @@ def add_definition():
     page = Page.query.filter_by(slug='admin').first()
     form = EditDefinitionForm()
     form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
+    form.type.choices = Definition.TYPE_CHOICES
+    form.tag_id.choices = [(0, '')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
     if form.validate_on_submit():
         definition = Definition(
                 name=form.name.data,
+                type=form.type.data,
                 body=form.body.data,
                 hidden_body=form.hidden_body.data,
                 parent_id=form.parent_id.data,
-                tags=form.tags.data,
+                tag_id=form.tag_id.data,
             )
         db.session.add(definition)
         db.session.commit()
@@ -322,22 +325,29 @@ def edit_definition(definition_id):
     definition = Definition.query.filter_by(id=definition_id).first()
     form = EditDefinitionForm()
     form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
+    form.type.choices = Definition.TYPE_CHOICES
+    form.tag_id.choices = [(0, '')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
     if form.validate_on_submit():
         log_orig = log_change(definition)
         definition.name=form.name.data
+        definition.type=form.type.data
         definition.body=form.body.data
         definition.hidden_body=form.hidden_body.data
         definition.parent_id=form.parent_id.data
-        definition.tags=form.tags.data
+        if form.tag_id.data > 0:
+            definition.tag_id=definition.tag_id.data
+        #definition.tags=form.tags.data
         log_change(log_orig, definition, 'edited a definition')
         db.session.commit()
         flash("Definition updated successfully.", "success")
         return redirect(url_for('admin.definitions'))
     form.name.data = definition.name
+    form.type.data = definition.type
     form.body.data = definition.body
     form.hidden_body.data = definition.hidden_body
+    form.tag_id.data = definition.tag_id
     form.parent_id.data = definition.parent_id
-    form.tags.data = definition.tags
+    #form.tags.data = definition.tags
     return render_template('admin/definition-edit.html', 
             form=form, 
             tab='definitions', 

@@ -25,6 +25,23 @@
 		</div>
 	</div>
 
+	<!--TYPE-->
+	<div class="form-group row">
+		{{ form.type.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.type.errors %}
+				{{ form.type(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.type.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.type(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--PARENT-->
 	<div class="form-group row">
 		{{ form.parent_id.label(class="col-sm-2 control-from-label text-md-right") }} 
@@ -42,19 +59,19 @@
 		</div>
 	</div>
 
-	<!--TAGS-->
+	<!--TAG ID-->
 	<div class="form-group row">
-		{{ form.tags.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.tag_id.label(class="col-sm-2 control-from-label text-md-right") }} 
 		<div class="col-sm-8">
-			{% if form.tags.errors %}
-				{{ form.tags(class="form-control is-invalid mkSelect2") }}
+			{% if form.tag_id.errors %}
+				{{ form.tag_id(class="form-control is-invalid mkSelect2") }}
 				<div class="invalid-feedback">
-					{% for error in form.tags.errors %}
+					{% for error in form.tag_id.errors %}
 						{{ error }}
 					{% endfor %}
 				</div>
 			{% else %}
-				{{ form.tags(class="form-control mkSelect2") }}
+				{{ form.tag_id(class="form-control mkSelect2") }}
 			{% endif %}
 		</div>
 	</div>

@@ -10,51 +10,53 @@
 
     <div class="content">
 
-			{% if not tags %}
+			{% if not definitions %}
 				<p>
 					No glossary items added yet...
 				</p>
 			{% endif %}
 
-			{% for tag in sorted(tags) %}
-				<h2>{{ tag }}</h2>
-				<div class="accordian mb-5" id="{{ tag }}_accordian">
-					{% for definition in tags[tag] %}
-						<div class="card">
-							<div class="card-header" id="headingOne">
-								{% if current_user.is_authenticated %}
-									<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}"
-										 class="btn btn-secondary btn-sm float-right">
-										<i class="fas fa-edit"></i>
-									</a>
-								{% endif %}
-								<a href="#" class="btn btn-link collapsed d-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
-									<h3 class="mb-0">
-										{{ definition.name }}
-									</h3>
-								</a>
-							</div>
-
-							<div id="collapse{{ tag }}{{ definition.id }}" class="collapse" data-parent="#{{ tag }}_accordian">
-								<div class="card-body">
-									<p>
-										{{ definition.html_body()|safe }}
-									</p>
-									{% if current_user.is_authenticated and definition.hidden_body %}
-										<div class="card">
-											<div class="card-body">
-												<h4><i class="fas fa-eye-slash"></i> Author's Note</h4>
-												<p>
-													{{ definition.html_body(True)|safe }}
-												</p>
-											</div>
-										</div>
+			{% for type in sorted(type_choices) %}
+				{% if definitions[type[1]] %}
+					<h2>{{ type[1] }}</h2>
+					<div class="accordian mb-5" id="{{ tag }}_accordian">
+						{% for definition in definitions[type[1]] %}
+							<div class="card">
+								<div class="card-header" id="headingOne">
+									{% if current_user.is_authenticated %}
+										<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}"
+											 class="btn btn-secondary btn-sm float-right">
+											<i class="fas fa-edit"></i>
+										</a>
 									{% endif %}
+									<a href="#" class="btn btn-link collapsed d-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
+										<h3 class="mb-0">
+											{{ definition.name }}
+										</h3>
+									</a>
+								</div>
+
+								<div id="collapse{{ tag }}{{ definition.id }}" class="collapse" data-parent="#{{ tag }}_accordian">
+									<div class="card-body">
+										<p>
+											{{ definition.html_body()|safe }}
+										</p>
+										{% if current_user.is_authenticated and definition.hidden_body %}
+											<div class="card">
+												<div class="card-body">
+													<h4><i class="fas fa-eye-slash"></i> Author's Note</h4>
+													<p>
+														{{ definition.html_body(True)|safe }}
+													</p>
+												</div>
+											</div>
+										{% endif %}
+									</div>
 								</div>
 							</div>
-						</div>
-					{% endfor %}
-				</div>
+						{% endfor %}
+					</div>
+				{% endif %}
 			{% endfor %}
 
     </div>

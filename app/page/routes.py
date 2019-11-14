@@ -124,26 +124,24 @@ def glossary(path):
     Page.set_nav()
     path = f"/{path}"
     page = Page.query.filter_by(path=path).first()
+    definitions = {}
+    for t in Definition.TYPE_CHOICES:
+        definitions[t[1]] = []
+
+    current_app.logger.debug(f'DEFINITIONS: {definitions}')
     if page:
-        definitions = Definition.query.filter_by(parent_id=page.id).order_by('name').all()
-        tags = {}
-        for definition in definitions:
-            print(f"def: {definition}")
-            for tag in definition.tags:
-                print(f"tag: {tag}")
-                if tag.name in tags:
-                    tags[tag.name] += [definition]
-                else:
-                    tags[tag.name] = [definition]
+        for d in Definition.query.filter_by(parent_id=page.id).order_by('name').all():
+            definitions[d.type.title()] += [d]
         code = request.args['code'] if 'code' in request.args else None
         if page.published or page.check_view_code(code):
             return render_template(f'page/glossary.html', 
                     page=page, 
                     glossary=True,
                     definitions=definitions,
-                    tags=tags,
+                    type_choices=Definition.TYPE_CHOICES,
                     sorted=sorted,
                 )    
+    current_app.logger.debug(f'DEFINITIONS: {definitions}')
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
