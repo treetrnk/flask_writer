@@ -287,6 +287,7 @@ def definitions():
             tab='definitions', 
             definitions=definitions, 
             page=page,
+            len=len,
         )
 
 @bp.route('/admin/definition/add', methods=['GET', 'POST'])

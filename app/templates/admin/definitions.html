@@ -14,7 +14,8 @@
 		<tr>
 			<th>Name</th>
 			<th>Parent</th>
-			<th>Tags</th>
+			<th>Type</th>
+			<th width="100">Mentions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,11 +31,12 @@
 					{{ definition.parent }}
 				</td>
 				<td>
-					{% for tag in definition.tags %}
-						<span class="badge badge-secondary">
-							{{ tag.name }}
-						</span>
-					{% endfor %}
+					{{ definition.type.title() }}
+				</td>
+				<td class="text-center">
+					{% if definition.tag_id and definition.tag.pages %}
+						{{ len(definition.tag.pages) }}
+					{% endif %}
 				</td>
 			</tr>
 		{% endfor %}
