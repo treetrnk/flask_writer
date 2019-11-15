@@ -27,7 +27,7 @@
 						{% endif #}
 						<i class="fa fa-tags"></i> Tags:
 						{% for tag in child.tags %}
-							<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+							<a href="{{ url_for('page.search', tag=tag) }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 						{% endfor %}
 					</div>
 				</div>

@@ -85,7 +85,7 @@
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
 				{% for tag in page.tags %}
-					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+					<a href="{{ url_for('page.search', tag=tag) }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
