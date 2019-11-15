@@ -114,7 +114,7 @@ class Page(db.Model):
     body = db.Column(db.String(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
-            backref=db.backref('pages', lazy=True))
+            backref=db.backref('pages', order_by='Page.path', lazy=True))
     summary = db.Column(db.String(300), nullable=True)
     sidebar = db.Column(db.String(5000), nullable=True)
     user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
