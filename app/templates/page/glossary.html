@@ -32,7 +32,7 @@
 									<a href="#" class="btn btn-link collapsed d-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
 										<h3 class="mb-0">
 											{{ definition.name }}
-											{% if definition.tag_id and definition.tag.pages %}
+											{% if current_user.is_authenticated and definition.tag_id and definition.tag.pages %}
 												<small class="text-muted" title="Mentions" data-toggle='tooltip'>
 													({{ len(definition.tag.pages) }})
 												</small>
@@ -61,8 +61,15 @@
 											<h4>Mentioned In:</h4>
 											<ul>
 												{% for page in definition.tag.pages %}
-													{% if page.published %}
-														<li><a href='{{ page.path }}'>{{ page.title }}</a></li>
+													{% if page.published or current_user.is_authenticated %}
+														<li>
+															<a href='{{ page.path }}'>{{ page.title }}</a>
+															{% if not page.published %}
+																<small class="text-muted">
+																	(Unpublished)
+																</small>
+															{% endif %}
+														</li>
 													{% endif %}
 												{% endfor %}
 											</ul>
