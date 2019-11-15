@@ -140,6 +140,7 @@ def glossary(path):
                     definitions=definitions,
                     type_choices=Definition.TYPE_CHOICES,
                     sorted=sorted,
+                    len=len,
                 )    
     current_app.logger.debug(f'DEFINITIONS: {definitions}')
     page = Page.query.filter_by(slug='404-error').first()

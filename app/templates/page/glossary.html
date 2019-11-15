@@ -32,6 +32,11 @@
 									<a href="#" class="btn btn-link collapsed d-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
 										<h3 class="mb-0">
 											{{ definition.name }}
+											{% if definition.tag_id and definition.tag.pages %}
+												<small class="text-muted" title="Mentions" data-toggle='tooltip'>
+													({{ len(definition.tag.pages) }})
+												</small>
+											{% endif %}
 										</h3>
 									</a>
 								</div>
