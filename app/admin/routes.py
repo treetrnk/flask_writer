@@ -305,8 +305,9 @@ def add_definition():
                 body=form.body.data,
                 hidden_body=form.hidden_body.data,
                 parent_id=form.parent_id.data,
-                tag_id=form.tag_id.data,
             )
+        if form.tag_id.data > 0:
+            definition.tag_id = form.tag_id.data
         db.session.add(definition)
         db.session.commit()
         log_new(definition, 'added a definition')
