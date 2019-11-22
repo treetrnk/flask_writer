@@ -4,7 +4,7 @@ from flask import (
     )
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition
 from app import db
 
@@ -113,10 +113,11 @@ def rss(path):
     posts = None
     if path == '/all':
         page = Page.query.filter_by(slug='home').first()
-        posts = Page.query.filter(or_(Page.template == 'post',Page.template == 'chapter'), Page.published == True).order_by('pub_date').all()
+        posts = Page.query.filter(or_(Page.template == 'post',Page.template == 'chapter'), Page.published == True).order_by(desc('pub_date')).all()
         current_app.logger.debug(posts)
     else:
         page = Page.query.filter_by(path=path,published=True).first()
+        posts = Page.query.filter(or_(Page.template == 'post',Page.template == 'chapter'), Page.published == True, Page.parent_id == page.id).order_by(desc('pub_date')).all()
     if page:
         return render_template(f'page/rss.xml', page=page, posts=posts)
         rss_xml = render_template(f'page/rss.xml', page=page)
