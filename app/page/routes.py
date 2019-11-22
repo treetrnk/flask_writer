@@ -4,6 +4,7 @@ from flask import (
     )
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
+from sqlalchemy import or_
 from app.models import Page, Tag, Subscriber, Definition
 from app import db
 
@@ -109,13 +110,19 @@ def uploads(filename):
 @bp.route('/rss/<path:path>')
 def rss(path):
     path = f"/{path}"
-    page = Page.query.filter_by(path=path,published=True).first()
+    posts = None
+    if path == '/all':
+        page = Page.query.filter_by(slug='home').first()
+        posts = Page.query.filter(or_(Page.template == 'post',Page.template == 'chapter'), Page.published == True).order_by('pub_date').all()
+        current_app.logger.debug(posts)
+    else:
+        page = Page.query.filter_by(path=path,published=True).first()
     if page:
-        return render_template(f'page/rss.xml', page=page)
-        #rss_xml = render_template(f'page/rss.xml', page=page)
-        #response = make_response(rss_xml)
-        #response.headers['Content-Type'] = 'application/rss+xml'
-        #return response
+        return render_template(f'page/rss.xml', page=page, posts=posts)
+        rss_xml = render_template(f'page/rss.xml', page=page)
+        response = make_response(rss_xml)
+        response.headers['Content-Type'] = 'application/rss+xml'
+        return response
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
