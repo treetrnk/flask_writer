@@ -191,7 +191,7 @@ class Page(db.Model):
             return check_password_hash(code, self.view_code())
         return False
         
-    def banner_path(self):
+    def banner_path(self, always_return_img=False):
         banner = self.banner 
         if not self.banner and (self.template == 'chapter' or self.template == 'post'):
             if self.parent_id:
@@ -201,7 +201,10 @@ class Page(db.Model):
                 return banner
             else:
                 return str(current_app.config['BASE_URL']) + banner
-        return False
+        if not always_return_img:
+            return False
+        else: 
+            return str(current_app.config['DEFAULT_BANNER_PATH'])
 
     def section_name(self):
         if self.template == 'chapter' or self.template == 'post':

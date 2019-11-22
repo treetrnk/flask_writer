@@ -24,3 +24,4 @@ class Config(object):
     UPLOAD_DIR = uploaddir
     BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'
     ADMINS=[os.environ.get('ADMINS')]
+    DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or 'https://houstonhare.com/static/images/forest.png'
