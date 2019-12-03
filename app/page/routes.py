@@ -158,7 +158,12 @@ def glossary(path):
 @bp.route('/<path:path>')
 def index(path):
     Page.set_nav()
-    path = f"/{path}"
+    current_app.logger.debug(request.host_url)
+    current_app.logger.debug(request.host.lower())
+    if request.host.lower() == "sprig.houstonhare.com":
+        path = f"/stories/sprig/{path}"
+    else:
+        path = f"/{path}"
     page = Page.query.filter_by(path=path).first()
     print(f"path: {path}")
     print(f"page: {page}")
