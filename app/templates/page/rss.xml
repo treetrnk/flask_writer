@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 		<channel>
-			<a href="{{ config['BASE_URL'] }}{{ page.path }}"><h1>{{ page.title }} - <small>RSS Feed</small></h1></a>
+			<h1>{{ page.title }} - <small>RSS Feed</small></h1>
 			<title>{{ page.title }}</title>
 				<description>{{ page.description() }}</description>
 				<link>https://houstonhare.com/{{ page.path }}</link>
