@@ -133,6 +133,17 @@ $(document).ready(function() {
 		}
 	});
 
+	$(document).on('click', '.delete-btn', function() {
+		var thisID = $(this).data('id');
+		$('#confirmDelete').data('id', thisID);
+		$('#deleteModal').modal('toggle');
+	});
+
+	$('#confirmDelete').click(function() {
+		var thisID = $(this).data('id');
+		$('#delete' + thisID).submit();
+	});
+
 	$(document).on('keydown', function(e) {
 		//console.log(e.type);
 		if (e.which == 37) {

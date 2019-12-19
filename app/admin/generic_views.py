@@ -4,6 +4,7 @@ from flask_login import login_required
 from app.admin.functions import log_new, log_change, log_form, flash_form_errors
 from app.admin.forms import DeleteObjForm
 from app import db
+from app.models import Page
 
 class ListView(MethodView):
 
@@ -103,6 +104,7 @@ class SaveObjView(MethodView):
         pass
 
     def get(self, obj_id=None):
+        self.context.update({'page':Page.query.filter_by(slug='admin').first()})
         self.set_object(obj_id)
         self.extra()
         current_app.logger.debug(self.context)

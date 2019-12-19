@@ -411,7 +411,7 @@ class DeleteLink(DeleteObjView):
     model = Link
     log_msg = 'deleted a link'
     success_msg = 'Link deleted.'
-    redirect = {'endpoint': 'admin.links'}
+    redirect = {'endpoint': 'admin.products'}
 
 bp.add_url_rule("/admin/link/delete", 
         view_func = login_required(DeleteLink.as_view('delete_link')))
