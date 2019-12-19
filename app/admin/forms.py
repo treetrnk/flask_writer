@@ -6,7 +6,7 @@ from wtforms import (
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError
-from app.models import Page, User, Tag, Definition
+from app.models import Page, User, Tag, Definition, Link, Product
 
 required = "<span class='text-danger'>*</span>"
 
@@ -84,9 +84,24 @@ class EditDefinitionForm(FlaskForm):
     #        raise ValidationError('Definition already exists.', 'Error')
     #    return True
 
+class ProductEditForm(FlaskForm):
+    name = StringField(f'Name{required}', validators=[DataRequired()])
+    price = StringField(f'Price{required}', validators=[DataRequired()])
+    description = StringField('Description', validators=[Length(max=1000)])
+    image = StringField('Image URL', validators=[Length(max=500)])
+    sort = IntegerField('Sort #')
+
+class LinkEditForm(FlaskForm):
+    product_id = SelectField(f'Product{required}', coerce=int, validators=[DataRequired()])
+    text = StringField(f'Link Text{required}', validators=[Length(max=1000)])
+    url = StringField('URL', validators=[Length(max=500)])
+    sort = IntegerField('Sort #')
+
 class EmailForm(FlaskForm):
     subject = StringField('Subject')
     recipients = SelectMultipleField('Recipients', coerce=int)
     banner = StringField('Banner URL')
     body = TextAreaField('Body')
-
+    
+class DeleteObjForm(FlaskForm):
+    obj_id = HiddenField('Object id', validators=[DataRequired()])

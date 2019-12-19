@@ -5,7 +5,7 @@ from flask import (
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm
 from sqlalchemy import or_, desc
-from app.models import Page, Tag, Subscriber, Definition
+from app.models import Page, Tag, Subscriber, Definition, Link, Product
 from app import db
 
 @bp.route('/')
@@ -127,6 +127,20 @@ def rss(path):
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
+@bp.route('/shop')
+def shop():
+    Page.set_nav()
+    products = Product.query.filter_by(active=True).order_by('sort','name').all()
+    page = Page.query.filter_by(slug='shop').first()
+    if products and page:
+        return render_template('page/{page.template}.html', 
+                page=page,
+                products=products,
+            )
+    page = Page.query.filter_by(slug='404-error').first()
+    return render_template(f'page/{page.template}.html', page=page)    
+
+
 @bp.route('/<path:path>/glossary')
 def glossary(path):
     Page.set_nav()
@@ -153,7 +167,6 @@ def glossary(path):
     current_app.logger.debug(f'DEFINITIONS: {definitions}')
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
-
 
 @bp.route('/<path:path>')
 def index(path):

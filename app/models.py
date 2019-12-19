@@ -5,6 +5,7 @@ from app import db, login
 from datetime import datetime
 from markdown import markdown
 from sqlalchemy import desc
+from sqlalchemy.orm import backref
 from flask_mail import Mail, Message
 from app import mail
 from app.email import send_email
@@ -532,6 +533,42 @@ class Definition(db.Model):
         if len(body) > threshold:
             return body[0:threshold] + '...'
         return body
+
+    def __str__(self):
+        return f"{self.name} ({self.short_body()})"
+
+    def __repr__(self):
+        return f"<Definition({self.id}, {self.name}, {self.short_body()})>"
+
+
+class Link(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    text = db.Column(db.String(100), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+    sort = db.Column(db.Integer, default=500)
+    product = db.relationship('Product', backref=backref('links', order_by=sort))
+
+    def set_default(self):
+        links = Link.query.filter_by(product_id=self.product_id).all()
+        for link in links:
+            link.default = False
+        self.default = True
+
+    def __str__(self):
+        return f"{self.text} ({self.url[0,20]}...)"
+
+    def __repr__(self):
+        return f"<Definition({self.id}, {self.text}, {self.url[0,20]}...)>"
+    
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    price = db.Column(db.String(10), nullable=False, default='$0.00')
+    description = db.Column(db.String(1000))
+    image = db.Column(db.String(500), default="/uploads/missing-product.png")
+    sort = db.Column(db.Integer, default=500)
 
     def __str__(self):
         return f"{self.name} ({self.short_body()})"
