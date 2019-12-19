@@ -56,7 +56,7 @@
 								{{ link.text|safe }}
 							</a><br />
 						{% endfor %}
-						<a href="{{ url_for('admin.add_link') }}" target='link' class="text-success">
+						<a href="{{ url_for('admin.add_link') }}?product_id={{ obj.id }}" target='link' class="text-success">
 							<i class="fas fa-plus"></i> Add Link
 						</a>
 					</small>

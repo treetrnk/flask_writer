@@ -1,6 +1,6 @@
 import pytz
 import re
-from flask import render_template, redirect, flash, url_for, send_from_directory, current_app
+from flask import render_template, redirect, flash, url_for, send_from_directory, current_app, request
 from app import db
 from app.admin import bp
 from app.admin.functions import log_new, log_change
@@ -379,10 +379,13 @@ class AddLink(SaveObjView):
     success_msg = 'Link added.'
     delete_endpoint = 'admin.delete_link'
     template = 'admin/object-edit.html'
-    redirect = {'endpoint': 'admin.links'}
+    redirect = {'endpoint': 'admin.products'}
 
     def extra(self):
         self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
+        current_app.logger.debug(request.args.get('product_id'))
+        if request.args.get('product_id'):
+            self.form.product_id.data = int(request.args.get('product_id'))
 
 bp.add_url_rule("/admin/link/add", 
         view_func=login_required(AddLink.as_view('add_link')))
@@ -396,7 +399,7 @@ class EditLink(SaveObjView):
     success_msg = 'Link updated.'
     delete_endpoint = 'admin.delete_link'
     template = 'admin/object-edit.html'
-    redirect = {'endpoint': 'admin.links'}
+    redirect = {'endpoint': 'admin.products'}
 
     def extra(self):
         self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
