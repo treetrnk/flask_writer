@@ -395,7 +395,7 @@ class EditLink(SaveObjView):
     log_msg = 'updated a link'
     success_msg = 'Link updated.'
     delete_endpoint = 'admin.delete_link'
-    template = 'odmin/object-edit.html'
+    template = 'admin/object-edit.html'
     redirect = {'endpoint': 'admin.links'}
 
     def extra(self):

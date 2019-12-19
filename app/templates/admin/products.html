@@ -21,12 +21,19 @@
 	</thead>
 	<tbody>
 		{% for obj in products %}
-			<tr>
+			<tr {% if not obj.active %}class="table-dark"{% endif %}>
 				<td>
 					<a href="{{ url_for('admin.edit_product', obj_id=obj.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
 					{{ obj.name }}
+					<span style="display:none;">
+					{% if obj.active %}
+						active
+					{% else %}
+						disabled
+					{% endif %}
+					</span>
 				</td>
 				<td>
 					{{ obj.price }}
@@ -40,14 +47,19 @@
 					</a>
 				</td>
 				<td>
-					{% for link in obj.links %}
-						<a href="{{ url_for('admin.edit_link', obj_id=link.id) }}" target='link'>
-							<i class="fas fa-edit"></i>
+					<small>
+						{% for link in obj.links %}
+							<a href="{{ url_for('admin.edit_link', obj_id=link.id) }}" target='link' data-toggle='tooltip' title="Edit">
+								<i class="fas fa-edit"></i>
+							</a>
+							<a href="{{ link.url }}" target='_blank'>
+								{{ link.text|safe }}
+							</a><br />
+						{% endfor %}
+						<a href="{{ url_for('admin.add_link') }}" target='link' class="text-success">
+							<i class="fas fa-plus"></i> Add Link
 						</a>
-						<a href="{{ link.url }}" target='_blank'>
-							{{ link.text }}
-						</a>
-					{% endfor %}
+					</small>
 				</td>
 			</tr>
 		{% endfor %}

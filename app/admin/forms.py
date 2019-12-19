@@ -90,6 +90,7 @@ class ProductEditForm(FlaskForm):
     description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
     sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
+    active = BooleanField('Active')
 
 class LinkEditForm(FlaskForm):
     product_id = SelectField(f'Product{required}', coerce=int, validators=[DataRequired()])

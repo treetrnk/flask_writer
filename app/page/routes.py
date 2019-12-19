@@ -133,7 +133,7 @@ def shop():
     products = Product.query.filter_by(active=True).order_by('sort','name').all()
     page = Page.query.filter_by(slug='shop').first()
     if products and page:
-        return render_template('page/{page.template}.html', 
+        return render_template(f'page/shop.html', 
                 page=page,
                 products=products,
             )

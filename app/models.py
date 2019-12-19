@@ -556,10 +556,10 @@ class Link(db.Model):
         self.default = True
 
     def __str__(self):
-        return f"{self.text} ({self.url[0,20]}...)"
+        return f"{self.text} ({self.url[0:20]}...)"
 
     def __repr__(self):
-        return f"<Link({self.id}, {self.text}, {self.url[0,20]}...)>"
+        return f"<Link({self.id}, {self.text}, {self.url[:20]}...)>"
     
 
 class Product(db.Model):
@@ -569,9 +569,10 @@ class Product(db.Model):
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
     sort = db.Column(db.Integer, default=500)
+    active = db.Column(db.Boolean, default=False)
 
     def __str__(self):
-        return f"{self.name} ({self.short_body()})"
+        return f"{self.name}"
 
     def __repr__(self):
         return f"<Product({self.id}, {self.name})>"
