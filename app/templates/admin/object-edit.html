@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="mb-4">{{ action }} {{ model_name }}</h1>
+{% include 'admin/nav.html' %}
+
+<h2 class="mb-4">{{ action }} {{ model_name }}</h2>
 
 <div class="row">
 	<div class="col-sm-10">
@@ -44,7 +46,7 @@
 						<i class="fas fa-ban"></i>
 						Cancel
 					</a>
-					{% if action == 'Edit' and current_user.in_group('admin') %}
+					{% if action == 'Edit' %}
 						<button type='button' class="btn btn-danger delete-btn float-right" data-id="{{ obj.id }}">
 								<i class="fas fa-trash-alt"></i>
 								Delete
@@ -56,7 +58,7 @@
 		</form>
 	</div>
 </div>
-{% if action == 'Edit' and current_user.in_group('admin') %}
+{% if action == 'Edit' %}
 	<form action="{{ url_for(delete_endpoint) }}" id="delete{{ obj.id }}" method="post">
 		{{ delete_form.hidden_tag() }}
 	</form>

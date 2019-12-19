@@ -20,6 +20,17 @@
 			<i class="fas fa-tags"></i><span class="d-none d-sm-none d-md-inline"> Tags</span>
 		</a>
 	</li>
+	<li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-shopping-bag"></i> Shop</a>
+		<div class="dropdown-menu">
+			<a href="{{ url_for('admin.products') }}?path={{ request.path }}" class="dropdown-item">
+				<i class="fas fa-tshirt"></i> Products
+			</a>
+			<a href="{{ url_for('admin.links') }}" class="dropdown-item">
+				<i class="fas fa-link"></i> Links
+			</a>
+		</div>
+	</li>
 	<li class="nav-item">
 		<a href="{{ url_for('admin.subscribers') }}" class="nav-link {% if tab == 'subscribers' %}active{% endif %}" data-toggle='tooltip' title='Subscribers ({{ current_user.total_subscribers() }})'>
 			<i class="fas fa-envelope"></i><span class="d-none d-sm-none d-md-inline"> Subscribers</span>

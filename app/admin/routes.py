@@ -4,8 +4,9 @@ from flask import render_template, redirect, flash, url_for, send_from_directory
 from app import db
 from app.admin import bp
 from app.admin.functions import log_new, log_change
-from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, EmailForm
-from app.models import Page, User, Tag, PageVersion, Subscriber, Definition
+from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, EmailForm, LinkEditForm, ProductEditForm
+from app.admin.generic_views import SaveObjView, DeleteObjView
+from app.models import Page, User, Tag, PageVersion, Subscriber, Definition, Link, Product
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from datetime import datetime
@@ -357,6 +358,114 @@ def edit_definition(definition_id):
             action='Edit', 
             page=page
         )
+
+@bp.route('/admin/links')
+@login_required
+def links():
+    page = Page.query.filter_by(slug='admin').first()
+    links = Link.query.all()
+    return render_template('admin/links.html',
+            tab='products',
+            page=page,
+            links=links,
+        )
+
+class AddLink(SaveObjView):
+    title = "Add Link"
+    model = Link
+    form = LinkEditForm
+    action = 'Add'
+    log_msg = 'added a link'
+    success_msg = 'Link added.'
+    delete_endpoint = 'admin.delete_link'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.links'}
+
+    def extra(self):
+        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
+
+bp.add_url_rule("/admin/link/add", 
+        view_func=login_required(AddLink.as_view('add_link')))
+
+class EditLink(SaveObjView):
+    title = "Edit Link"
+    model = Link
+    form = LinkEditForm
+    action = 'Edit'
+    log_msg = 'updated a link'
+    success_msg = 'Link updated.'
+    delete_endpoint = 'admin.delete_link'
+    template = 'odmin/object-edit.html'
+    redirect = {'endpoint': 'admin.links'}
+
+    def extra(self):
+        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
+
+bp.add_url_rule("/admin/link/edit/<int:obj_id>", 
+        view_func=login_required(EditLink.as_view('edit_link')))
+
+class DeleteLink(DeleteObjView):
+    model = Link
+    log_msg = 'deleted a link'
+    success_msg = 'Link deleted.'
+    redirect = {'endpoint': 'admin.links'}
+
+bp.add_url_rule("/admin/link/delete", 
+        view_func = login_required(DeleteLink.as_view('delete_link')))
+
+@bp.route('/admin/products')
+@login_required
+def products():
+    page = Page.query.filter_by(slug='admin').first()
+    products = Product.query.all()
+    return render_template('admin/products.html',
+            tab='products',
+            page=page,
+            products=products,
+        )
+
+class AddProduct(SaveObjView):
+    title = "Add Product"
+    model = Product
+    form = ProductEditForm
+    action = 'Add'
+    log_msg = 'added a product'
+    success_msg = 'Product added.'
+    delete_endpoint = 'admin.delete_product'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.products'}
+
+    def pre_post(self):
+        self.obj.updater_id = current_user.id
+
+bp.add_url_rule("/admin/product/add", 
+        view_func=login_required(AddProduct.as_view('add_product')))
+
+class EditProduct(SaveObjView):
+    title = "Edit Product"
+    model = Product
+    form = ProductEditForm
+    action = 'Edit'
+    log_msg = 'updated a product'
+    success_msg = 'Product updated.'
+    delete_endpoint = 'admin.delete_product'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.products'}
+
+    def pre_post(self):
+        self.obj.updater_id = current_user.id
+
+bp.add_url_rule("/admin/product/edit/<int:obj_id>", 
+        view_func=login_required(EditProduct.as_view('edit_product')))
+
+class DeleteProduct(DeleteObjView):
+    model = Product
+    log_msg = 'deleted a product'
+    success_msg = 'Product deleted.'
+    redirect = {'endpoint': 'admin.products'}
+
+bp.add_url_rule("/admin/product/delete", 
+        view_func = login_required(DeleteProduct.as_view('delete_product')))
 
 @bp.route('/admin/subscribers')
 @login_required

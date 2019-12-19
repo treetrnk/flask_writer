@@ -559,7 +559,7 @@ class Link(db.Model):
         return f"{self.text} ({self.url[0,20]}...)"
 
     def __repr__(self):
-        return f"<Definition({self.id}, {self.text}, {self.url[0,20]}...)>"
+        return f"<Link({self.id}, {self.text}, {self.url[0,20]}...)>"
     
 
 class Product(db.Model):
@@ -574,4 +574,4 @@ class Product(db.Model):
         return f"{self.name} ({self.short_body()})"
 
     def __repr__(self):
-        return f"<Definition({self.id}, {self.name}, {self.short_body()})>"
+        return f"<Product({self.id}, {self.name})>"

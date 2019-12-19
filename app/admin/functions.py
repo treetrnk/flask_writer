@@ -1,5 +1,5 @@
 import re
-from flask import current_app
+from flask import current_app, flash
 from flask_login import current_user
 
 def convert_to_dict(obj):
@@ -62,4 +62,18 @@ def log_change(original, updated=None, message='changed something'):
         return True
     return original_data
     
+def log_form(form_obj):
+    for field in form_obj:
+        current_app.logger.debug(f'{field.name}: {field.data}')
+        for error in field.errors:
+            current_app.logger.warning(f'{field.name}: {error}')
 
+def flash_form_errors(form_obj):
+    if form_obj.errors:
+        msg = """A problem occured with the following fields. 
+                Please correct them and try again. 
+                <ul>"""
+        for error in form_obj.errors:
+            msg += f"<li>{error}</li>"
+    
+        flash(msg, 'danger')

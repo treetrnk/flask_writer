@@ -87,15 +87,15 @@ class EditDefinitionForm(FlaskForm):
 class ProductEditForm(FlaskForm):
     name = StringField(f'Name{required}', validators=[DataRequired()])
     price = StringField(f'Price{required}', validators=[DataRequired()])
-    description = StringField('Description', validators=[Length(max=1000)])
+    description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
-    sort = IntegerField('Sort #')
+    sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
 
 class LinkEditForm(FlaskForm):
     product_id = SelectField(f'Product{required}', coerce=int, validators=[DataRequired()])
     text = StringField(f'Link Text{required}', validators=[Length(max=1000)])
     url = StringField('URL', validators=[Length(max=500)])
-    sort = IntegerField('Sort #')
+    sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
 
 class EmailForm(FlaskForm):
     subject = StringField('Subject')

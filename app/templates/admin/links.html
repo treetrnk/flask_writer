@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_link') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Link
+</a>
+
+<h2>Links</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Product</th>
+			<th>Text</th>
+			<th>URL</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for link in links %}
+			<tr>
+				<td>
+					<a href="{{ url_for('admin.edit_link', obj_id=link.id) }}">
+						<i class="fas fa-edit"></i>
+					</a>
+					{{ link.product }}
+				</td>
+				<td>
+					{{ link.text }}
+				</td>
+				<td>
+					<a href="{{ link.url }}" target="_blank">
+						{{ link.url }}
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

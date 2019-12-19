@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_product') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Product
+</a>
+
+<h2>Products</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Description</th>
+			<th>Image</th>
+			<th>Links</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for obj in products %}
+			<tr>
+				<td>
+					<a href="{{ url_for('admin.edit_product', obj_id=obj.id) }}">
+						<i class="fas fa-edit"></i>
+					</a>
+					{{ obj.name }}
+				</td>
+				<td>
+					{{ obj.price }}
+				</td>
+				<td>
+					{{ obj.description }}
+				</td>
+				<td>
+					<a href="{{ obj.image }}" target="_blank">
+						<img src="{{ obj.image }}" width="150" />
+					</a>
+				</td>
+				<td>
+					{% for link in obj.links %}
+						<a href="{{ url_for('admin.edit_link', obj_id=link.id) }}" target='link'>
+							<i class="fas fa-edit"></i>
+						</a>
+						<a href="{{ link.url }}" target='_blank'>
+							{{ link.text }}
+						</a>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
