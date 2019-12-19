@@ -8,7 +8,7 @@
 
 			{% for product in products %}
 				<div class="col-md-4 col-sm-3 col">
-					<div class="card shadow">
+					<div class="card shadow mb-4">
 						{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
 							<div style="height:200px;width:100%;background-image:url({{ product.image }});background-size:contain;background-repeat:no-repeat;background-position:center center;background-color: rgba(230,230,230,0.3)"></div>
 						</a>
@@ -18,7 +18,7 @@
 									{{ product.name }}
 								</a>
 							</h3>
-							<p>
+							<p class="text-center">
 							Starting at <b>{{ product.price }}</b>
 							</p>
 							<p>
@@ -34,7 +34,7 @@
 											<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														<span class="sr-only">Toggle Dropdown</span>
 											</button>
-											<div class="dropdown-menu">
+											<div class="dropdown-menu dropdown-menu-right">
 												{% for l in product.links[1:]%}
 													<a class="dropdown-item" href="{{ l.url }}">{{ l.text|safe }}</a>
 												{% endfor %}
