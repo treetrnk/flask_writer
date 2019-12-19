@@ -1,9 +1,20 @@
 <h1 class="mb-4"><i class="fas fa-hat-wizard"></i> Admin Panel</h1>
 <ul class="nav nav-pills mb-4">
 	<li class="nav-item">
-		<a href="{{ url_for('admin.pages') }}" class="nav-link {% if tab == 'pages' %}active{% endif %}" data-toggle='tooltip' title='Pages'>
+		<a class="nav-link dropdown-toggle {% if tab == 'pages' %}active{% endif %}" data-toggle="dropdown" href="#">
 			<i class="fas fa-file-alt"></i><span class="d-none d-sm-none d-md-inline"> Pages</span>
 		</a>
+		<div class="dropdown-menu">
+			<a href="{{ url_for('admin.pages') }}?path={{ request.path }}" class="dropdown-item">
+				<i class="fas fa-file-alt"></i> Published
+			</a>
+			<a href="{{ url_for('admin.unpublished_pages') }}" class="dropdown-item">
+				<i class="fas fa-eye-slash"></i> Unpublished
+			</a>
+			<a href="{{ url_for('admin.add_page') }}?path={{ request.path }}" class="dropdown-item">
+				<i class="fas fa-plus"></i> Add Page
+			</a>
+		</div>
 	</li>
 	<li class="nav-item">
 		<a href="{{ url_for('admin.users') }}" class="nav-link {% if tab == 'users' %}active{% endif %}" data-toggle='tooltip' title='Users'>
@@ -21,7 +32,9 @@
 		</a>
 	</li>
 	<li class="nav-item dropdown">
-		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-shopping-bag"></i> Shop</a>
+		<a class="nav-link dropdown-toggle {% if tab == 'shop' %}active{% endif %}" data-toggle="dropdown" href="#">
+			<i class="fas fa-shopping-bag"></i><span class="d-none d-sm-none d-md-inline"> Shop</span>
+		</a>
 		<div class="dropdown-menu">
 			<a href="{{ url_for('admin.products') }}?path={{ request.path }}" class="dropdown-item">
 				<i class="fas fa-tshirt"></i> Products

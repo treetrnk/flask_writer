@@ -68,12 +68,23 @@ def edit_user(id):
 
 @bp.route('/admin/pages')
 @login_required
-def pages():
+def pages(unpub=None):
     page = Page.query.filter_by(slug='admin').first()
     Page.set_nav()
-    pub_pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
-    unpub_pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
-    return render_template('admin/pages.html', tab='pages', pub_pages=pub_pages, unpub_pages=unpub_pages,page=page)
+    if unpub:
+        pages = Page.query.filter_by(published=False).order_by('dir_path','sort','title')
+    else: 
+        pages = Page.query.filter_by(published=True).order_by('dir_path','sort','title')
+    return render_template('admin/pages.html', 
+            tab='pages', 
+            pages=pages, 
+            unpub=unpub,
+            page=page,
+        )
+
+@bp.route('/admin/pages/unpublished')
+def unpublished_pages():
+    return pages(unpub=True)
 
 @bp.route('/admin/page/add', methods=['GET', 'POST'])
 @login_required
@@ -365,7 +376,7 @@ def links():
     page = Page.query.filter_by(slug='admin').first()
     links = Link.query.all()
     return render_template('admin/links.html',
-            tab='products',
+            tab='shop',
             page=page,
             links=links,
         )
@@ -422,7 +433,7 @@ def products():
     page = Page.query.filter_by(slug='admin').first()
     products = Product.query.all()
     return render_template('admin/products.html',
-            tab='products',
+            tab='shop',
             page=page,
             products=products,
         )

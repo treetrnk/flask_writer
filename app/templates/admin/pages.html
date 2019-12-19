@@ -7,8 +7,12 @@
 	<i class="fas fa-plus"></i> Add Page
 </a>
 
-<h2>Pages</h2>
+<h2>
+	{% if unpub %}Un{% endif %}published
+	Pages
+</h2>
 
+<!--
 <ul class="nav nav-pills mb-4">
 	<li class="nav-item">
 		<a href="#" class="nav-link active page-toggle" data-target="#published">Published</a>
@@ -17,6 +21,7 @@
 			<a href="#" class="nav-link page-toggle" data-target="#unpublished">Unpublished</a>
 	</li>
 </ul>
+-->
 
 <div id="published" class="page-list">
 	<table class="table table-sm table-striped table-hover table-responsive-sm datatable">
@@ -26,11 +31,13 @@
 				<th>Path</th>
 				<th>Template</th>
 				<th width="125">Word Count</th>
-				<th width="100">Published</th>
+				{% if not unpub %}
+					<th width="100">Published</th>
+				{% endif %}
 			</tr>
 		</thead>
 		<tbody>
-			{% for page in pub_pages %}
+			{% for page in pages %}
 				<tr>
 					<td>
 						<a href="{{ url_for('admin.edit_page', id=page.id) }}">
@@ -46,19 +53,22 @@
 					</td>
 					<td>{{ page.template.title() }}</td>
 					<td class="text-center">{{ page.word_count() }}</td>
-					<td class="text-center">
-						<small>
-							{% if page.pub_date %}
-								{{ page.pub_date.strftime('%-m/%-d/%Y') }}
-							{% endif %}
-						</small>
-					</td>
+					{% if not unpub %}
+						<td class="text-center">
+							<small>
+								{% if page.pub_date %}
+									{{ page.pub_date.strftime('%-m/%-d/%Y') }}
+								{% endif %}
+							</small>
+						</td>
+					{% endif %}
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </div>
 
+<!--
 <div id="unpublished" class="page-list" style="display:none;">
 	<table class="table table-sm table-striped table-hover datatable">
 		<thead>
@@ -91,5 +101,6 @@
 		</tbody>
 	</table>
 </div>
+-->
 
 {% endblock %}

@@ -7,7 +7,7 @@
 		<div class="row">
 
 			{% for product in products %}
-				<div class="col-md-4 col-sm-3 col">
+				<div class="col-md-4 col-sm-6 col">
 					<div class="card shadow mb-4">
 						{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
 							<div style="height:200px;width:100%;background-image:url({{ product.image }});background-size:contain;background-repeat:no-repeat;background-position:center center;background-color: rgba(230,230,230,0.3)"></div>
