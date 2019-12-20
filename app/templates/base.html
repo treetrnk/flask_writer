@@ -116,8 +116,11 @@
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-blue" id='topNavbar'>
 			<div class="container">
 				<a href="{{ url_for('page.home') }}" class='site-title'>
-				<span class="small">Stories by</span>
-					<h2>Houston Hare</h2>
+					<!--<img src="{{ url_for('static', filename='images/favicon-admin.png') }}" width="32" class="float-left mr-2" />-->
+					<h2 class="float-left">
+						Houston Hare
+						<span class="small">Stories</span>
+					</h2>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>

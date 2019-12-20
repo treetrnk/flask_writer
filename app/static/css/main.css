@@ -55,7 +55,15 @@
 				font-size: 14px;
 				text-transform: none;
 			}
+			a.site-title h2 .small {
+				font-size: 16px;
+        font-family: "Open Sans", sans-serif;
+				font-style: italic;
+			}
 			/*
+			a.site-title h2 .small {
+        font-family: "Open Sans", sans-serif;
+			}
 			nav.navlinks i.nav-menu {
 				font-size: 35px;
 				line-height: 68px;
