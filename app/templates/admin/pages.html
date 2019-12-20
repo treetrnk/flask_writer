@@ -46,7 +46,7 @@
 						{{ page.title }}
 					</td>
 					<td>
-						<a href="{{ page.path }}" data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
+						<a href="{{ page.path }}{% if unpub %}{{ page.gen_view_code() }}{% endif %}" data-toggle="tooltip" title="{{ page.path }}" target="viewpage">
 							<i class="fas fa-eye"></i> 
 						</a>
 						<span class="d-none d-sm-none d-md-inline">{{ page.path }}</span>
