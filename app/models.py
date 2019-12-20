@@ -236,6 +236,11 @@ class Page(db.Model):
                     parent_id=self.id,
             ).order_by('sort','pub_date','title').all()
 
+    def latest(self):
+        if self.template == 'chapter' or self.template == 'post':
+            return self.pub_siblings(chapter_post_only=True)[::-1][0]
+        return self.pub_children(chapter_post_only=True)[::-1][0]
+
     def pub_siblings(self, published_only=True, chapter_post_only=False):
         if published_only: 
             if chapter_post_only:

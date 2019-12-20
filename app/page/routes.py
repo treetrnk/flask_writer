@@ -168,6 +168,14 @@ def glossary(path):
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
+@bp.route('/<path:path>/latest')
+def latest(path):
+    Page.set_nav()
+    path = f"/{path}"
+    page = Page.query.filter_by(path=path).first()
+    return redirect(url_for('page.index', path=page.latest().path))
+    
+
 @bp.route('/<path:path>')
 def index(path):
     Page.set_nav()
