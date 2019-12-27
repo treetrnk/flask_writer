@@ -67,7 +67,7 @@
 
 						<p style="color:#666;text-align:center;"><small>
 							You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>.<br /> 
-							If you no longer wish to receive these emails, please <a href="https://houstonhare.com/unsubscribe/{{ recipient.email }}">unsubscribe here</a>.<br />
+							If you no longer wish to receive these emails, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
 							&copy; Houston Hare, 2019<br />
 						</small></p>
 					</td>

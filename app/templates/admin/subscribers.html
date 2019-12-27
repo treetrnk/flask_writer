@@ -25,15 +25,17 @@
 		{% for subscriber in subscribers %}
 			<tr>
 				<td>
-					<a href="#{# url_for('admin.edit_tag', id=tag.id) #}">
+					<a href="{{ url_for('page.subscription', email=subscriber.email, code=subscriber.gen_update_code()) }}">
 						<i class="fas fa-edit"></i>
 					</a>
 					{{ subscriber.first_name }} {{ subscriber.last_name }}
 				</td>
 				<td>{{ subscriber.email }}</td>
-				<td>{{ subscriber.subscription }}</td>
+				<td>
+					{{ subscriber.subscription[1:-1] }}
+				</td>
 				<td class="text-center">
-					<a href="{{ url_for('page.unsubscribe', email=subscriber.email) }}" class="btn btn-danger btn-sm" data-toggle='tooltip' title='Remove' target='unsubscribe'>
+					<a href="{{ url_for('page.unsubscribe', email=subscriber.email, code=subscriber.gen_update_code()) }}" class="btn btn-danger btn-sm" data-toggle='tooltip' title='Remove' target='unsubscribe'>
 						<i class="fas fa-times"></i>
 					</a>
 				</td>

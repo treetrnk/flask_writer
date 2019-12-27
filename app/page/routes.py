@@ -3,7 +3,7 @@ from flask import (
         current_app, make_response, send_from_directory
     )
 from app.page import bp
-from app.page.forms import SearchForm, SubscribeForm
+from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm
 from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product
 from app import db
@@ -71,6 +71,7 @@ def search(tag=None,keyword=None):
 def subscribe():
     Page.set_nav()
     form = SubscribeForm()
+    form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -80,6 +81,16 @@ def subscribe():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
         )
+        current_app.logger.debug(form.subscription.choices)
+        if "all" in form.subscription.data:
+            choices = [c[0] for c in form.subscription.choices]
+            current_app.logger.debug(choices)
+            choices.remove("all")
+            sub.subscription = "," + ",".join(choices) + ","
+        else:
+            sub.subscription = "," + ",".join(form.subscription.data) + ","
+        current_app.logger.debug(sub.subscription)
+        #raise Exception('pause')
         db.session.add(sub)
         db.session.commit()
         sub.welcome()
@@ -90,16 +101,51 @@ def subscribe():
             form=form
         )
 
-@bp.route('/unsubscribe/<string:email>')
-def unsubscribe(email):
+@bp.route('/update-subscription/<string:email>/<string:code>', methods=['GET','POST'])
+def subscription(email, code):
     sub = Subscriber.query.filter_by(email=email).first()
-    if sub:
+    if sub and sub.check_update_code(code):
+        Page.set_nav()
+        form = SubscriptionForm()
+        form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
+        choices = [c[0] for c in form.subscription.choices]
+        for field in form:
+            print(f"{field.name}: {field.data}")
+        if form.validate_on_submit():
+            print("Validated")
+            current_app.logger.debug(form.subscription.data)
+            if "all" in form.subscription.data:
+                choices.remove("all")
+                sub.subscription = "," + ",".join(choices) + ","
+            else:
+                sub.subscription = "," + ",".join(form.subscription.data) + ","
+            current_app.logger.debug(sub.subscription)
+            db.session.commit()
+            current_app.logger.info(f'Subscription Updated!\n    {repr(sub)}')
+            flash('Your subscription has been updated!', 'success')
+            return redirect(url_for('page.subscription', email=email, code=code))
+        form.subscription.data = sub.subscription[1:-1].split(',')
+        return render_template('update-subscription.html',
+                form=form,
+                subscriber=sub,
+            )
+    else: 
+        flash('Invalid code to update subscription!', 'danger')
+        return redirect(url_for('page.home'))
+
+@bp.route('/unsubscribe/<string:email>/<string:code>')
+def unsubscribe(email, code):
+    sub = Subscriber.query.filter_by(email=email).first()
+    if sub and sub.check_update_code(code):
         db.session.delete(sub)
         db.session.commit()
-        flash(f"{email} has been unsubscribed successfully. If you'd like to resubscribe, click the subscribe button in the bottom right of the screen.", "success")
+        flash(f"{email} has been unsubscribed successfully. If you'd like to resubscribe, <a href='/subscribe'>click here</a>.", "success")
         current_app.logger.info(f'User unsubscribed :(\n    {repr(sub)}')
     else:
-        flash(f"Subscriber email not found. You are not subscribed.", "danger")
+        if not sub:
+            flash(f"Subscriber email not found. You are not subscribed.", "danger")
+        else:
+            flash(f"Unable to unsubscribe. Incorrect update code.", "danger")
         current_app.logger.info(f'Failed to unsubscribe:\n    {email}')
     return redirect(url_for('page.home'))
 

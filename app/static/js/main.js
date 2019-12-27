@@ -32,6 +32,12 @@ function count_words() {
 
 $(document).ready(function() {
 
+	$('.mkSelect2').select2();
+	$('select[data-type="select2"]').select2();
+	$('select[data-type="select2-tags"]').select2({
+		tags: true
+	});
+
 	var page_body = $('#page_body_input');
 	if (page_body.val()) {
 		count_words();

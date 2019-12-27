@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<form action="" method="post">
+	{{ form.hidden_tag() }}
+
+	<div class="row justify-content-md-center">
+		<div class="col-sm-8">
+
+			<h1>Update Subscription</h1>
+
+			<div class="row">
+				<div class="col-sm-2"></div>
+				<div class="col">
+					<p>
+						{{ subscriber.name_if_given(True) }}<br />
+						{{ subscriber.email }}
+					</p>
+				</div>
+			</div>
+
+			<!--SUBSCRIPTION-->
+			<div class="form-group row">
+				{{ form.subscription.label(class="col-sm-2 control-from-label text-md-right") }} 
+				<div class="col-sm-8">
+					{% if form.subscription.errors %}
+						{{ form.subscription(class="form-control is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.subscription.errors %}
+								{{ error }}
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.subscription(class="form-control") }}
+					{% endif %}
+					<small class="form-text text-muted">
+						{{ form.subscription.description }}
+					</small>
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<button type='submit' class="btn btn-primary">
+						<i class="fas fa-envelope"></i> Update
+					</button>
+					<a href="{{ url_for('page.unsubscribe', email=subscriber.email, code=subscriber.gen_update_code()) }}" class="btn btn-danger float-right">
+						<i class="fas fa-times"></i>
+						Unsubscribe
+					</a>
+				</div>
+			</div>
+		</div>
+	<div>
+
+</form>
+
+{% endblock %}

@@ -466,8 +466,9 @@ class Subscriber(db.Model):
 
     SUBSCRIPTION_CHOICES = [
             ('all','All'),
-            ('sprig','Sprig'),
-            ('blog','Blog'),
+            ('news', 'Promotions and News'),
+            ('sprig','Sprig Chapter Updates'),
+            ('blog','Blog Posts'),
         ]
 
     def all_subscribers():
@@ -478,6 +479,17 @@ class Subscriber(db.Model):
             if self.first_name and self.last_name:
                 return f'{self.first_name} {self.last_name}'
         return self.first_name if self.first_name else ''
+
+    def update_code(self):
+        return self.email + current_app.config['SECRET_KEY']
+
+    def gen_update_code(self):
+        return generate_password_hash(self.update_code())
+
+    def check_update_code(self, code):
+        if code:
+            return check_password_hash(code, self.update_code())
+        return False
 
     def welcome(self):
         page=Page.query.filter_by(slug='subscriber-welcome').order_by('pub_date').first()
