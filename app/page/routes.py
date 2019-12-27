@@ -72,6 +72,7 @@ def subscribe():
     Page.set_nav()
     form = SubscribeForm()
     form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
+    form.subscription.data = ['all']
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
