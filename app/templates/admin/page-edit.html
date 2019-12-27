@@ -318,6 +318,24 @@
 		</div>
 	</div>
 
+	<!--NOTIFY_GROUP-->
+	<div class="form-group row">
+		<div class="col-sm-3"></div>
+		{{ form.notify_group.label(class="col-sm-3 control-from-label text-md-right") }} 
+		<div class="col-sm-4">
+			{% if form.notify_group.errors %}
+				{{ form.notify_group(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.notify_group.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.notify_group(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">

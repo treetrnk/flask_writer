@@ -391,20 +391,25 @@ class Page(db.Model):
         pub_date = local_tz.localize(pub_date)
         self.pub_date = pub_date.astimezone(pytz.utc) 
                 
-    def notify_subscribers(self):
+    def notify_subscribers(self, group):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         parent_title = self.parent.title + ' - ' if self.parent else ''
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
         subject=f"[New {self.template.title()}] {parent_title}{self.title}"
         body=f"Stories by Houston Hare\nNew Post: {parent_title}{self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
-        for recipient in Subscriber.query.all():
-            send_email(
-                    subject,
-                    sender,
-                    [recipient.email],
-                    body,
-                    render_template('email/subscriber-notification.html', page=self, recipient=recipient),
-                )
+        if group == "all":
+            subs = Subscriber.query.all()
+        else:
+            subs = Subscriber.query.filter(Subscriber.subscription.contains(f",{group},")).all()
+        if subs:
+            for recipient in subs:
+                send_email(
+                        subject,
+                        sender,
+                        [recipient.email],
+                        body,
+                        render_template('email/subscriber-notification.html', page=self, recipient=recipient),
+                    )
 
     def nav_list(self):
         nav = []

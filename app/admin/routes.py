@@ -94,6 +94,7 @@ def add_page():
         print(f"{field.name}: {field.data}")
     form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
+    form.notify_group.choices = Subscriber.SUBSCRIPTION_CHOICES
     if form.validate_on_submit():
         parentid = form.parent_id.data if form.parent_id.data else None
         page = Page(
@@ -117,7 +118,7 @@ def add_page():
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
         if form.notify_subs.data:
-            page.notify_subscribers()
+            page.notify_subscribers(form.notify_group.data)
         db.session.add(page)
         db.session.commit()
         flash("Page added successfully.", "success")
@@ -145,6 +146,7 @@ def edit_page(id, ver_id=None):
     form = AddPageForm()
     form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
+    form.notify_group.choices = Subscriber.SUBSCRIPTION_CHOICES
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -195,7 +197,8 @@ def edit_page(id, ver_id=None):
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
         if form.notify_subs.data:
-            page.notify_subscribers()
+            current_app.logger.debug(form.notify_group.data)
+            page.notify_subscribers(form.notify_group.data)
         log_change(log_orig, page, 'edited a page')
         db.session.commit()
         flash("Page updated successfully.", "success")

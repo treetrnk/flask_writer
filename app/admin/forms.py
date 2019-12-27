@@ -49,6 +49,7 @@ class AddPageForm(FlaskForm):
    pub_time = TimeField('Published Date', validators=[Optional()])
    published = BooleanField('Published?')
    notify_subs = BooleanField('Notify Subscribers?')
+   notify_group = SelectField('Notify Group')
    timezone = HiddenField('Timezone')
    submit = SubmitField('Submit Post')
 
