@@ -55,8 +55,14 @@
 				{% else %}
 					height: 500px;
 				{% endif %}
-				{% if page %}
+				{% if page and page.banner_path() %}
 					background-image: url({{ page.banner_path(True) }});
+					background-repeat: no-repeat;
+					/*background-attachment: fixed;*/
+					background-size: cover;
+				{% else %}
+					background-image: url({{ config['DEFAULT_BANNER_PATH'] }});
+					background-repeat: repeat;
 				{% endif %}
 			}
 

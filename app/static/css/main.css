@@ -186,12 +186,8 @@
       }
 			*/
 			div.jumbotron {
-        background-image: url("../images/forest.png");
-				background-color: #ffffff;
-				background-repeat: no-repeat;
 				background-position: center center;
-        /*background-attachment: fixed;*/
-				background-size: cover;
+				background-color: #444;
 				padding-top: 89px;
         height: 450px;
 				z-index: 1;
