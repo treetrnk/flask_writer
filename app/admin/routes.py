@@ -532,9 +532,9 @@ def records(day=None):
                     Record.date <= datetime.utcnow()
                 ).all()[0].data,
         }
-    stats['week_avg'] = int(stats['week'] / 7)
-    stats['month_avg'] = int(stats['month'] / 30)
-    stats['year_avg'] = int(stats['year'] / 365)
+    stats['week_avg'] = int(stats['week'] / 7) if stats['week'] else 0
+    stats['month_avg'] = int(stats['month'] / 30) if stats['month'] else 0
+    stats['year_avg'] = int(stats['year'] / 365) if stats['year'] else 0
     while (day <= next_month):
         chart_records += [Record.words_by_day(day)]
         day += timedelta(days=+1)
