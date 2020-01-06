@@ -535,6 +535,19 @@ def records(day=None):
     stats['week_avg'] = int(stats['week'] / 7) if stats['week'] else 0
     stats['month_avg'] = int(stats['month'] / 30) if stats['month'] else 0
     stats['year_avg'] = int(stats['year'] / 365) if stats['year'] else 0
+    best_query = db.session.query(Record, db.func.sum(Record.words).label('best')).group_by(Record.date).order_by(desc('best'))
+    stats['week_best'] = best_query.filter(
+            Record.date >= (datetime.utcnow() - timedelta(days=30)),
+            Record.date <= datetime.utcnow()
+        ).first().best
+    stats['month_best'] = best_query.filter(
+            Record.date >= (datetime.utcnow() - timedelta(days=30)),
+            Record.date <= datetime.utcnow()
+        ).first().best
+    stats['year_best'] = best_query.filter(
+            Record.date >= (datetime.utcnow() - timedelta(days=30)),
+            Record.date <= datetime.utcnow()
+        ).first().best
     while (day <= next_month):
         chart_records += [Record.words_by_day(day)]
         day += timedelta(days=+1)
