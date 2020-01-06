@@ -83,21 +83,21 @@
 		<h2 class="text-center">Stats</h2>
 		<div class="row">
 			<div class="col text-center">
-				<h4>Week</h4>
+				<h4>Past Week</h4>
 				<p>
 					Words/Day: <b>{{ stats.week_avg }}</b><br />
 					Total: <b>{{ stats.week }}</b>
 				</p>
 			</div>
 			<div class="col text-center">
-				<h4>Month</h4>
+				<h4>Past Month</h4>
 				<p>
 					Words/Day: <b>{{ stats.month_avg }}</b><br />
 					Total: <b>{{ stats.month }}</b>
 				</p>
 			</div>
 			<div class="col text-center">
-				<h4>Year</h4>
+				<h4>Past Year</h4>
 				<p>
 					Words/Day: <b>{{ stats.year_avg }}</b><br />
 					Total: <b>{{ stats.year }}</b>
@@ -109,7 +109,7 @@
 	</div>
 </div>
 
-<table class="table table-sm table-striped table-hover datatable">
+<table class="table table-sm table-striped table-hover datatable-desc">
 	<thead>
 		<tr>
 			<th>Date</th>
@@ -127,7 +127,7 @@
 					<a href="{{ url_for('admin.edit_record', obj_id=obj.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
-					<span class="d-none">{{ obj.date }}</span>
+					<span class="d-none">{{ obj.date }} {{ obj.id }}</span>
 					{{ obj.date.strftime('%a. %b. %-d, %Y') }}
 				</td>
 				<td>
@@ -174,6 +174,29 @@
 										{% endfor %}
 									],
 									yAxisID: 'y-axis-1'
+								},{
+									label: 'Session Average',
+									backgroundColor: '#ff6666',
+					        borderColor: '#cc0000',
+									fill: false,
+									data: [
+										{% for r in chart_records %}
+											{{ r.session_avg }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-1'
+								},{
+									label: 'Daily Sessions',
+									//backgroundColor: '#dd66ff',
+					        //borderColor: '#cc00ee',
+									fill: true,
+									lineTension: 0,
+									data: [
+										{% for r in chart_records %}
+											{{ r.sessions }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-2'
 								}]
 		};
 
@@ -199,7 +222,7 @@ var monthly_settings = {
 										display: true,
 										position: 'left',
 										id: 'y-axis-1',
-									}, /*{
+									}, {
 										type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 										display: true,
 										position: 'right',
@@ -208,8 +231,8 @@ var monthly_settings = {
 										// grid line settings
 										gridLines: {
 											drawOnChartArea: false, // only want the grid lines for one axis to show up
-										},*/
-									],
+										},
+									}],
 								}
 						}
 				};

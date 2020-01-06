@@ -615,7 +615,13 @@ class Record(db.Model):
         for r in records:
             daily_total += r.words
         overall_words = records[0].overall_words if records else 0
-        return {'daily': daily_total, 'total': overall_words, 'sessions': len(records), 'date': f'{day.strftime("%b")} {day.day}'}
+        return {
+                'daily': daily_total, 
+                'total': overall_words, 
+                'sessions': len(records), 
+                'session_avg': int(daily_total / len(records)) if records else 0,
+                'date': f'{day.strftime("%b")} {day.day}',
+            }
 
     def stats():
         highest_daily = Record.query(func.sum(Record.words).label('daily_total')).group_by(Record.date).order_by(desc('daily_total')).all()
