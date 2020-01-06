@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<h2>Records</h2>
+
+<form method='post'>
+	{{ form.hidden_tag() }}
+	<div class="row mb-4">
+
+		<div class="form-group col">
+			{{ form.start_words.label(class="control-label") }}
+			{% if form.start_words.errors %}
+				{{ form.start_words(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.start_words.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.start_words(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
+			{{ form.end_words.label(class="control-label") }}
+			{% if form.end_words.errors %}
+				{{ form.end_words(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.end_words.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.end_words(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
+			{{ form.overall_words.label(class="control-label") }}
+			{% if form.overall_words.errors %}
+				{{ form.overall_words(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.overall_words.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.overall_words(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
+			{{ form.comment.label(class="control-label") }}
+			{% if form.comment.errors %}
+				{{ form.comment(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.comment.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.comment(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class='col'>
+			<br />
+			<button type="submit" class="btn btn-primary mt-2"><i class="fas fa-plus"></i> Add Record</button>
+		</div>
+
+	</div>
+</form>
+
+<div>
+	<canvas id="chart" class="mb-4"></canvas>
+</div>
+
+<div class="card shadow mb-4">
+	<div class="card-body">
+
+		<h2 class="text-center">Stats</h2>
+		<div class="row">
+			<div class="col text-center">
+				<h4>Week</h4>
+				<p>
+					Words/Day: <b>{{ stats.week_avg }}</b><br />
+					Total: <b>{{ stats.week }}</b>
+				</p>
+			</div>
+			<div class="col text-center">
+				<h4>Month</h4>
+				<p>
+					Words/Day: <b>{{ stats.month_avg }}</b><br />
+					Total: <b>{{ stats.month }}</b>
+				</p>
+			</div>
+			<div class="col text-center">
+				<h4>Year</h4>
+				<p>
+					Words/Day: <b>{{ stats.year_avg }}</b><br />
+					Total: <b>{{ stats.year }}</b>
+				</p>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start</th>
+			<th>End</th>
+			<th>Words</th>
+			<th>Overall</th>
+			<th>Comment</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for obj in records %}
+			<tr>
+				<td>
+					<a href="{{ url_for('admin.edit_record', obj_id=obj.id) }}">
+						<i class="fas fa-edit"></i>
+					</a>
+					<span class="d-none">{{ obj.date }}</span>
+					{{ obj.date.strftime('%a. %b. %-d, %Y') }}
+				</td>
+				<td>
+					{{ obj.start_words }}
+				</td>
+				<td>
+					{{ obj.end_words }}
+				</td>
+				<td>
+					{{ obj.words }}
+				</td>
+				<td>
+					{% if obj.overall_words %}
+						{{ obj.overall_words }}
+					{% endif %}
+				</td>
+				<td>
+					{% if obj.comment %}
+						{{ obj.comment }}
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+	<script>
+		var labels = [
+				{% for r in chart_records %}
+					'{{ r.date }}',
+				{% endfor %}
+			];
+		var monthlyChartData = {
+	      labels: labels,
+	      datasets: [{
+									label: 'Daily Words',
+									backgroundColor: '#6666ff',
+					        borderColor: '#0000cc',
+									fill: false,
+									data: [
+										{% for r in chart_records %}
+											{{ r.daily }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-1'
+								}]
+		};
+
+var monthly_settings = {
+					type: 'line',
+					data: monthlyChartData,
+					options: {
+							responsive: true,
+							hoverMode: 'index',
+							stacked: false,
+							title: {
+								display: true,
+								text: 'Records for {{ start_date }} - {{ end_date }}'
+							},
+							tooltips: {
+								position: 'average',
+								mode: 'index',
+								intersect: false,
+							},
+							scales: {
+									yAxes: [{
+										type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+										display: true,
+										position: 'left',
+										id: 'y-axis-1',
+									}, /*{
+										type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+										display: true,
+										position: 'right',
+										id: 'y-axis-2',
+
+										// grid line settings
+										gridLines: {
+											drawOnChartArea: false, // only want the grid lines for one axis to show up
+										},*/
+									],
+								}
+						}
+				};
+
+
+var chart_ctx = document.getElementById('chart').getContext('2d');
+
+// var total_settings = Object.assign({}, monthly_settings);
+
+var monthly_chart = new Chart(chart_ctx, monthly_settings);
+
+//total_settings.data = totalChartData;
+//total_settings.options.title.text = 'Total Word/Chapter Counts';
+
+//var total_chart = new Chart(total_ctx, total_settings);
+	</script>
+
+{% endblock %}

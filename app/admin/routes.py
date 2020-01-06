@@ -4,14 +4,21 @@ from flask import render_template, redirect, flash, url_for, send_from_directory
 from app import db
 from app.admin import bp
 from app.admin.functions import log_new, log_change
-from app.admin.forms import AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, EmailForm, LinkEditForm, ProductEditForm
+from app.admin.forms import (
+        AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, 
+        EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm
+    )
 from app.admin.generic_views import SaveObjView, DeleteObjView
-from app.models import Page, User, Tag, PageVersion, Subscriber, Definition, Link, Product
+from app.models import (
+        Page, User, Tag, PageVersion, Subscriber, Definition, Link, Product, 
+        Record
+    )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
-from datetime import datetime
+from datetime import datetime, time, timedelta
 from markdown import markdown
 from app.email import send_email
+from dateutil.relativedelta import relativedelta
 
 @bp.route('/admin/users')
 @login_required
@@ -483,6 +490,90 @@ class DeleteProduct(DeleteObjView):
 
 bp.add_url_rule("/admin/product/delete", 
         view_func = login_required(DeleteProduct.as_view('delete_product')))
+
+@bp.route('/admin/records', methods=['GET','POST'])
+@bp.route('/admin/records/<string:day>', methods=['GET','POST'])
+@login_required
+def records(day=None):
+    form = RecordForm()
+    if form.validate_on_submit():
+        record = Record()
+        current_app.logger.debug('VALIDATED')
+        for field in form:
+            current_app.logger.debug(f'{field.name}: {field.data}')
+        form.populate_obj(record)
+        record.words = form.end_words.data - form.start_words.data
+        current_app.logger.debug(repr(record))
+        db.session.add(record)
+        db.session.commit()
+        log_new(record, 'added a record')
+        flash('Record added!','success')
+        return redirect(url_for('admin.records', day=day))
+    page = Page.query.filter_by(slug='admin').first()
+    day = datetime(int(day[0:3]), int(day[4:5]), int(day[-2:])) if day else datetime.utcnow() - timedelta(days=30)
+    day = datetime.combine(day, time(0,0,0))
+    start_date = day.date()
+    next_month = day + relativedelta(months=+1)
+    end_date = next_month.date()
+    chart_records = []
+    #records = Record.query.filter(Record.date >= day, Record.date < next_month).order_by(desc('created')).all()
+    records = Record.query.order_by(desc('created')).all()
+    stats = {
+            'week': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+                    Record.date >= (datetime.utcnow() - timedelta(days=7)),
+                    Record.date <= datetime.utcnow()
+                ).all()[0].data,
+            'month': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+                    Record.date >= (datetime.utcnow() - timedelta(days=30)),
+                    Record.date <= datetime.utcnow()
+                ).all()[0].data,
+            'year': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+                    Record.date >= (datetime.utcnow() - timedelta(days=365)),
+                    Record.date <= datetime.utcnow()
+                ).all()[0].data,
+        }
+    stats['week_avg'] = int(stats['week'] / 7)
+    stats['month_avg'] = int(stats['month'] / 30)
+    stats['year_avg'] = int(stats['year'] / 365)
+    while (day <= next_month):
+        chart_records += [Record.words_by_day(day)]
+        day += timedelta(days=+1)
+    return render_template('admin/records.html', 
+            tab='records', 
+            chart_records=chart_records,
+            records=records,
+            page=page,
+            form=form,
+            start_date=start_date,
+            end_date=end_date,
+            stats=stats,
+        )
+
+class EditRecord(SaveObjView):
+    title = "Edit Record"
+    model = Record
+    form = RecordEditForm
+    action = 'Edit'
+    log_msg = 'updated a record'
+    success_msg = 'Record updated.'
+    delete_endpoint = 'admin.delete_record'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.records'}
+
+    def pre_post(self):
+        self.obj.words = self.form.end_words.data - self.form.start_words.data
+
+bp.add_url_rule("/admin/record/edit/<int:obj_id>", 
+        view_func=login_required(EditRecord.as_view('edit_record')))
+
+class DeleteRecord(DeleteObjView):
+    model = Record
+    log_msg = 'deleted a record'
+    success_msg = 'Record deleted.'
+    redirect = {'endpoint': 'admin.records'}
+
+bp.add_url_rule("/admin/record/delete", 
+        view_func = login_required(DeleteRecord.as_view('delete_record')))
 
 @bp.route('/admin/subscribers')
 @login_required

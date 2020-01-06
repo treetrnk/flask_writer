@@ -598,3 +598,32 @@ class Product(db.Model):
 
     def __repr__(self):
         return f"<Product({self.id}, {self.name})>"
+
+class Record(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    words = db.Column(db.Integer)
+    start_words = db.Column(db.Integer, nullable=False)
+    end_words = db.Column(db.Integer, nullable=False)
+    overall_words = db.Column(db.Integer)
+    comment = db.Column(db.String(200))
+    date = db.Column(db.Date, default=datetime.utcnow)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def words_by_day(day):
+        records = Record.query.filter_by(date=day).order_by(desc('overall_words')).all()
+        daily_total = 0
+        for r in records:
+            daily_total += r.words
+        overall_words = records[0].overall_words if records else 0
+        return {'daily': daily_total, 'total': overall_words, 'sessions': len(records), 'date': f'{day.strftime("%b")} {day.day}'}
+
+    def stats():
+        highest_daily = Record.query(func.sum(Record.words).label('daily_total')).group_by(Record.date).order_by(desc('daily_total')).all()
+        best_session = Record.query.order_by(desc('words')).all()
+        most_sessions = Record.query(func.count(Record.words).label('sessions')).group_by(Record.date).all()
+
+    def __str__(self):
+        return f"{self.date} ({self.words} words)"
+
+    def __repr__(self):
+        return f"<Record:{self.date} ({self.words} words)>"

@@ -31,6 +31,11 @@
 			<i class="fas fa-tags"></i><span class="d-none d-sm-none d-md-inline"> Tags</span>
 		</a>
 	</li>
+	<li class="nav-item">
+		<a href="{{ url_for('admin.records') }}" class="nav-link {% if tab == 'records' %}active{% endif %}" data-toggle='tooltip' title='Records'>
+			<i class="fas fa-chart-line"></i><span class="d-none d-sm-none d-md-inline"> Records</span>
+		</a>
+	</li>
 	<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle {% if tab == 'shop' %}active{% endif %}" data-toggle="dropdown" href="#">
 			<i class="fas fa-shopping-bag"></i><span class="d-none d-sm-none d-md-inline"> Shop</span>

@@ -5,7 +5,7 @@ from wtforms import (
         PasswordField, HiddenField, DateField, TimeField
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
-from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError, InputRequired
 from app.models import Page, User, Tag, Definition, Link, Product
 
 required = "<span class='text-danger'>*</span>"
@@ -104,6 +104,19 @@ class EmailForm(FlaskForm):
     recipients = SelectMultipleField('Recipients', coerce=int)
     banner = StringField('Banner URL')
     body = TextAreaField('Body')
+
+class RecordForm(FlaskForm):
+    start_words = IntegerField(f'Start{required}', validators=[InputRequired()])
+    end_words = IntegerField(f'End{required}', validators=[DataRequired()])
+    overall_words = IntegerField('Overall Total', validators=[Optional()])
+    comment = StringField('Comment', validators=[Length(max=200)])
+    
+class RecordEditForm(FlaskForm):
+    start_words = IntegerField(f'Start{required}', validators=[InputRequired()])
+    end_words = IntegerField(f'End{required}', validators=[DataRequired()])
+    overall_words = IntegerField('Overall Total', validators=[Optional()])
+    comment = StringField('Comment', validators=[Length(max=200)])
+    date = DateField('Date', render_kw={'type': 'date'})
     
 class DeleteObjForm(FlaskForm):
     obj_id = HiddenField('Object id', validators=[DataRequired()])
