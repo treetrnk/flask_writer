@@ -503,6 +503,7 @@ def records(day=None):
             current_app.logger.debug(f'{field.name}: {field.data}')
         form.populate_obj(record)
         record.words = form.end_words.data - form.start_words.data
+        record.words_per_minute = int(record.words/record.minutes) if record.minutes else None
         current_app.logger.debug(repr(record))
         db.session.add(record)
         db.session.commit()
@@ -575,6 +576,7 @@ class EditRecord(SaveObjView):
 
     def pre_post(self):
         self.obj.words = self.form.end_words.data - self.form.start_words.data
+        self.obj.words_per_minute = int(self.obj.words/self.form.minutes.data) if self.form.minutes.data else None
 
 bp.add_url_rule("/admin/record/edit/<int:obj_id>", 
         view_func=login_required(EditRecord.as_view('edit_record')))

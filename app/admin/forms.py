@@ -106,15 +106,17 @@ class EmailForm(FlaskForm):
     body = TextAreaField('Body')
 
 class RecordForm(FlaskForm):
-    start_words = IntegerField(f'Start{required}', validators=[InputRequired()])
-    end_words = IntegerField(f'End{required}', validators=[DataRequired()])
-    overall_words = IntegerField('Overall Total', validators=[Optional()])
+    start_words = IntegerField(f'Start{required}', render_kw={'type': 'number'}, validators=[InputRequired()])
+    end_words = IntegerField(f'End{required}', render_kw={'type': 'number'}, validators=[DataRequired()])
+    overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
+    minutes = IntegerField('Minutes', render_kw={'type': 'number'}, validators=[Optional()])
     comment = StringField('Comment', validators=[Length(max=200)])
     
 class RecordEditForm(FlaskForm):
-    start_words = IntegerField(f'Start{required}', validators=[InputRequired()])
-    end_words = IntegerField(f'End{required}', validators=[DataRequired()])
-    overall_words = IntegerField('Overall Total', validators=[Optional()])
+    start_words = IntegerField(f'Start{required}', render_kw={'type': 'number'}, validators=[InputRequired()])
+    end_words = IntegerField(f'End{required}', render_kw={'type': 'number'}, validators=[DataRequired()])
+    overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
+    minutes = IntegerField('Minutes', render_kw={'type': 'number'}, validators=[Optional()])
     comment = StringField('Comment', validators=[Length(max=200)])
     date = DateField('Date', render_kw={'type': 'date'})
     

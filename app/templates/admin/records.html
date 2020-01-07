@@ -52,6 +52,20 @@
 		</div>
 
 		<div class="form-group col">
+			{{ form.minutes.label(class="control-label") }}
+			{% if form.minutes.errors %}
+				{{ form.minutes(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.minutes.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.minutes(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
 			{{ form.comment.label(class="control-label") }}
 			{% if form.comment.errors %}
 				{{ form.comment(class="form-control is-invalid") }}
@@ -117,10 +131,10 @@
 	<thead>
 		<tr>
 			<th>Date</th>
-			<th>Start</th>
-			<th>End</th>
 			<th>Words</th>
 			<th>Overall</th>
+			<th>Minutes</th>
+			<th>Words/Min.</th>
 			<th>Comment</th>
 		</tr>
 	</thead>
@@ -135,17 +149,25 @@
 					{{ obj.date.strftime('%a. %b. %-d, %Y') }}
 				</td>
 				<td>
-					{{ obj.start_words }}
-				</td>
-				<td>
-					{{ obj.end_words }}
-				</td>
-				<td>
-					{{ obj.words }}
+					<span data-toggle="tooltip" title="{{ obj.start_words }} 🠦 {{ obj.end_words }}">
+						{{ obj.words }}
+					</span>
 				</td>
 				<td>
 					{% if obj.overall_words %}
 						{{ obj.overall_words }}
+					{% endif %}
+				</td>
+				<td>
+					{% if obj.minutes %}
+						{{ obj.minutes }}
+					{% endif %}
+				</td>
+				<td>
+					{% if obj.words_per_minute %}
+						<span data-toggle="tooltip" title="{{ obj.minutes }} minutes">
+							{{ obj.words_per_minute }}
+						</span>
 					{% endif %}
 				</td>
 				<td>
@@ -186,6 +208,17 @@
 									data: [
 										{% for r in chart_records %}
 											{{ r.session_avg }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-1'
+								},{
+									label: 'Words Per Minute',
+									backgroundColor: '#ffcc33',
+					        borderColor: '#ff9900',
+									fill: false,
+									data: [
+										{% for r in chart_records %}
+											{{ r.words_per_minute }},
 										{% endfor %}
 									],
 									yAxisID: 'y-axis-1'

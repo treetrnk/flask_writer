@@ -606,20 +606,25 @@ class Record(db.Model):
     end_words = db.Column(db.Integer, nullable=False)
     overall_words = db.Column(db.Integer)
     comment = db.Column(db.String(200))
-    date = db.Column(db.Date, default=datetime.utcnow)
+    minutes = db.Column(db.Integer)
+    words_per_minute = db.Column(db.Integer)
+    date = db.Column(db.Date, default=datetime.now)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def words_by_day(day):
         records = Record.query.filter_by(date=day).order_by(desc('overall_words')).all()
         daily_total = 0
+        minutes = 0
         for r in records:
             daily_total += r.words
+            minutes += r.minutes if r.minutes else 0
         overall_words = records[0].overall_words if records else 0
         return {
                 'daily': daily_total, 
                 'total': overall_words, 
                 'sessions': len(records), 
                 'session_avg': int(daily_total / len(records)) if records else 0,
+                'words_per_minute': int(daily_total / minutes) if minutes else 0,
                 'date': f'{day.strftime("%b")} {day.day}',
             }
 
