@@ -190,6 +190,7 @@
 		var monthlyChartData = {
 	      labels: labels,
 	      datasets: [{
+									type: 'line',
 									label: 'Daily Words',
 									backgroundColor: '#6666ff',
 					        borderColor: '#0000cc',
@@ -201,6 +202,7 @@
 									],
 									yAxisID: 'y-axis-1'
 								},{
+									type: 'line',
 									label: 'Session Average',
 									backgroundColor: '#ff6666',
 					        borderColor: '#cc0000',
@@ -212,6 +214,7 @@
 									],
 									yAxisID: 'y-axis-1'
 								},{
+									type: 'line',
 									label: 'Words Per Minute',
 									backgroundColor: '#ffcc33',
 					        borderColor: '#ff9900',
@@ -223,11 +226,12 @@
 									],
 									yAxisID: 'y-axis-1'
 								},{
+									type: 'bar',
 									label: 'Daily Sessions',
 									//backgroundColor: '#dd66ff',
 					        //borderColor: '#cc00ee',
-									fill: true,
-									lineTension: 0,
+									//fill: true,
+									//lineTension: 0,
 									data: [
 										{% for r in chart_records %}
 											{{ r.sessions }},
@@ -238,7 +242,7 @@
 		};
 
 var monthly_settings = {
-					type: 'line',
+					type: 'bar',
 					data: monthlyChartData,
 					options: {
 							responsive: true,
