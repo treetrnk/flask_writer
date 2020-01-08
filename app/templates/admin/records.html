@@ -203,6 +203,18 @@
 									yAxisID: 'y-axis-1'
 								},{
 									type: 'line',
+									label: 'Words Per Minute',
+									backgroundColor: '#ffcc33',
+					        borderColor: '#ff9900',
+									fill: false,
+									data: [
+										{% for r in chart_records %}
+											{{ r.words_per_minute }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-2'
+								},{
+									type: 'line',
 									label: 'Session Average',
 									backgroundColor: '#ff6666',
 					        borderColor: '#cc0000',
@@ -214,24 +226,24 @@
 									],
 									yAxisID: 'y-axis-1'
 								},{
-									type: 'line',
-									label: 'Words Per Minute',
-									backgroundColor: '#ffcc33',
-					        borderColor: '#ff9900',
-									fill: false,
-									data: [
-										{% for r in chart_records %}
-											{{ r.words_per_minute }},
-										{% endfor %}
-									],
-									yAxisID: 'y-axis-1'
-								},{
 									type: 'bar',
-									label: 'Daily Sessions',
+									label: 'Minutes',
 									//backgroundColor: '#dd66ff',
 					        //borderColor: '#cc00ee',
-									//fill: true,
-									//lineTension: 0,
+									//fill: false,
+									data: [
+										{% for r in chart_records %}
+											{{ r.minutes }},
+										{% endfor %}
+									],
+									yAxisID: 'y-axis-2'
+								},{
+									type: 'line',
+									label: 'Daily Sessions',
+									backgroundColor: '#ccffcc',
+					        borderColor: '#00cc00',
+									fill: true,
+									lineTension: 0,
 									data: [
 										{% for r in chart_records %}
 											{{ r.sessions }},

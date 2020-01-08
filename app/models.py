@@ -626,6 +626,7 @@ class Record(db.Model):
                 'total': overall_words, 
                 'sessions': len(records), 
                 'session_avg': int(daily_total / len(records)) if records else 0,
+                'minutes': minutes,
                 'words_per_minute': int(daily_total / minutes) if minutes else 0,
                 'date': f'{day.strftime("%a %b")} {day.day}',
             }
