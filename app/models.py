@@ -350,7 +350,9 @@ class Page(db.Model):
 
     def page_count(self, published_only=True):
         words_per_page = 275
-        return round(self.child_word_count(published_only) / words_per_page)
+        if self.template in ['blog','story']:
+            return round(self.child_word_count(published_only) / words_per_page)
+        return round(self.word_count() / words_per_page)
 
     def avg_child_word_count(self, published_only=True):
         total = 0
