@@ -550,6 +550,7 @@ def records(day=None):
             Record.date >= (datetime.utcnow() - timedelta(days=365)),
             Record.date <= datetime.utcnow()
         ).first().best
+    stats['today'] = Record.words_by_day(datetime.utcnow())
     while (day <= next_month):
         chart_records += [Record.words_by_day(day)]
         day += timedelta(days=+1)

@@ -614,7 +614,7 @@ class Record(db.Model):
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def words_by_day(day):
-        records = Record.query.filter_by(date=day).order_by(desc('overall_words')).all()
+        records = Record.query.filter_by(date=day).order_by(desc('words')).all()
         daily_total = 0
         minutes = 0
         for r in records:
@@ -628,6 +628,7 @@ class Record(db.Model):
                 'session_avg': int(daily_total / len(records)) if records else 0,
                 'minutes': minutes,
                 'words_per_minute': int(daily_total / minutes) if minutes else 0,
+                'best': records[0].words if records else 0,
                 'date': f'{day.strftime("%a %b")} {day.day}',
             }
 

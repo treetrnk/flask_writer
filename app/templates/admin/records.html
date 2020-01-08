@@ -94,6 +94,14 @@
 		<hr />
 		<div class="row">
 			<div class="col text-center">
+				<h4>Today</h4>
+				<p>
+				Speed: <b>{% if stats.today.minutes %}{{ stats.today.daily/stats.today.minutes }}{% else %}0{% endif %} wpm</b><br />
+					Best: <b>{{ stats.today.best }}</b><br />
+					Total: <b>{{ stats.today.daily }}</b>
+				</p>
+			</div>
+			<div class="col text-center">
 				<h4>Past Week</h4>
 				<p>
 					Average: <b>{{ stats.week_avg }}</b><br />
