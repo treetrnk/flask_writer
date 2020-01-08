@@ -519,16 +519,17 @@ def records(day=None):
     chart_records = []
     #records = Record.query.filter(Record.date >= day, Record.date < next_month).order_by(desc('created')).all()
     records = Record.query.order_by(desc('created')).all()
+    total_query = db.session.query(Record, db.func.sum(Record.words).label('data'))
     stats = {
-            'week': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+            'week': total_query.filter(
                     Record.date >= (datetime.utcnow() - timedelta(days=7)),
                     Record.date <= datetime.utcnow()
                 ).all()[0].data,
-            'month': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+            'month': total_query.filter(
                     Record.date >= (datetime.utcnow() - timedelta(days=30)),
                     Record.date <= datetime.utcnow()
                 ).all()[0].data,
-            'year': db.session.query(Record, db.func.sum(Record.words).label('data')).filter(
+            'year': total_query.filter(
                     Record.date >= (datetime.utcnow() - timedelta(days=365)),
                     Record.date <= datetime.utcnow()
                 ).all()[0].data,
@@ -538,7 +539,7 @@ def records(day=None):
     stats['year_avg'] = int(stats['year'] / 365) if stats['year'] else 0
     best_query = db.session.query(Record, db.func.sum(Record.words).label('best')).group_by(Record.date).order_by(desc('best'))
     stats['week_best'] = best_query.filter(
-            Record.date >= (datetime.utcnow() - timedelta(days=30)),
+            Record.date >= (datetime.utcnow() - timedelta(days=7)),
             Record.date <= datetime.utcnow()
         ).first().best
     stats['month_best'] = best_query.filter(
@@ -546,7 +547,7 @@ def records(day=None):
             Record.date <= datetime.utcnow()
         ).first().best
     stats['year_best'] = best_query.filter(
-            Record.date >= (datetime.utcnow() - timedelta(days=30)),
+            Record.date >= (datetime.utcnow() - timedelta(days=365)),
             Record.date <= datetime.utcnow()
         ).first().best
     while (day <= next_month):
