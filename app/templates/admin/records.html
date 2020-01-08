@@ -134,7 +134,7 @@
 			<th>Words</th>
 			<th>Overall</th>
 			<th>Minutes</th>
-			<th>Words/Min.</th>
+			<th>Speed</th>
 			<th>Comment</th>
 		</tr>
 	</thead>
@@ -166,7 +166,7 @@
 				<td>
 					{% if obj.words_per_minute %}
 						<span data-toggle="tooltip" title="{{ obj.minutes }} minutes">
-							{{ obj.words_per_minute }}
+							{{ obj.words_per_minute }} wpm
 						</span>
 					{% endif %}
 				</td>
