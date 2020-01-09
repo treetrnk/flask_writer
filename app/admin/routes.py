@@ -511,50 +511,60 @@ def records(day=None):
         flash('Record added!','success')
         return redirect(url_for('admin.records', day=day))
     page = Page.query.filter_by(slug='admin').first()
-    day = datetime(int(day[0:3]), int(day[4:5]), int(day[-2:])) if day else datetime.utcnow() - timedelta(days=30)
-    day = datetime.combine(day, time(0,0,0))
-    start_date = day.date()
-    next_month = day + relativedelta(months=+1)
-    end_date = next_month.date()
+    current_app.logger.debug(int(day[0:4]))
+    current_app.logger.debug(int(day[4:6]))
+    current_app.logger.debug(int(day[-2:]))
+    today = datetime(int(day[0:4]), int(day[4:6]), int(day[-2:])) if day else datetime.utcnow()
+    current_app.logger.debug(f'here is day: {today}')
+    today = datetime.combine(today, time(0,0,0))
+    end_date = today.date()
+    prev_month = today + relativedelta(months=-1)
+    start_date = prev_month.date()
     chart_records = []
     #records = Record.query.filter(Record.date >= day, Record.date < next_month).order_by(desc('created')).all()
     records = Record.query.order_by(desc('created')).all()
     total_query = db.session.query(Record, db.func.sum(Record.words).label('data'))
     stats = {
             'week': total_query.filter(
-                    Record.date >= (datetime.utcnow() - timedelta(days=7)),
-                    Record.date <= datetime.utcnow()
+                    Record.date >= (today - timedelta(days=7)),
+                    Record.date <= today
                 ).all()[0].data,
             'month': total_query.filter(
-                    Record.date >= (datetime.utcnow() - timedelta(days=30)),
-                    Record.date <= datetime.utcnow()
+                    Record.date >= (today - timedelta(days=30)),
+                    Record.date <= today
                 ).all()[0].data,
             'year': total_query.filter(
-                    Record.date >= (datetime.utcnow() - timedelta(days=365)),
-                    Record.date <= datetime.utcnow()
+                    Record.date >= (today - timedelta(days=365)),
+                    Record.date <= today
                 ).all()[0].data,
         }
+    #stats['week'] = stats['week'].data if stats['week'] else 0
+    #stats['month'] = stats['month'].data if stats['month'] else 0
+    #stats['year'] = stats['year'].data if stats['year'] else 0
     stats['week_avg'] = int(stats['week'] / 7) if stats['week'] else 0
     stats['month_avg'] = int(stats['month'] / 30) if stats['month'] else 0
     stats['year_avg'] = int(stats['year'] / 365) if stats['year'] else 0
     best_query = db.session.query(Record, db.func.sum(Record.words).label('best')).group_by(Record.date).order_by(desc('best'))
     stats['week_best'] = best_query.filter(
-            Record.date >= (datetime.utcnow() - timedelta(days=7)),
-            Record.date <= datetime.utcnow()
-        ).first().best
+            Record.date >= (today - timedelta(days=7)),
+            Record.date <= today
+        ).first()
+    stats['week_best'] = stats['week_best'].best if stats['week_best'] else 0
     stats['month_best'] = best_query.filter(
-            Record.date >= (datetime.utcnow() - timedelta(days=30)),
-            Record.date <= datetime.utcnow()
-        ).first().best
+            Record.date >= (today - timedelta(days=30)),
+            Record.date <= today
+        ).first()
+    stats['month_best'] = stats['month_best'].best if stats['month_best'] else 0
     stats['year_best'] = best_query.filter(
-            Record.date >= (datetime.utcnow() - timedelta(days=365)),
-            Record.date <= datetime.utcnow()
-        ).first().best
+            Record.date >= (today - timedelta(days=365)),
+            Record.date <= today
+        ).first()
+    stats['year_best'] = stats['year_best'].best if stats['year_best'] else 0
     current_app.logger.debug(datetime.utcnow().date())
-    stats['today'] = Record.words_by_day(datetime.now().date())
-    while (day <= next_month):
-        chart_records += [Record.words_by_day(day)]
-        day += timedelta(days=+1)
+    stats['today'] = Record.words_by_day(today.date())
+    while (prev_month <= today):
+        chart_records += [Record.words_by_day(prev_month)]
+        prev_month += timedelta(days=1)
     return render_template('admin/records.html', 
             tab='records', 
             chart_records=chart_records,
