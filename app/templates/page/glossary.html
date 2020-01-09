@@ -20,14 +20,17 @@
 				{% if definitions[type[1]] %}
 					<h2>{{ type[1] }}</h2>
 					<div class="accordian mb-5" id="{{ tag }}_accordian">
-						{% for definition in definitions[type[1]] %}
-							<div class="card">
+						{% for definition in definitions[type[1]] if definition.active or current_user.is_authenticated %}
+						<div class="card{% if not definition.active %} bg-dark text-light{% endif %}">
 								<div class="card-header" id="headingOne">
 									{% if current_user.is_authenticated %}
-										<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}"
+										<a href="{{ url_for('admin.edit_definition', obj_id=definition.id) }}"
 											 class="btn btn-secondary btn-sm float-right">
 											<i class="fas fa-edit"></i>
 										</a>
+										{% if not definition.active %}
+											<i class="fas fa-eye-slash float-left"></i>
+										{% endif %}
 									{% endif %}
 									<a href="#" class="btn btn-link collapsed d-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ tag }}{{ definition.id }}">
 										<h3 class="mb-0">

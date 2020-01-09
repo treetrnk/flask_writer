@@ -70,13 +70,14 @@ class AddTagForm(FlaskForm):
                 return False
         return True
 
-class EditDefinitionForm(FlaskForm):
+class DefinitionEditForm(FlaskForm):
     name = StringField(f'Name{required}', validators=[DataRequired()])
     type = SelectField(f'Type{required}', validators=[DataRequired()])
     body = TextAreaField(f'Body{required}', validators=[DataRequired()])
     hidden_body = TextAreaField("Author's Notes")
-    parent_id = SelectField('Parent', coerce=int)
-    tag_id = SelectField(f'Linked Tag', coerce=int)
+    parent_id = SelectField('Parent', coerce=int, render_kw={'data_type': 'select2'})
+    tag_id = SelectField(f'Linked Tag', coerce=int, render_kw={'data_type': 'select2'})
+    active = BooleanField(f'Active', description="Uncheck to hide from readers")
     #tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
 
     #def validate_name(self, name):

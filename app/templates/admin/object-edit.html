@@ -17,18 +17,27 @@
 					{{ field.label(class="col-form-label col-md-3 text-md-right") }}
 					<div class="col">
 						{% if field.errors %}
-							{{ field(class="form-control is-invalid") }}
+							{% if field.widget.input_type == 'checkbox' %}
+								{{ field(class="mt-2 is-invalid") }}
+							{% else %}
+								{{ field(class="form-control is-invalid") }}
+							{% endif %}
 							<div class="invalid-feedback">
 								{% for error in field.errors %}
 									<span>{{ error }}</span>
 								{% endfor %}
 							</div>
 						{% else %}
-							{{ field(class="form-control") }}
+							{% if field.widget.input_type == 'checkbox' %}
+								{{ field(class="mt-2") }}
+							{% else %}
+								{{ field(class="form-control") }}
+							{% endif %}
 						{% endif %}
-						{{ field.form_text }}
 						{% if field.description %}
-							{{ field.description|safe }}
+							<small class="form-text text-muted">
+								{{ field.description }}
+							</small>
 						{% endif %}
 					</div>
 				</div>

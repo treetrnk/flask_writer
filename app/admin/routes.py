@@ -5,7 +5,7 @@ from app import db
 from app.admin import bp
 from app.admin.functions import log_new, log_change
 from app.admin.forms import (
-        AddUserForm, AddPageForm, AddTagForm, EditUserForm, EditDefinitionForm, 
+        AddUserForm, AddPageForm, AddTagForm, EditUserForm, DefinitionEditForm, 
         EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm
     )
 from app.admin.generic_views import SaveObjView, DeleteObjView
@@ -312,73 +312,68 @@ def definitions():
             len=len,
         )
 
-@bp.route('/admin/definition/add', methods=['GET', 'POST'])
-@login_required
-def add_definition():
-    page = Page.query.filter_by(slug='admin').first()
-    form = EditDefinitionForm()
-    form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
-    form.type.choices = Definition.TYPE_CHOICES
-    form.tag_id.choices = [(0, '')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
-    if form.validate_on_submit():
-        definition = Definition(
-                name=form.name.data,
-                type=form.type.data,
-                body=form.body.data,
-                hidden_body=form.hidden_body.data,
-                parent_id=form.parent_id.data,
-            )
-        if form.tag_id.data > 0:
-            definition.tag_id = form.tag_id.data
-        db.session.add(definition)
-        db.session.commit()
-        log_new(definition, 'added a definition')
-        flash("Definition added successfully.", "success")
-        return redirect(url_for('admin.definitions'))
-    return render_template('admin/definition-edit.html', 
-            form=form, 
-            tab='definitions', 
-            action='Add', 
-            page=page
-        )
+class AddDefinition(SaveObjView):
+    title = "Add Definition"
+    model = Definition
+    form = DefinitionEditForm
+    action = 'Add'
+    log_msg = 'added a definition'
+    success_msg = 'Definition added.'
+    delete_endpoint = 'admin.delete_definition'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.definitions'}
 
-@bp.route('/admin/definition/edit/<int:definition_id>', methods=['GET', 'POST'])
-@login_required
-def edit_definition(definition_id):
-    page = Page.query.filter_by(slug='admin').first()
-    definition = Definition.query.filter_by(id=definition_id).first()
-    form = EditDefinitionForm()
-    form.parent_id.choices = [(p.id, str(p)) for p in Page.query.all()]
-    form.type.choices = Definition.TYPE_CHOICES
-    form.tag_id.choices = [(0, '')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
-    if form.validate_on_submit():
-        log_orig = log_change(definition)
-        definition.name=form.name.data
-        definition.type=form.type.data
-        definition.body=form.body.data
-        definition.hidden_body=form.hidden_body.data
-        definition.parent_id=form.parent_id.data
-        if form.tag_id.data > 0:
-            definition.tag_id=form.tag_id.data
-        #definition.tags=form.tags.data
-        log_change(log_orig, definition, 'edited a definition')
-        db.session.commit()
-        flash("Definition updated successfully.", "success")
-        return redirect(url_for('admin.definitions'))
-    form.name.data = definition.name
-    form.type.data = definition.type
-    form.body.data = definition.body
-    form.hidden_body.data = definition.hidden_body
-    form.tag_id.data = definition.tag_id
-    form.parent_id.data = definition.parent_id
-    #form.tags.data = definition.tags
-    return render_template('admin/definition-edit.html', 
-            form=form, 
-            tab='definitions', 
-            definition=definition, 
-            action='Edit', 
-            page=page
-        )
+    def extra(self):
+        self.form.type.choices = Definition.TYPE_CHOICES
+        self.form.tag_id.choices = [(0,'')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
+        self.form.parent_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
+        self.context['tab'] = 'definitions'
+        #self.context.update({'form': self.form})
+
+    def pre_post(self):
+        if self.form.parent_id.data == 0:
+            self.form.parent_id.data = None
+        if self.form.tag_id.data == 0:
+            self.form.tag_id.data = None
+
+bp.add_url_rule("/admin/definition/add", 
+        view_func=login_required(AddDefinition.as_view('add_definition')))
+
+class EditDefinition(SaveObjView):
+    title = "Edit Definition"
+    model = Definition
+    form = DefinitionEditForm
+    action = 'Edit'
+    log_msg = 'updated a definition'
+    success_msg = 'Definition updated.'
+    delete_endpoint = 'admin.delete_definition'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.definitions'}
+
+    def extra(self):
+        self.form.type.choices = Definition.TYPE_CHOICES
+        self.form.tag_id.choices = [(0,'')] + [(t.id, t.name) for t in Tag.query.all()]
+        self.form.parent_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
+        self.context['tab'] = 'definitions'
+        #self.context.update({'form': self.form})
+
+    def pre_post(self):
+        if self.form.parent_id.data == 0:
+            self.form.parent_id.data = None
+        if self.form.tag_id.data == 0:
+            self.form.tag_id.data = None
+
+bp.add_url_rule("/admin/definition/edit/<int:obj_id>", 
+        view_func=login_required(EditDefinition.as_view('edit_definition')))
+
+class DeleteDefinition(DeleteObjView):
+    model = Definition
+    log_msg = 'deleted a definition'
+    success_msg = 'Definition deleted.'
+    redirect = {'endpoint': 'admin.definitions'}
+
+bp.add_url_rule("/admin/Definition/delete", 
+        view_func = login_required(DeleteDefinition.as_view('delete_definition')))
 
 @bp.route('/admin/links')
 @login_required
@@ -403,6 +398,7 @@ class AddLink(SaveObjView):
     redirect = {'endpoint': 'admin.products'}
 
     def extra(self):
+        self.context['tab'] = 'shop'
         self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
         current_app.logger.debug(request.args.get('product_id'))
         if request.args.get('product_id'):
@@ -423,6 +419,7 @@ class EditLink(SaveObjView):
     redirect = {'endpoint': 'admin.products'}
 
     def extra(self):
+        self.context['tab'] = 'shop'
         self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
 
 bp.add_url_rule("/admin/link/edit/<int:obj_id>", 
@@ -459,6 +456,9 @@ class AddProduct(SaveObjView):
     template = 'admin/object-edit.html'
     redirect = {'endpoint': 'admin.products'}
 
+    def extra(self):
+        self.context['tab'] = 'shop'
+
     def pre_post(self):
         self.obj.updater_id = current_user.id
 
@@ -475,6 +475,9 @@ class EditProduct(SaveObjView):
     delete_endpoint = 'admin.delete_product'
     template = 'admin/object-edit.html'
     redirect = {'endpoint': 'admin.products'}
+
+    def extra(self):
+        self.context['tab'] = 'shop'
 
     def pre_post(self):
         self.obj.updater_id = current_user.id

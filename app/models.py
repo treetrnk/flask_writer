@@ -522,9 +522,9 @@ class Subscriber(db.Model):
 class Definition(db.Model):
     
     TYPE_CHOICES = [
+        ('events', 'Events'),
         ('locations', 'Locations'),
         ('people', 'People'),
-        ('places', 'Places'),
         ('races', 'Races'),
         ('other', 'Other'),
     ]
@@ -539,6 +539,7 @@ class Definition(db.Model):
     tag_id = db.Column(db.Integer(), db.ForeignKey('tag.id'), nullable=True)
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     parent = db.relationship('Page', backref='definitions')
+    active = db.Column(db.Boolean, default=True)
 
     def html_body(self, hidden=False):
         body = self.hidden_body if hidden else self.body

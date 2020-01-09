@@ -20,12 +20,16 @@
 	</thead>
 	<tbody>
 		{% for definition in definitions %}
-			<tr>
+			<tr {% if not definition.active %}class="table-secondary"{% endif %}>
 				<td>
-					<a href="{{ url_for('admin.edit_definition', definition_id=definition.id) }}">
+					<a href="{{ url_for('admin.edit_definition', obj_id=definition.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
 					{{ definition.name }}
+					{% if not definition.active %}
+						<i class="fas fa-eye-slash"></i>
+						<span class="d-none">hidden</span>
+					{% endif %}
 				</td>
 				<td>
 					{{ definition.parent }}
