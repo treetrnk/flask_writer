@@ -36,6 +36,7 @@
 					{{ subscriber.subscription[1:-1] }}
 				</td>
 				<td>
+					<span class="d-none">{{ subscriber.sub_date }}</span>
 					<span data-toggle="tooltip" title="{{ subscriber.sub_date }}">
 						{{ moment(subscriber.sub_date).fromNow() }}
 					</span>
