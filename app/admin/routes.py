@@ -210,6 +210,7 @@ def edit_page(id, ver_id=None):
         db.session.commit()
         flash("Page updated successfully.", "success")
         Page.set_nav()
+        return redirect(url_for('admin.edit_page', id=id))
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
     versions = PageVersion.query.filter_by(original_id=id).order_by(desc('edit_date')).all()
