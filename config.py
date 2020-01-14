@@ -25,3 +25,4 @@ class Config(object):
     BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'
     ADMINS=[os.environ.get('ADMINS')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
+    DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None

@@ -207,6 +207,11 @@ class Page(db.Model):
         else: 
             return str(current_app.config['DEFAULT_BANNER_PATH'])
 
+    def meta_img(self):
+        if self.banner_path():
+            return self.banner_path()
+        return str(current_app.config['DEFAULT_FAVICON'])
+
     def section_name(self):
         if self.template == 'chapter' or self.template == 'post':
             if self.parent_id:
