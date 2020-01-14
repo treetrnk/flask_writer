@@ -25,14 +25,14 @@
 				{{ form.subscription.label(class="col-sm-2 control-from-label text-md-right") }} 
 				<div class="col-sm-8">
 					{% if form.subscription.errors %}
-						{{ form.subscription(class="form-control is-invalid") }}
-						<div class="invalid-feedback">
+						{{ form.subscription(class="table-danger list-unstyled") }}
+						<div class="invalid-feedback d-block">
 							{% for error in form.subscription.errors %}
 								{{ error }}
 							{% endfor %}
 						</div>
 					{% else %}
-						{{ form.subscription(class="form-control") }}
+						{{ form.subscription(class="list-unstyled") }}
 					{% endif %}
 					<small class="form-text text-muted">
 						{{ form.subscription.description }}

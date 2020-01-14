@@ -72,7 +72,6 @@ def subscribe():
     Page.set_nav()
     form = SubscribeForm()
     form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
-    form.subscription.data = ['all']
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -98,6 +97,7 @@ def subscribe():
         current_app.logger.info(f'New Subscriber!\n    {repr(sub)}')
         flash('You have subscribed successfully!', 'success')
         return redirect(url_for('page.home'))
+    form.subscription.data = [i[0] for i in Subscriber.SUBSCRIPTION_CHOICES]
     return render_template('subscribe.html',
             form=form
         )

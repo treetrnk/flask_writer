@@ -472,7 +472,7 @@ class Subscriber(db.Model):
     sub_date = db.Column(db.DateTime(), default=datetime.utcnow)
 
     SUBSCRIPTION_CHOICES = [
-            ('all','All'),
+            #('all','All'),
             ('news', 'Promotions and News'),
             ('sprig','Sprig Chapter Updates'),
             ('blog','Blog Posts'),
