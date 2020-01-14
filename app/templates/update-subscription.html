@@ -25,7 +25,7 @@
 				{{ form.subscription.label(class="col-sm-2 control-from-label text-md-right") }} 
 				<div class="col-sm-8">
 					{% if form.subscription.errors %}
-						{{ form.subscription(class="table-danger list-unstyled") }}
+						{{ form.subscription(class="border border-danger list-unstyled rounded") }}
 						<div class="invalid-feedback d-block">
 							{% for error in form.subscription.errors %}
 								{{ error }}
