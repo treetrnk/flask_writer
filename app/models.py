@@ -364,7 +364,7 @@ class Page(db.Model):
         children = self.pub_children(published_only=published_only, chapter_post_only=True)
         for child in children:
             total += child.word_count()
-        return int(total / len(children))
+        return int(total / len(children)) if len(children) else total
 
     def child_read_time(self, published_only=True):
         words = self.child_word_count(published_only)
