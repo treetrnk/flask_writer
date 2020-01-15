@@ -523,7 +523,7 @@ def records(day=None):
     start_date = prev_month.date()
     chart_records = []
     #records = Record.query.filter(Record.date >= day, Record.date < next_month).order_by(desc('created')).all()
-    records = Record.query.order_by(desc('created')).all()
+    records = Record.query.filter(Record.date >= prev_month, Record.date <= today).order_by(desc('created')).all()
     total_query = db.session.query(Record, db.func.sum(Record.words).label('data'))
     stats = {
             'week': total_query.filter(
