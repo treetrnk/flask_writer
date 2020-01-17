@@ -35,7 +35,7 @@
 						{% if product.links|length > 1 %}
 							<div class="btn-group btn-block">
 								<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">{{ product.links[0].text|safe }}</a>
-								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Sellers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
 								</button>
 								<div class="dropdown-menu dropdown-menu-right">

@@ -226,6 +226,10 @@ $(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	})
 
+	$(function () {
+		$('.jquery-tooltip').tooltip();
+	})
+
 		/*
 	$("#subForm").submit(function(e) {
 		if ($honeypot.is(':checked')) {
