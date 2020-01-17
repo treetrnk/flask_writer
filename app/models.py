@@ -156,22 +156,30 @@ class Page(db.Model):
 
     def html(self, field):
         if field == 'body':
-            return markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+            data = self.body
         if field == 'notes':
-            return markdown(self.notes.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+            data = self.notes
+        data = markdown(data.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+        data = Product.replace_product_markup(data)
+        return data
 
     def html_body(self):
-        return markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+        body = markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+        body = Product.replace_product_markup(body)
+        return body
 
     def text_body(self):
         pattern = re.compile(r'<.*?>')
         return pattern.sub('', self.html_body())
 
     def html_sidebar(self):
+        sidebar = self.sidebar
         if self.template == 'chapter' or self.template == 'post':
             if self.parent_id:
-                return markdown(self.parent.sidebar)
-        return markdown(self.sidebar)
+                sidebar = self.parent.sidebar
+        sidebar = markdown(sidebar)
+        sidebar = Product.replace_product_markup(sidebar)
+        return sidebar
     
     def description(self, length=247):
         if self.summary:
@@ -600,6 +608,25 @@ class Product(db.Model):
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
     sort = db.Column(db.Integer, default=500)
     active = db.Column(db.Boolean, default=False)
+
+    def card(self, hide=[]):
+        return render_template('page/product-card.html',
+                product=self,
+                hide=hide,
+            )
+
+    def replace_product_markup(text):
+        result = text
+        matches = re.findall('p\[(\d*)\]', text)
+        for match in matches:
+            pid = match[0]
+            product = Product.query.filter_by(id = pid).first()
+            if product:
+                result = result.replace(f'p[{pid}]', product.card(hide=['description']))
+                current_app.logger.debug(result)
+            else:
+                result = result.replace(f'p[{pid}]', '')
+        return result
 
     def __str__(self):
         return f"{self.name}"
