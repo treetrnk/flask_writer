@@ -15,14 +15,18 @@
 			</a>
 			<div class="card-body">
 	{% endif %}
-				<h3 class="card-title">
-					{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
-						{{ product.name }}
-					</a>
-				</h3>
-				<p class="text-center">
-				Starting at <b>{{ product.price }}</b>
-				</p>
+				{% if not 'title' in hide %}
+					<h3 class="card-title">
+						{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
+							{{ product.name }}
+						</a>
+					</h3>
+				{% endif %}
+				{% if not 'price' in hide %}
+					<p class="text-center">
+					Starting at <b>{{ product.price }}</b>
+					</p>
+				{% endif %}
 				{% if not 'description' in hide %}
 					<p>
 						<small>
@@ -33,7 +37,7 @@
 				<div class="text-center">
 					{% if product.links %}
 						{% if product.links|length > 1 %}
-							<div class="btn-group btn-block">
+						<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
 								<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">{{ product.links[0].text|safe }}</a>
 								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Sellers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
@@ -45,10 +49,10 @@
 								</div>
 							</div>
 						{% else %}
-							<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">{{ product.links[0].text|safe }}</a>
+						<a href="{{ product.links[0].url }}" class="btn btn-primary {% if not 'btnblock' in hide %}btn-block{% endif %}" target="_blank">{{ product.links[0].text|safe }}</a>
 						{% endif %}
 					{% else %}
-						<button type="button" class="btn btn-secondary btn-block disabled" disabled>
+					<button type="button" class="btn btn-secondary {% if not 'btnblock' in hide %}btn-block{% endif %} disabled" disabled>
 							<i class="fas fa-seedling"></i> Coming Soon!
 						</button>
 					{% endif %}
