@@ -4,7 +4,7 @@
   <div class="col-md-10 col-sm-12">
 		{% include 'theme-chooser.html' %}
 		<h1 class="mb-4">{{ page.title }}</h1>
-		<div class="row">
+		<div class="row justify-content-center">
 
 			{% for product in products %}
 				<div class="col-md-4 col-sm-6 col">
@@ -26,7 +26,7 @@
 									{{ product.description }}
 								</small>
 							</p>
-							<div class="text-right">
+							<div class="text-center">
 								{% if product.links %}
 									{% if product.links|length > 1 %}
 										<div class="btn-group btn-block">
@@ -43,6 +43,8 @@
 									{% else %}
 										<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">{{ product.links[0].text|safe }}</a>
 									{% endif %}
+								{% else %}
+									<h3>Coming Scoon!</h3>
 								{% endif %}
 							</div>
 						</div>
