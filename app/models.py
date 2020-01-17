@@ -178,7 +178,7 @@ class Page(db.Model):
             if self.parent_id:
                 sidebar = self.parent.sidebar
         sidebar = markdown(sidebar)
-        sidebar = Product.replace_product_markup(sidebar)
+        sidebar = Product.replace_product_markup(sidebar, hide=['description'])
         return sidebar
     
     def description(self, length=247):
@@ -615,14 +615,14 @@ class Product(db.Model):
                 hide=hide,
             )
 
-    def replace_product_markup(text):
+    def replace_product_markup(text, hide=[]):
         result = text
         matches = re.findall('p\[(\d*)\]', text)
         for match in matches:
             pid = match[0]
             product = Product.query.filter_by(id = pid).first()
             if product:
-                result = result.replace(f'p[{pid}]', product.card(hide=['description']))
+                result = result.replace(f'p[{pid}]', product.card(hide=hide))
                 current_app.logger.debug(result)
             else:
                 result = result.replace(f'p[{pid}]', '')
