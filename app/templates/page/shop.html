@@ -44,7 +44,9 @@
 										<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">{{ product.links[0].text|safe }}</a>
 									{% endif %}
 								{% else %}
-									<button type="button" class="btn btn-secondary btn-block disabled">Coming Soon!</button>
+									<button type="button" class="btn btn-secondary btn-block disabled">
+										<i class="fas fa-seedling"></i> Coming Soon!
+									</button>
 								{% endif %}
 							</div>
 						</div>
