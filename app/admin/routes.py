@@ -400,7 +400,7 @@ class AddLink(SaveObjView):
 
     def extra(self):
         self.context['tab'] = 'shop'
-        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
+        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.all()]
         current_app.logger.debug(request.args.get('product_id'))
         if request.args.get('product_id'):
             self.form.product_id.data = int(request.args.get('product_id'))
@@ -421,7 +421,7 @@ class EditLink(SaveObjView):
 
     def extra(self):
         self.context['tab'] = 'shop'
-        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.filter_by(active=True).all()]
+        self.form.product_id.choices = [(p.id, str(p)) for p in Product.query.all()]
 
 bp.add_url_rule("/admin/link/edit/<int:obj_id>", 
         view_func=login_required(EditLink.as_view('edit_link')))
