@@ -64,3 +64,4 @@ uploads/
 .flaskenv
 .gitignore
 textlogs/
+app/templates/analytics.html
