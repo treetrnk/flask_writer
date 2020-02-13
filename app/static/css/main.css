@@ -396,4 +396,29 @@
 					-moz-border-radius: 6px 0 6px 6px;
 					border-radius: 6px 0 6px 6px;
 			}
+			blockquote::before {
+				content: '❝';
+				position: absolute;
+				font-size: 80px;
+				color: #eee;
+				z-index: 0;
+				top: -40px;
+				left: -30px;
+			}
+			blockquote {
+				position: relative;
+				margin-left: 30px;
+				margin-right: 30px;
+				/*border-left: solid 3px #eee;*/
+				font-size: 17.5px !important;
+				padding-top: 5px;
+				padding-left: 15px;
+				padding-right: 15px;
+				font-style: italic;
+				background-color: rgba(125,125,125,0.07);
+			}
+			blockquote p {
+				position: relative;
+				z-index: 1;
+			}
 		</style>
