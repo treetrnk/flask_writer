@@ -400,7 +400,7 @@
 				content: '❝';
 				position: absolute;
 				font-size: 80px;
-				color: #eee;
+				color: #48a3f2;
 				z-index: 0;
 				top: -40px;
 				left: -30px;
@@ -411,7 +411,8 @@
 				margin-right: 30px;
 				/*border-left: solid 3px #eee;*/
 				font-size: 17.5px !important;
-				padding-top: 5px;
+				padding-top: 10px;
+				padding-bottom: 1px;
 				padding-left: 15px;
 				padding-right: 15px;
 				font-style: italic;
