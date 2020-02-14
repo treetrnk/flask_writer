@@ -399,24 +399,25 @@
 			blockquote::before {
 				content: '❝';
 				position: absolute;
-				font-size: 80px;
+				font-size: 90px;
 				color: #48a3f2;
 				z-index: 0;
 				top: -40px;
-				left: -30px;
+				left: -35px;
 			}
 			blockquote {
 				position: relative;
 				margin-left: 30px;
 				margin-right: 30px;
-				/*border-left: solid 3px #eee;*/
-				font-size: 17.5px !important;
+				/*border-left: solid 3px #eee;
+				font-size: 19px !important;*/
 				padding-top: 10px;
 				padding-bottom: 1px;
 				padding-left: 15px;
 				padding-right: 15px;
 				font-style: italic;
-				background-color: rgba(125,125,125,0.07);
+				background-color: rgba(125,125,125,0.06);
+				border-radius: 5px;
 			}
 			blockquote p {
 				position: relative;
