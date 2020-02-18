@@ -603,6 +603,7 @@ class Link(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
+    slug = db.Column(db.String(150), nullable=False)
     price = db.Column(db.String(10), nullable=False, default='$0.00')
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")

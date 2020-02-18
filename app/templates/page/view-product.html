@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{ url_for('page.shop') }}">Shop</a></li>
+		<li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+	</ol>
+</nav>
+
+<div class="row">
+	<div class="col-md-3 col-12">
+		{% if product.links %}	
+			<a href="{{ product.links[0].url }}" target="_blank">
+		{% endif %}
+				<img src="{{ product.image }}" class="img-fluid" />
+		</a>
+	</div>
+	<div class="col">
+		<h1>{{ product.name }}</h1>
+
+		<p class="mb-5">{{ product.description }}</p>
+		<h3 class="mb-5">Starting at<br />{{ product.price }}</h3>
+		{% if product.links %}	
+			<a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg" target="_blank">{{ product.links[0].text|safe }}</a>
+			{% if product.links|length > 1 %}
+				<hr class="mt-4 mb-4" />
+				<h3>Other Sellers:</h3>
+				<ul>
+					{% for link in product.links[1:] %}
+						<li><a href="{{ link.url }}" target="_blank">{{ link.text|safe }}</a></li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% else %}
+			<button type="button" class="btn btn-secondary btn-lg disabled" disabled>
+				<i class="fas fa-seedling"></i> Coming Soon!
+			</button>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

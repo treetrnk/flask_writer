@@ -26,7 +26,8 @@
 					<a href="{{ url_for('admin.edit_product', obj_id=obj.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
-					{{ obj.name }}
+					{{ obj.name }} 
+					<a href="{{ url_for('page.view_product', slug=obj.slug) }}" target="product"><i class="fas fa-link"></i></a>
 					<span style="display:none;">
 					{% if obj.active %}
 						active

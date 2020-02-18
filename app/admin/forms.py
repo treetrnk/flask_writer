@@ -87,7 +87,8 @@ class DefinitionEditForm(FlaskForm):
     #    return True
 
 class ProductEditForm(FlaskForm):
-    name = StringField(f'Name{required}', validators=[DataRequired()])
+    name = StringField(f'Name{required}', validators=[DataRequired()], render_kw={'id':'page_title_input'})
+    slug = StringField(f'Slug{required}', validators=[DataRequired()], render_kw={'id':'page_slug_input'})
     price = StringField(f'Price{required}', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
