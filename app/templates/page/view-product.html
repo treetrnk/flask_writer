@@ -31,7 +31,7 @@
 		</center>
 			{% if product.links|length > 1 %}
 				<hr class="mt-4 mb-4" />
-				<h3>Other Sellers:</h3>
+				<h3>More Links:</h3>
 				<ul>
 					{% for link in product.links[1:] %}
 						<li><a href="{{ link.url }}" target="_blank">{{ link.text|safe }}</a></li>
