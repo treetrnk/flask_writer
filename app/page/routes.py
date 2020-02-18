@@ -190,13 +190,14 @@ def shop():
 @bp.route('/shop/<string:slug>')
 def view_product(slug):
     Page.set_nav()
-    product = Product.query.filter_by(slug=slug).first()
+    product = Product.query.filter_by(slug=slug,active=True).first()
     page = Page.query.filter_by(slug='shop').first()
     if product:
-        return render_template(f'page/view-product.html', 
-                page=page,
-                product=product,
-            )
+        if product.active or current_user.is_authenticated:
+            return render_template(f'page/view-product.html', 
+                    page=page,
+                    product=product,
+                )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
