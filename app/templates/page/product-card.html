@@ -10,14 +10,14 @@
 		{% endif %}
 	{% else %}
 		<div class="card shadow mb-4">
-			{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
+			<a href="{{ url_for('page.view_product', slug=product.slug) }}">
 				<div style="height:200px;width:100%;background-image:url({{ product.image }});background-size:contain;background-repeat:no-repeat;background-position:center center;background-color: rgba(230,230,230,0.3)"></div>
 			</a>
 			<div class="card-body">
 	{% endif %}
 				{% if not 'title' in hide %}
 					<h3 class="card-title">
-						{% if product.links %}<a href="{{ product.links[0].url }}" target="_blank">{% endif %}
+						<a href="{{ url_for('page.view_product', slug=product.slug) }}">
 							{{ product.name }}
 						</a>
 					</h3>
@@ -51,17 +51,9 @@
 								</div>
 							</div>
 					{% else %}
-						<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
-							<button type="button" class="btn btn-secondary btn-block disabled" disabled>
-								<i class="fas fa-seedling"></i> Coming Soon!
-							</button>
-							<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="sr-only">Toggle Dropdown</span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right">
-								<a class="dropdown-item" href="{{ url_for('page.view_product', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
-							</div>
-						</div>
+						<button type="button" class="btn btn-secondary {% if not 'btnblock' in hide %}btn-block{% endif %} disabled" disabled>
+							<i class="fas fa-seedling"></i> Coming Soon!
+						</button>
 					{% endif %}
 				</div>
 	{% if not 'card' in hide %}

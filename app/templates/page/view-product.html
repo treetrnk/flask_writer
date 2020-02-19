@@ -21,6 +21,16 @@
 	</div>
 	<div class="col">
 		<h1>{{ product.name }}</h1>
+		{% if product.linked_page %}
+			<small class="text-muted">
+				(Product for: 
+				<i>
+					<a href="{{ product.linked_page.path }}">
+						{{ product.linked_page.title }}
+					</a>
+				</i>)
+			</small>
+		{% endif %}
 
 		<p class="mb-5">{{ product.description }}</p>
 		<center>
