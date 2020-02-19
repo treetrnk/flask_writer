@@ -608,6 +608,8 @@ class Product(db.Model):
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
     sort = db.Column(db.Integer, default=500)
+    linked_page_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
+    linked_page = db.relationship('Page', backref='products')
     active = db.Column(db.Boolean, default=False)
 
     def card(self, hide=[]):

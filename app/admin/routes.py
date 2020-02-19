@@ -459,6 +459,7 @@ class AddProduct(SaveObjView):
 
     def extra(self):
         self.context['tab'] = 'shop'
+        self.form.linked_page_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
 
     def pre_post(self):
         self.obj.updater_id = current_user.id
@@ -479,6 +480,7 @@ class EditProduct(SaveObjView):
 
     def extra(self):
         self.context['tab'] = 'shop'
+        self.form.linked_page_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
 
     def pre_post(self):
         self.obj.updater_id = current_user.id

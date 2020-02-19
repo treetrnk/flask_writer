@@ -47,4 +47,18 @@
 	</div>
 </div>
 
+<br />
+
+<hr class="mb-4 mt-5" />
+
+<h3 class="mb-4">Related Products</h3>
+
+<div class="row">
+	{% for r_product in related %}
+		<div class="col-md-4 col">
+			{{ r_product.card()|safe }}
+		</div>
+	{% endfor %}
+</div>
+
 {% endblock %}
