@@ -197,7 +197,7 @@ def view_product(slug):
             related = Product.query.filter(
                     Product.linked_page_id == product.linked_page_id,
                     Product.id != product.id,
-                ).order_by('sort','name').limit(3).all()
+                ).order_by('sort','name').limit(4).all()
             return render_template(f'page/view-product.html', 
                     page=page,
                     product=product,
