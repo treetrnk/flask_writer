@@ -246,12 +246,23 @@ $(document).ready(function() {
 		if (prevScrollpos > currentScrollPos) {
 			$("#topNavbar").css("top","0");
 			$("#sub-btn").css("bottom","15px");
+			if ($(window).scrollTop() > 100) {
+				$("#scroll-top").css("right","20px");
+			} 
 		} else {
 			$("#topNavbar").css("top","-80px");
 			$("#sub-btn").css("bottom","-80px");
+			$("#scroll-top").css("right","-80px");
 		}
 		prevScrollpos = currentScrollPos;
 	}
+
+	$('#scroll-top').click(function() {
+			$("html, body").animate({
+				scrollTop: 0
+			}, 100);
+			return false;
+	});
 
 });
 

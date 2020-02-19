@@ -343,6 +343,19 @@
         right: 20px;
         z-index: 2;
       }
+			#scroll-top {
+				background-color: rgba(125,125,125,0.3);
+				position: fixed;
+				text-align: center;
+				border: 1px solid rgba(75,75,75,0.5);
+				color: #222;
+				bottom: 70px;
+				right: -80px;
+        -webkit-box-shadow: 3px 3px 10px 1px rgba(0,0,0, .3);
+        box-shadow:         3px 3px 10px 1px rgba(0,0,0, .3);
+        z-index: 3;
+				transition: right 0.3s;
+			}
       .spacer {
         height: 100px;
       }
