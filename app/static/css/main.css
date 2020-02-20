@@ -428,11 +428,31 @@
 				padding-bottom: 1px;
 				padding-left: 15px;
 				padding-right: 15px;
+				font-style: italic;
 				background-color: rgba(125,125,125,0.06);
 				border-radius: 5px;
 			}
 			blockquote p {
 				position: relative;
 				z-index: 1;
+			}
+			.author-note {
+				margin: 15px 30px;
+				border: 1px solid #eee;
+				/*
+				border-left: solid 3px #eee;
+				border-top: solid 3px #eee;
+				font-size: 19px !important;
+        -moz-box-shadow:    5px 5px 5px 1px rgba(0,0,0, .1);
+        -webkit-box-shadow: 5px 5px 5px 1px rgba(0,0,0, .1);
+        box-shadow:         5px 5px 5px 1px rgba(0,0,0, .1);
+				*/
+				padding-top: 15px;
+				padding-bottom: 1px;
+				padding-left: 15px;
+				padding-right: 15px;
+				background-color: rgba(125,125,125,0.06);
+				border-radius: 5px;
+
 			}
 		</style>
