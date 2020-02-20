@@ -37,6 +37,7 @@ def add_user():
         user = User(
                 username=form.username.data, 
                 email=form.email.data,
+                avatar=form.avatar.data,
                 about_me=form.about_me.data,
                 timezone=form.timezone.data,
             )
@@ -59,6 +60,7 @@ def edit_user(id):
         log_orig = log_change(user)
         user.username = form.username.data
         user.email = form.email.data
+        user.avatar = form.avatar.data
         user.about_me = form.about_me.data
         user.timezone = form.timezone.data
         if form.password.data and user.check_password(form.password.data):
@@ -69,6 +71,7 @@ def edit_user(id):
         return redirect(url_for('admin.users'))
     form.username.data = user.username
     form.email.data = user.email
+    form.avatar.data = user.avatar
     form.about_me.data = user.about_me
     form.timezone.data = user.timezone
     return render_template('admin/user-edit.html', form=form, tab='users', action='Edit', user=user,page=page)
@@ -113,6 +116,8 @@ def add_page():
                 body = form.body.data,
                 notes = form.notes.data,
                 summary = form.summary.data,
+                author_note = form.author_note.data,
+                author_note_location = form.author_note_location.data,
                 sidebar = form.sidebar.data,
                 tags = form.tags.data,
                 user_id = current_user.id,
@@ -170,6 +175,8 @@ def edit_page(id, ver_id=None):
             body = page.body,
             notes = page.notes,
             summary = page.summary,
+            author_note = page.author_note,
+            author_note_location = page.author_note_location,
             sidebar = page.sidebar,
             tags = page.tags,
             user_id = page.user_id,
@@ -191,6 +198,8 @@ def edit_page(id, ver_id=None):
         page.body = form.body.data
         page.notes = form.notes.data
         page.summary = form.summary.data
+        page.author_note = form.author_note.data
+        page.author_note_location = form.author_note_location.data
         page.sidebar = form.sidebar.data
         page.tags = form.tags.data
         page.user_id = form.user_id.data
@@ -224,6 +233,8 @@ def edit_page(id, ver_id=None):
         form.body.data = version.body
         form.notes.data = version.notes
         form.summary.data = version.summary
+        form.author_note.data = version.author_note
+        form.author_note_location.data = version.author_note_location
         form.sidebar.data = version.sidebar
         form.tags.data = version.tags
         form.user_id.data = version.user_id
@@ -239,6 +250,8 @@ def edit_page(id, ver_id=None):
         form.body.data = page.body
         form.notes.data = page.notes
         form.summary.data = page.summary
+        form.author_note.data = page.author_note
+        form.author_note_location.data = page.author_note_location
         form.sidebar.data = page.sidebar
         form.tags.data = page.tags
         form.user_id.data = page.user_id

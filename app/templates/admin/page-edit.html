@@ -175,6 +175,40 @@
 		</div>
 	</div>
 
+	<!--AUTHOR NOTE-->
+	<div class="form-group row">
+		{{ form.author_note.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.author_note.errors %}
+				{{ form.author_note(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.author_note.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.author_note(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
+	<!--AUTHOR NOTE LOCATION-->
+	<div class="form-group row">
+		{{ form.author_note_location.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.author_note_location.errors %}
+				{{ form.author_note_location(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.author_note_location.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.author_note_location(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--SUMMARY-->
 	<div class="form-group row">
 		<div class="col-sm-2"></div>

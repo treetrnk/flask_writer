@@ -42,6 +42,23 @@
 		</div>
 	</div>
 
+	<!--AVATAR-->
+	<div class="form-group row">
+		{{ form.avatar.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.avatar.errors %}
+				{{ form.avatar(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.avatar.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.avatar(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--ABOUT ME-->
 	<div class="form-group row">
 		{{ form.about_me.label(class="col-sm-2 control-from-label text-md-right") }} 

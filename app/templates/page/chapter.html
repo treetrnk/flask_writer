@@ -22,10 +22,18 @@
 		{% include 'page/notes.html' %}
 		{% include 'page/next_prev.html' %}
 
+		{% if page.author_note and page.author_note_location == 'top' %}
+			{% include 'page/author-note.html' %}
+		{% endif %}
+
 		{% include 'page/edit.html' %}
     <div class="content">
 			{{ page.html_body()|safe }}
     </div>
+
+		{% if page.author_note and page.author_note_location == 'bottom' %}
+			{% include 'page/author-note.html' %}
+		{% endif %}
 
     <div class="row">
       <div class="col-sm-6 col-xs-12">

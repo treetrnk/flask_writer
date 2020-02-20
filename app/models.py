@@ -30,9 +30,9 @@ tags_defs = db.Table('tags_defs',
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
+    avatar = db.Column(db.String(500))
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    pages = db.relationship('Page', backref='user', lazy='dynamic')
     about_me = db.Column(db.String(140))
     timezone = db.Column(db.String(150))
 
@@ -71,8 +71,11 @@ class PageVersion(db.Model):
     tags = db.relationship('Tag', secondary=ver_tags, lazy='subquery', 
             backref=db.backref('page_versions', lazy=True))
     summary = db.Column(db.String(300), nullable=True)
+    author_note = db.Column(db.String(5000), nullable=True)
+    author_note_location = db.Column(db.String(20), default='bottom')
     sidebar = db.Column(db.String(5000), nullable=True)
     user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref='versions')
     sort = db.Column(db.Integer(), nullable=False, default=75)
     pub_date = db.Column(db.DateTime(), nullable=True)
     published = db.Column(db.Boolean(), default=False)
@@ -117,8 +120,11 @@ class Page(db.Model):
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
             backref=db.backref('pages', order_by='Page.path', lazy=True))
     summary = db.Column(db.String(300), nullable=True)
+    author_note = db.Column(db.String(5000), nullable=True)
+    author_note_location = db.Column(db.String(20), default='bottom')
     sidebar = db.Column(db.String(5000), nullable=True)
     user_id = db.Column('User', db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref='pages')
     sort = db.Column(db.Integer(), nullable=False, default=75)
     pub_date = db.Column(db.DateTime(), nullable=True)
     published = db.Column(db.Boolean(), default=False)
@@ -133,6 +139,11 @@ class Page(db.Model):
         ('book', 'Book'),
         ('chapter', 'Chapter'),
         ('blog', 'Blog'),
+    ]
+
+    AUTHOR_NOTE_LOCATIONS = [
+        ('bottom', 'Bottom'),
+        ('top', 'Top'),
     ]
 
     #def parent(self):
@@ -159,6 +170,8 @@ class Page(db.Model):
             data = self.body
         if field == 'notes':
             data = self.notes
+        if field == 'author_note':
+            data = self.author_note
         data = markdown(data.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
         data = Product.replace_product_markup(data)
         return data

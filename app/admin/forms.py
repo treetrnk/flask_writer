@@ -13,6 +13,7 @@ required = "<span class='text-danger'>*</span>"
 class AddUserForm(FlaskForm):
     username = StringField(f'Username{required}', validators=[DataRequired()])
     email = StringField('Email', validators=[Email(), Optional()])
+    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional()])
     about_me = TextAreaField('About Me')
     timezone = SelectField('Timezone')
     password = PasswordField(f'Password{required}', validators=[DataRequired()])
@@ -22,6 +23,7 @@ class AddUserForm(FlaskForm):
 class EditUserForm(FlaskForm):
     username = StringField(f'Username{required}', validators=[DataRequired()])
     email = StringField('Email', validators=[Email(), Optional()])
+    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional()])
     about_me = TextAreaField('About Me')
     timezone = SelectField('Timezone')
 
@@ -39,8 +41,10 @@ class AddPageForm(FlaskForm):
    template = SelectField(f'Template{required}', choices=Page.TEMPLATE_CHOICES)
    parent_id = SelectField('Parent', coerce=int)
    banner = StringField('Banner Image')
-   summary = TextAreaField('Summary')#, validators=[Length('250')])
-   sidebar = TextAreaField('Sidebar')#, validators=[Length('1000')])
+   summary = TextAreaField('Summary', validators=[Length(max=300),Optional()])
+   author_note = TextAreaField("Author's Note", validators=[Length(max=5000),Optional()], render_kw={'rows':4})
+   author_note_location = SelectField('Note Location', coerce=str, choices=Page.AUTHOR_NOTE_LOCATIONS)
+   sidebar = TextAreaField('Sidebar', validators=[Length(max=5000), Optional()])
    body = TextAreaField(f'Body{required}', validators=[DataRequired()])
    notes = TextAreaField('Notes')
    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)

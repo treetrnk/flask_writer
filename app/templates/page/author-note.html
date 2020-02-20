@@ -1,0 +1,7 @@
+<blockquote>
+	{% if page.author.avatar %}
+		 <div style="width:50px;height:50px;border-radius:100px;background:url({{ page.author.avatar }}) center center;background-size:cover;" class="float-left mr-3 mb-3"></div> 
+	{% endif %}
+	<h3>A note from {{ page.author.username }}</h3>
+	{{ page.html('author_note')|safe }}
+</blockquote>
