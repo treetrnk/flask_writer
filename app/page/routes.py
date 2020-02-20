@@ -204,7 +204,7 @@ def view_product(slug):
                     product=product,
                     related=related,
                     banner=product.image,
-                    description=product.description,
+                    description=f'{product.description} Starting at {product.price}',
                 )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
