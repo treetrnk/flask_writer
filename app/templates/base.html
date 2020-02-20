@@ -8,24 +8,48 @@
 
 			<!-- Schema.org markup for Google+ -->
 			<meta itemprop="name" content="{{ page.title }}">
-			<meta itemprop="description" content="{{ page.description() }}">
-			<meta itemprop="image" content="{{ page.meta_img() }}">
+			{% if description %}
+				<meta itemprop="description" content="{{ description }}">
+			{% else %}
+				<meta itemprop="description" content="{{ page.description() }}">
+			{% endif %}
+			{% if banner %}
+				<meta itemprop="image" content="{{ banner }}">
+			{% else %}
+				<meta itemprop="image" content="{{ page.meta_img() }}">
+			{% endif %}
 
 			<!-- Twitter Card data -->
 			<meta name="twitter:card" content="summary_large_image">
 			<meta name="twitter:site" content="@treetrnk">
 			<meta name="twitter:title" content="{{ page.title }}">
-			<meta name="twitter:description" content="{{ page.description() }}">
+			{% if description %}
+				<meta name="twitter:description" content="{{ description }}">
+			{% else %}
+				<meta name="twitter:description" content="{{ page.description() }}">
+			{% endif %}
 			<meta name="twitter:creator" content="@treetrnk">
 			<!-- Twitter summary card with large image must be at least 280x150px -->
-			<meta name="twitter:image:src" content="{{ page.banner_path() }}">
+			{% if banner %}
+				<meta name="twitter:image:src" content="{{ banner }}">
+			{% else %}
+				<meta name="twitter:image:src" content="{{ page.banner_path() }}">
+			{% endif %}
 
 			<!-- Open Graph data -->
 			<meta property="og:title" content="{{ page.title }}" />
 			<meta property="og:type" content="article" />
 			<meta property="og:url" content="http://houstonhare.com" />
-			<meta property="og:image" content="{{ page.banner_path() }}" />
-			<meta property="og:description" content="{{ page.description() }}" />
+			{% if banner %}
+				<meta property="og:image" content="{{ banner }}" />
+			{% else %}
+				<meta property="og:image" content="{{ page.banner_path() }}" />
+			{% endif %}
+			{% if description %}
+				<meta property="og:description" content="{{ description }}" />
+			{% else %}
+				<meta property="og:description" content="{{ page.description() }}" />
+			{% endif %}
 			<meta property="og:site_name" content="Stories by Houston Hare" />
 			<meta property="article:published_time" content="{{ page.pub_date }}" />
 			<meta property="article:modified_time" content="{{ page.pub_date }}" />
