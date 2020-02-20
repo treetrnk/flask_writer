@@ -1,7 +1,7 @@
 	{% if 'card' in hide %}
 		{% if not 'image' in hide %}
 			{% if product.links %}
-				<a href="{{ product.links[0].url }}" target="_blank">
+				<a href="{{ url_for('page.view_product', slug=product.slug) }}" target="_blank">
 			{% endif %}
 				<img src="{{ product.image }}" class="img-responsive" width="100%" />
 			{% if product.links %}
