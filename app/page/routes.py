@@ -199,12 +199,18 @@ def view_product(slug):
                     Product.id != product.id,
                 ).order_by('sort','name').limit(4).all()
             page.title = f"Shop: {product.name}"
+            price = product.price
+            sale_text = ''
+            if product.on_sale:
+                price = product.sale_price if product.sale_price else product.price
+                sale_text = "On Sale! "
+            description=f'{sale_text}{product.description} Starting at {price}'
             return render_template(f'page/view-product.html', 
                     page=page,
                     product=product,
                     related=related,
                     banner=product.image,
-                    description=f'{product.description} Starting at {product.price}',
+                    description=description,
                 )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    

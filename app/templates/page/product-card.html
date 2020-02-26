@@ -1,17 +1,26 @@
 	{% if 'card' in hide %}
 		{% if not 'image' in hide %}
-			{% if product.links %}
-				<a href="{{ url_for('page.view_product', slug=product.slug) }}">
-			{% endif %}
-				<img src="{{ product.image }}" class="img-responsive" width="100%" />
-			{% if product.links %}
-				</a>
-			{% endif %}
+			<div class="relative">
+				{% if product.links %}
+					<a href="{{ url_for('page.view_product', slug=product.slug) }}">
+				{% endif %}
+					<img src="{{ product.image }}" class="img-responsive" width="100%" />
+					{% if product.on_sale %}
+						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner" />
+					{% endif %}
+				{% if product.links %}
+					</a>
+				{% endif %}
+			</div>
 		{% endif %}
 	{% else %}
 		<div class="card shadow mb-4">
 			<a href="{{ url_for('page.view_product', slug=product.slug) }}">
-				<div style="height:200px;width:100%;background-image:url({{ product.image }});background-size:contain;background-repeat:no-repeat;background-position:center center;background-color: rgba(230,230,230,0.3)"></div>
+				<div class="product-card-image" style="background-image:url({{ product.image }});">
+					{% if product.on_sale %}
+						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner" />
+					{% endif %}
+				</div>
 			</a>
 			<div class="card-body">
 	{% endif %}
@@ -24,7 +33,13 @@
 				{% endif %}
 				{% if not 'price' in hide %}
 					<p class="text-center">
-					Starting at <b>{{ product.price }}</b>
+					Starting at 
+					{% if product.on_sale and product.sale_price %}
+						<span class="sale-strike">{{ product.price }}</span>
+						<b class="text-danger">{{ product.sale_price }}</b>
+					{% else %}
+						<b>{{ product.price }}</b>
+					{% endif %}
 					</p>
 				{% endif %}
 				{% if not 'description' in hide %}

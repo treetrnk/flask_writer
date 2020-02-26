@@ -454,4 +454,29 @@
 				border-radius: 5px;
 
 			}
+			.product-card-image {
+				height:200px;
+				width:100%;
+				background-size:contain;
+				background-repeat:no-repeat;
+				background-position:center center;
+				background-color: rgba(230,230,230,0.3);
+				position:relative;
+			}
+			.sale-banner {
+				position: absolute;
+				bottom: 0px;
+				right: 0px;
+				max-width: 125px;
+				z-index: 2;
+			}
+			.sale-banner-lg {
+				max-width: 175px;
+			}
+			.sale-strike {
+				text-decoration: line-through red;
+			}
+			.relative {
+				position: relative;
+			}
 		</style>

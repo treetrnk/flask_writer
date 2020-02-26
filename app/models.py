@@ -618,11 +618,13 @@ class Product(db.Model):
     name = db.Column(db.String(150), nullable=False)
     slug = db.Column(db.String(150), nullable=False)
     price = db.Column(db.String(10), nullable=False, default='$0.00')
+    sale_price = db.Column(db.String(10), default='$0.00')
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
     sort = db.Column(db.Integer, default=500)
     linked_page_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     linked_page = db.relationship('Page', backref='products')
+    on_sale = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
 
     def card(self, hide=[]):

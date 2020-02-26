@@ -94,10 +94,12 @@ class ProductEditForm(FlaskForm):
     name = StringField(f'Name{required}', validators=[DataRequired()], render_kw={'id':'page_title_input'})
     slug = StringField(f'Slug{required}', validators=[DataRequired()], render_kw={'id':'page_slug_input'})
     price = StringField(f'Price{required}', validators=[DataRequired()])
+    sale_price = StringField(f'Sale Price')
     description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
     linked_page_id = SelectField('Linked Story', coerce=int, render_kw={'data_type': 'select2'})
     sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
+    on_sale = BooleanField('On Sale')
     active = BooleanField('Active')
 
 class LinkEditForm(FlaskForm):
