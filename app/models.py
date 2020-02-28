@@ -596,6 +596,8 @@ class Link(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     text = db.Column(db.String(100), nullable=False)
+    icon = db.Column(db.String(100))
+    format = db.Column(db.String(100))
     url = db.Column(db.String(500), nullable=False)
     sort = db.Column(db.Integer, default=500)
     product = db.relationship('Product', backref=backref('links', order_by=sort))
