@@ -49,37 +49,39 @@
 						</small>
 					</p>
 				{% endif %}
-				<div class="text-center">
-					{% if product.links %}
-						<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
-								<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">
-									<i class="{{ product.links[0].icon }}"></i>
-									{{ product.links[0].text }}
-								</a>
-								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu dropdown-menu-right">
-									{% if product.links|length > 1 %}
-										{% for format in product.grouped_links() %}
-											{% for l in format %}
-												<a class="dropdown-item" href="{{ l.url }}" target="_blank">
-													<i class="{{ l.icon }}"></i>
-													{{ l.text_simple() }} {% if l.format %}({{ l.format }}){% endif %}
-												</a>
+				{% if not 'links' in hide %}
+					<div class="text-center">
+						{% if product.links %}
+							<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
+									<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">
+										<i class="{{ product.links[0].icon }}"></i>
+										{{ product.links[0].text }}
+									</a>
+									<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										{% if product.links|length > 1 %}
+											{% for format in product.grouped_links() %}
+												{% for l in format %}
+													<a class="dropdown-item" href="{{ l.url }}" target="_blank">
+														<i class="{{ l.icon }}"></i>
+														{{ l.text_simple() }} {% if l.format %}({{ l.format }}){% endif %}
+													</a>
+												{% endfor %}
+												<div class="dropdown-divider"></div>
 											{% endfor %}
-											<div class="dropdown-divider"></div>
-										{% endfor %}
-									{% endif %}
-									<a class="dropdown-item" href="{{ url_for('page.view_product', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
+										{% endif %}
+										<a class="dropdown-item" href="{{ url_for('page.view_product', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
+									</div>
 								</div>
-							</div>
-					{% else %}
-						<button type="button" class="btn btn-secondary {% if not 'btnblock' in hide %}btn-block{% endif %} disabled" disabled>
-							<i class="fas fa-seedling"></i> Coming Soon!
-						</button>
-					{% endif %}
-				</div>
+						{% else %}
+							<button type="button" class="btn btn-secondary {% if not 'btnblock' in hide %}btn-block{% endif %} disabled" disabled>
+								<i class="fas fa-seedling"></i> Coming Soon!
+							</button>
+						{% endif %}
+					</div>
+				{% endif %}
 	{% if not 'card' in hide %}
 			</div>
 	</div>
