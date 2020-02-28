@@ -608,6 +608,9 @@ class Link(db.Model):
             link.default = False
         self.default = True
 
+    def text_simple(self):
+        return self.text.replace('Buy it on','').replace('Buy it at','')
+
     def __str__(self):
         return f"{self.text} ({self.url[0:20]}...)"
 
@@ -634,6 +637,22 @@ class Product(db.Model):
                 product=self,
                 hide=hide,
             )
+
+    def grouped_links(self):
+        links = Link.query.filter_by(product_id=self.id).order_by('format','sort','text').all()
+        link_list = []
+        current_format = ''
+        current_list = []
+        for link in links:
+            if link.format != current_format:
+                current_format = link.format
+                link_list.insert(0, current_list)
+                current_list = []
+            current_list += [link]
+        link_list.insert(0, current_list)
+        link_list = [i for i in link_list if i]
+        current_app.logger.debug(link_list)
+        return link_list
 
     def replace_product_markup(text, hide=[]):
         result = text

@@ -26,4 +26,5 @@ class Config(object):
     ADMINS=[os.environ.get('ADMINS')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
-    LINK_FORMATS = os.environ.get('LINK_FORMATS').split(',') or ['Paperback','eBook','Other','']
+    LINK_FORMATS = os.environ.get('LINK_FORMATS')
+    LINK_FORMATS = LINK_FORMATS.split(',') if LINK_FORMATS else ['Paperback','eBook','Other','']

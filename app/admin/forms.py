@@ -104,6 +104,8 @@ class ProductEditForm(FlaskForm):
 
 class LinkEditForm(FlaskForm):
     text = StringField(f'Link Text{required}', validators=[Length(max=1000)])
+    icon = StringField('Icon', validators=[Length(max=200)])
+    format = SelectField('Format', validators=[Length(max=200)])
     product_id = SelectField(f'Product{required}', coerce=int, validators=[DataRequired()])
     url = StringField('URL', validators=[Length(max=500)])
     sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
