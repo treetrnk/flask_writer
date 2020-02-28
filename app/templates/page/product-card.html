@@ -61,11 +61,14 @@
 								</button>
 								<div class="dropdown-menu dropdown-menu-right">
 									{% if product.links|length > 1 %}
-										{% for l in product.links[1:]%}
-											<a class="dropdown-item" href="{{ l.url }}" target="_blank">
-												<i class="{{ l.icon }}"></i>
-												{{ l.text }} {% if l.format %}({{ l.format }}){% endif %}
-											</a>
+										{% for format in product.grouped_links() %}
+											{% for l in format %}
+												<a class="dropdown-item" href="{{ l.url }}" target="_blank">
+													<i class="{{ l.icon }}"></i>
+													{{ l.text_simple() }} {% if l.format %}({{ l.format }}){% endif %}
+												</a>
+											{% endfor %}
+											<div class="dropdown-divider"></div>
 										{% endfor %}
 									{% endif %}
 									<a class="dropdown-item" href="{{ url_for('page.view_product', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
