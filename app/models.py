@@ -609,7 +609,7 @@ class Link(db.Model):
         self.default = True
 
     def text_simple(self):
-        return self.text.replace('Buy it on','').replace('Buy it at','')
+        return self.text.replace('Buy it on ','').replace('Buy it at ','').replace('Buy on ','').replace('Buy at ', '')
 
     def __str__(self):
         return f"{self.text} ({self.url[0:20]}...)"
