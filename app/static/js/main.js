@@ -93,7 +93,6 @@ $(document).ready(function() {
 		var $this = $(this);
 		$(".toggle-tab").each(function() {
 			$($(this).data('target')).slideUp();
-			$($(this).data('target')).removeClass('d-none');
 			$(this).removeClass('active');
 		});
 		$this.addClass('active');
