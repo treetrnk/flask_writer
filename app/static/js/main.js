@@ -86,6 +86,20 @@ $(document).ready(function() {
 		}
 	});
 
+	$(".toggle-tab").click(function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+
+		var $this = $(this);
+		$(".toggle-tab").each(function() {
+			$($(this).data('target')).slideUp();
+			$($(this).data('target')).removeClass('d-none');
+			$(this).removeClass('active');
+		});
+		$this.addClass('active');
+		$($this.data('target')).slideDown();
+	});
+
 	$("#page_title_input").on('keyup', function(e) {
 		console.log("fart");
 		var title = $(this).val();

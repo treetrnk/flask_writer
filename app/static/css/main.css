@@ -479,4 +479,10 @@
 			.relative {
 				position: relative;
 			}
+			.product-image {
+				max-height: 400px;
+			}
+			.product-image-div {
+				background-color: rgba(230,230,230,0.3);
+			}
 		</style>

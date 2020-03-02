@@ -13,11 +13,11 @@
 <br />
 <div class="row">
 	<div class="col-md-6 col-12">
-		<div class="relative">
+		<div class="relative text-center product-image-div">
 			{% if product.links %}	
 				<a href="{{ product.links[0].url }}" target="_blank">
 			{% endif %}
-					<img src="{{ product.image }}" class="img-fluid" />
+					<img src="{{ product.image }}" class="img-fluid product-image" />
 					{% if product.on_sale %}
 						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner sale-banner-lg" />
 					{% endif %}
@@ -54,18 +54,28 @@
 				{{ product.links[0].text }}
 			</a>
 		</center>
+	
 			{% if product.links|length > 1 %}
-				<hr class="mb-4" />
-				<div class="row">
+			<br />
+			
+
+				<ul class="nav nav-tabs nav-fill mb-3">
+					{% for format in product.grouped_links() %}
+						<li class="nav-item">
+							<button class="btn btn-link btn-block nav-link toggle-tab {% if loop.index == 1 %}active{% endif %}" data-target="#{{ format[0].format if format[0].format else 'morelinks' }}">
+								{% if format[0].format %}
+									{{ format[0].format }}
+								{% else %}
+									More Links
+								{% endif %}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+
+
 				{% for format in product.grouped_links() %}
-					<div class="col-md-6 col-12 mb-3">
-						<h3>
-							{% if format[0].format %}
-								{{ format[0].format }}
-							{% else %}
-								More Links
-							{% endif %}
-						</h3>
+					<div id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}class="d-none"{% endif %}>
 						{% for link in format %}
 							&nbsp;&nbsp;&nbsp;&nbsp;
 							<i class="{{ link.icon }}"></i>
@@ -73,7 +83,8 @@
 						{% endfor %}
 					</div>
 				{% endfor %}
-				</div>
+
+
 			{% endif %}
 		{% else %}
 			<button type="button" class="btn btn-secondary btn-lg disabled" disabled>
