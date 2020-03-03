@@ -709,6 +709,31 @@ class Product(db.Model):
                 result = result.replace(f'p[{pid}]', '')
         return result
 
+    def send(self, recipients=[]):
+        page=Page.query.filter_by(slug='purchase-thank-you').order_by('pub_date').first()
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+        relative_path = '/products'
+        path = current_app.config['BASE_DIR'] + relative_path
+        current_app.logger.debug(path)
+        current_app.logger.debug('..' + relative_path)
+        file_path = path + '/' + self.download_path
+        attachments = [(
+            os.path.basename(file_path), 
+            magic.Magic(mime=True).from_file(file_path), 
+            current_app.open_resource(file_path).read(),
+        )]
+        send_email(
+                page.title + ' - Houston Hare Stories', #subject
+                sender,
+                recipients,
+                page.text_body(), #body
+                render_template('email/manual.html', 
+                        page=page, 
+                        body=page.html_body(),
+                    ),
+                attachments = attachments,
+            )
+
     def __str__(self):
         return f"{self.name}"
 

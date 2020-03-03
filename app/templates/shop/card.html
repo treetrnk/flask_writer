@@ -54,12 +54,12 @@
 						{% if product.links or product.download_path %}
 							<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
 									{% if product.download_path and product.simple_price() == '000' %}
-										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block" target="_blank">
+										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block">
 											<i class="fas fa-download"></i>
 											Download the eBook
 										</a>
 									{% elif product.download_path %}
-										<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block" target="_blank">
+										<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block">
 											<i class="fas fa-credit-card"></i>
 											Buy the eBook Here
 										</a>

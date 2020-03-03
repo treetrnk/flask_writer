@@ -66,9 +66,11 @@
 						{% block content %}{% endblock %}
 
 						<p style="color:#666;text-align:center;"><small>
-							You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>.<br /> 
-							To change which emails you receive, <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">update your subscription prefrences</a>.<br /> 
-							If you no longer wish to receive any emails from HoustonHare.com, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
+							{% if recipient %}
+								You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>.<br /> 
+								To change which emails you receive, <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">update your subscription prefrences</a>.<br /> 
+								If you no longer wish to receive any emails from HoustonHare.com, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
+							{% endif %}
 							&copy; Houston Hare, 2020<br />
 						</small></p>
 					</td>

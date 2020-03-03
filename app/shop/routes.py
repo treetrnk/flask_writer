@@ -1,4 +1,5 @@
 import stripe
+import json
 from flask import (
         render_template, redirect, url_for, flash, session, request, 
         current_app, make_response, send_from_directory
@@ -41,6 +42,10 @@ def buy(slug):
             'currency': 'usd',
             'quantity': 1,
         }],
+        metadata={
+            'id': product.id,
+            'slug': product.slug,
+        },
         success_url=success,
         cancel_url=cancel,
     )
@@ -90,3 +95,39 @@ def subscribe(obj_id):
     else:
         flash(f'Please subscribe to receive all subscription downloadables.', 'info')
     return redirect(url_for('page.subscribe'))
+
+@bp.route('/shop/webhook', methods=['POST'])
+def success():
+    current_app.logger.debug('TRYING TO ACCESS SUCCESSFUL PURCHASE')
+    stripe.api_key = current_app.config['STRIPE_SECRET']
+    endpoint_secret = current_app.config['STRIPE_WEBHOOK']
+    payload = request.get_data()
+    sig_header = request.headers['Stripe-Signature']
+
+    try:
+        event = stripe.Webhook.construct_event(
+                payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        current_app.logger.info('STRIPE: Invalid payload')
+        page = Page.query.filter_by(slug='404-error').first()
+        return render_template(f'page/{page.template}.html', page=page), 404
+    except stripe.error.SignatureVerificationError as e:
+        current_app.logger.info('STRIPE: Invalid signature')
+        page = Page.query.filter_by(slug='404-error').first()
+        return render_template(f'page/{page.template}.html', page=page), 404
+
+    current_app.logger.debug('STRIPE WEBHOOK')
+    current_app.logger.debug(event['type'])
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+    
+        json_payload = json.loads(payload)
+        customer = stripe.Customer.retrieve(json_payload['data']['object']['customer'])
+        for item in json_payload['data']['object']['display_items']:
+            product = Product.query.filter_by(name=item['custom']['name'][:-5]).first_or_404()
+            product.send([customer['email']])
+            current_app.logger.info('PURCHASE EMAIL SENT TO: ' + customer['email'])
+
+    return 'True'
