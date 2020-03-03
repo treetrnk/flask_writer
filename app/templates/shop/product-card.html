@@ -2,7 +2,7 @@
 		{% if not 'image' in hide %}
 			<div class="relative">
 				{% if product.links %}
-					<a href="{{ url_for('page.view_product', slug=product.slug) }}">
+					<a href="{{ url_for('shop.view', slug=product.slug) }}">
 				{% endif %}
 					<img src="{{ product.image }}" class="img-responsive" width="100%" />
 					{% if product.on_sale %}
@@ -15,7 +15,7 @@
 		{% endif %}
 	{% else %}
 		<div class="card shadow mb-4">
-			<a href="{{ url_for('page.view_product', slug=product.slug) }}">
+			<a href="{{ url_for('shop.view', slug=product.slug) }}">
 				<div class="product-card-image" style="background-image:url({{ product.image }});">
 					{% if product.on_sale %}
 						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner" />
@@ -26,7 +26,7 @@
 	{% endif %}
 				{% if not 'title' in hide %}
 					<h3 class="card-title">
-						<a href="{{ url_for('page.view_product', slug=product.slug) }}">
+						<a href="{{ url_for('shop.view', slug=product.slug) }}">
 							{{ product.name }}
 						</a>
 					</h3>
@@ -72,7 +72,7 @@
 												<div class="dropdown-divider"></div>
 											{% endfor %}
 										{% endif %}
-										<a class="dropdown-item" href="{{ url_for('page.view_product', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
+										<a class="dropdown-item" href="{{ url_for('shop.view', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
 									</div>
 								</div>
 						{% else %}

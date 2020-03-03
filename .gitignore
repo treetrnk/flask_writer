@@ -65,3 +65,4 @@ uploads/
 .gitignore
 textlogs/
 app/templates/analytics.html
+products/

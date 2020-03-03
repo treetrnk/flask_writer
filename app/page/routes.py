@@ -174,48 +174,6 @@ def rss(path):
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page)    
 
-@bp.route('/shop')
-def shop():
-    Page.set_nav()
-    products = Product.query.filter_by(active=True).order_by('sort','name').all()
-    page = Page.query.filter_by(slug='shop').first()
-    if products and page:
-        return render_template(f'page/shop.html', 
-                page=page,
-                products=products,
-            )
-    page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
-
-@bp.route('/shop/<string:slug>')
-def view_product(slug):
-    Page.set_nav()
-    product = Product.query.filter_by(slug=slug,active=True).first()
-    page = Page.query.filter_by(slug='shop').first()
-    if product:
-        if product.active or current_user.is_authenticated:
-            related = Product.query.filter(
-                    Product.linked_page_id == product.linked_page_id,
-                    Product.id != product.id,
-                ).order_by('sort','name').limit(4).all()
-            page.title = f"Shop: {product.name}"
-            price = product.price
-            sale_text = ''
-            if product.on_sale:
-                price = product.sale_price if product.sale_price else product.price
-                sale_text = "On Sale! "
-            description=f'{sale_text}{product.description} Starting at {price}'
-            return render_template(f'page/view-product.html', 
-                    page=page,
-                    product=product,
-                    related=related,
-                    banner=product.image,
-                    description=description,
-                )
-    page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
-
-
 @bp.route('/<path:path>/glossary')
 def glossary(path):
     Page.set_nav()

@@ -97,6 +97,7 @@ class ProductEditForm(FlaskForm):
     sale_price = StringField(f'Sale Price')
     description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
+    download_path = StringField('Download Path', validators=[Length(max=500)])
     linked_page_id = SelectField('Linked Story', coerce=int, render_kw={'data_type': 'select2'})
     sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
     on_sale = BooleanField('On Sale')

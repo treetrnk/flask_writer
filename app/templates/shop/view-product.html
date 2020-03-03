@@ -3,7 +3,7 @@
 
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="{{ url_for('page.shop') }}">Shop</a></li>
+		<li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Shop</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
 	</ol>
 </nav>
@@ -48,15 +48,41 @@
 		{% else %}
 			<h2 class="mb-5">{{ product.price }}</h2>
 		{% endif %}
+
+
+		{% if product.download_path %}
+			{% if product.simple_price() == '000' %}
+				<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
+					<i class="fas fa-download"></i> Download the eBook
+				</a>
+				<br />
+				<p class="text-muted">
+				 OR<br />
+				 buy it from the marketplaces below:
+				</p>
+			{% else %}
+				<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
+					<i class="fas fa-credit-card"></i> Buy the eBook here
+				</a>
+				<br />
+				<p class="text-muted">
+				 OR<br />
+				 from any of the marketplaces below:
+				</p>
+			{% endif %}
+		{% endif %}
+
+
 		{% if product.links %}	
-			<a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
-				<i class="{{ product.links[0].icon }}"></i>
-				{{ product.links[0].text }}
-			</a>
+			{% if not product.download_path %}
+				<a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
+					<i class="{{ product.links[0].icon }}"></i>
+					{{ product.links[0].text }}
+				</a>
+			{% endif %}
 		</center>
 	
 			{% if product.links|length > 1 %}
-			<br />
 			
 
 				<ul class="nav nav-tabs nav-fill mb-3">
@@ -109,6 +135,6 @@
 	{% endfor %}
 </div>
 
-<h3 class="mt-4 text-center">Find more in the <a href="{{ url_for('page.shop') }}"><i class="fas fa-shopping-cart"></i> Shop</a></h3>
+<h3 class="mt-4 text-center">Find more in the <a href="{{ url_for('shop.index') }}"><i class="fas fa-shopping-cart"></i> Shop</a></h3>
 
 {% endblock %}

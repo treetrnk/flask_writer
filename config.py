@@ -28,3 +28,5 @@ class Config(object):
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
     LINK_FORMATS = os.environ.get('LINK_FORMATS')
     LINK_FORMATS = LINK_FORMATS.split(',') if LINK_FORMATS else ['Paperback','eBook','Other','']
+    STRIPE_PUBLISHABLE = os.environ.get('STRIPE_PUBLISHABLE') or ''
+    STRIPE_SECRET = os.environ.get('STRIPE_SECRET') or ''

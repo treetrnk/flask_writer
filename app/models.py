@@ -1,3 +1,7 @@
+import re
+import pytz
+import os
+import magic
 from flask import current_app, url_for, session, jsonify, render_template
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,8 +13,6 @@ from sqlalchemy.orm import backref
 from flask_mail import Mail, Message
 from app import mail
 from app.email import send_email
-import re
-import pytz
 
 tags = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
@@ -502,6 +504,7 @@ class Subscriber(db.Model):
             ('news', 'Promotions and News'),
             ('sprig','Sprig Chapter Updates'),
             ('blog','Blog Posts'),
+            ('stories', 'Other Stories'),
         ]
 
     def all_subscribers():
@@ -527,6 +530,20 @@ class Subscriber(db.Model):
     def welcome(self):
         page=Page.query.filter_by(slug='subscriber-welcome').order_by('pub_date').first()
         sender = current_app.config['MAIL_DEFAULT_SENDER']
+        relative_path = '/products/subscriber-downloads'
+        path = current_app.config['BASE_DIR'] + relative_path
+        attachments = []
+        current_app.logger.debug(path)
+        current_app.logger.debug('..' + relative_path)
+        if os.path.isdir(path):
+            current_app.logger.debug('IT IS A DIR')
+            for filename in os.listdir(path):
+                file_path = path + '/' + filename
+                attachments += [(
+                    filename, 
+                    magic.Magic(mime=True).from_file(file_path), 
+                    current_app.open_resource(file_path).read(),
+                )]
         send_email(
                 page.title, #subject
                 sender,
@@ -537,7 +554,22 @@ class Subscriber(db.Model):
                         html=page.html_body(),
                         recipient=self,
                     ),
+                attachments = attachments,
             )
+        """
+        [
+            (
+                'sprig-issue-1.zip',
+                'application/zip',
+                current_app.open_resource('../products/sprig-issue-1.zip').read(),
+            ),
+            (
+                'sprig-bookmarks.pdf',
+                'application/pdf',
+                current_app.open_resource('../products/sprig-bookmarks.pdf').read(),
+            ),
+        ],
+        """
 
     def __str__(self):
         return f"{self.email} ({self.first_name} {self.last_name})"
@@ -626,6 +658,7 @@ class Product(db.Model):
     sale_price = db.Column(db.String(10), default='$0.00')
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
+    download_path = db.Column(db.String(500))
     sort = db.Column(db.Integer, default=500)
     linked_page_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     linked_page = db.relationship('Page', backref='products')
@@ -633,10 +666,15 @@ class Product(db.Model):
     active = db.Column(db.Boolean, default=False)
 
     def card(self, hide=[]):
-        return render_template('page/product-card.html',
+        return render_template('shop/product-card.html',
                 product=self,
                 hide=hide,
             )
+
+    def simple_price(self):
+        if self.on_sale and self.sale_price:
+            return self.sale_price.replace('$', '').replace('.','')
+        return self.price.replace('$', '').replace('.','')
 
     def grouped_links(self):
         links = Link.query.filter_by(product_id=self.id).order_by('format','sort','text').all()

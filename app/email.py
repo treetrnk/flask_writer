@@ -10,6 +10,7 @@ def send_async_email(app, msg):
 
 def send_email(subject, sender, recipients, text_body, html_body, 
             attachments=None, sync=False):
+    current_app.logger.debug(attachments)
     emails_sent_to = []
     for recipient in recipients:
         msg = Message(subject, sender=sender, recipients=recipients)
