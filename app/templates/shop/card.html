@@ -56,12 +56,12 @@
 									{% if product.download_path and product.simple_price() == '000' %}
 										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block">
 											<i class="fas fa-download"></i>
-											Download the eBook
+											Get the eBook
 										</a>
 									{% elif product.download_path %}
 										<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block">
 											<i class="fas fa-credit-card"></i>
-											Buy the eBook Here
+											Buy the eBook
 										</a>
 									{% else %}
 										<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">
