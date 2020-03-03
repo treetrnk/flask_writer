@@ -666,7 +666,7 @@ class Product(db.Model):
     active = db.Column(db.Boolean, default=False)
 
     def card(self, hide=[]):
-        return render_template('shop/product-card.html',
+        return render_template('shop/card.html',
                 product=self,
                 hide=hide,
             )

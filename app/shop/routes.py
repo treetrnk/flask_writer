@@ -72,7 +72,7 @@ def view(slug):
                 price = product.sale_price if product.sale_price else product.price
                 sale_text = "On Sale! "
             description=f'{sale_text}{product.description} Starting at {price}'
-            return render_template(f'shop/view-product.html', 
+            return render_template(f'shop/view.html', 
                     page=page,
                     product=product,
                     related=related,
@@ -86,7 +86,7 @@ def view(slug):
 def subscribe(obj_id):
     product = Product.query.filter_by(id=obj_id).first()
     if product:
-        flash(f'Please subscribe to receive a copy of <b><i>{product.name}</i></b>.', 'info')
+        flash(f'Please subscribe to receive a free copy of <b><i>{product.name}</i></b>.', 'info')
     else:
         flash(f'Please subscribe to receive all subscription downloadables.', 'info')
     return redirect(url_for('page.subscribe'))

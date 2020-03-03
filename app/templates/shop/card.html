@@ -51,12 +51,24 @@
 				{% endif %}
 				{% if not 'links' in hide %}
 					<div class="text-center">
-						{% if product.links %}
+						{% if product.links or product.download_path %}
 							<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
-									<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">
-										<i class="{{ product.links[0].icon }}"></i>
-										{{ product.links[0].text }}
-									</a>
+									{% if product.download_path and product.simple_price() == '000' %}
+										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block" target="_blank">
+											<i class="fas fa-download"></i>
+											Download the eBook
+										</a>
+									{% elif product.download_path %}
+										<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block" target="_blank">
+											<i class="fas fa-credit-card"></i>
+											Buy the eBook Here
+										</a>
+									{% else %}
+										<a href="{{ product.links[0].url }}" class="btn btn-primary btn-block" target="_blank">
+											<i class="{{ product.links[0].icon }}"></i>
+											{{ product.links[0].text }}
+										</a>
+									{% endif %}
 									<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split jquery-tooltip" title="More Links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<span class="sr-only">Toggle Dropdown</span>
 									</button>
