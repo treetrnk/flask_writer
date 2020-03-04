@@ -699,6 +699,7 @@ class Product(db.Model):
         for match in matches:
             pid = match[0]
             current_app.logger.debug(f'PID: {pid}')
+            hide = []
             hide = hide + match[1].split(',')
             current_app.logger.debug(f'HIDE: {hide}')
             product = Product.query.filter_by(id = pid).first()
