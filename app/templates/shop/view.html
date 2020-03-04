@@ -55,20 +55,10 @@
 				<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
 					<i class="fas fa-download"></i> Download the eBook
 				</a>
-				<br />
-				<p class="text-muted">
-				 OR<br />
-				 buy it from the marketplaces below:
-				</p>
 			{% else %}
 				<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
 					<i class="fas fa-credit-card"></i> Buy the eBook Here
 				</a>
-				<br />
-				<p class="text-muted">
-				 OR<br />
-				 from any of the marketplaces below:
-				</p>
 			{% endif %}
 		{% endif %}
 
@@ -83,6 +73,8 @@
 		</center>
 	
 			{% if product.links|length > 1 %}
+				
+				<h3 class="mt-5">Other Marketplaces</h3>
 			
 
 				<ul class="nav nav-tabs nav-fill mb-3">
