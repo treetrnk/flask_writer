@@ -43,8 +43,8 @@ def buy(slug):
             'quantity': 1,
         }],
         metadata={
-            'id': product.id,
-            'slug': product.slug,
+            'item_ids': product.id,
+            'item_slugs': product.slug,
         },
         success_url=success,
         cancel_url=cancel,
@@ -56,36 +56,6 @@ def buy(slug):
 def process():
     flash('Thank you for your purchase! Your eBooks will be emailed to you shortly.', 'success')
     return redirect(url_for('shop.index'))
-
-
-
-@bp.route('/shop/<string:slug>')
-def view(slug):
-    Page.set_nav()
-    product = Product.query.filter_by(slug=slug,active=True).first()
-    page = Page.query.filter_by(slug='shop').first()
-    if product:
-        if product.active or current_user.is_authenticated:
-            related = Product.query.filter(
-                    Product.linked_page_id == product.linked_page_id,
-                    Product.id != product.id,
-                ).order_by('sort','name').limit(4).all()
-            page.title = f"Shop: {product.name}"
-            price = product.price
-            sale_text = ''
-            if product.on_sale:
-                price = product.sale_price if product.sale_price else product.price
-                sale_text = "On Sale! "
-            description=f'{sale_text}{product.description} Starting at {price}'
-            return render_template(f'shop/view.html', 
-                    page=page,
-                    product=product,
-                    related=related,
-                    banner=product.image,
-                    description=description,
-                )
-    page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
 
 @bp.route('/shop/subscribe/<int:obj_id>')
 def subscribe(obj_id):
@@ -125,9 +95,42 @@ def success():
     
         json_payload = json.loads(payload)
         customer = stripe.Customer.retrieve(json_payload['data']['object']['customer'])
-        for item in json_payload['data']['object']['display_items']:
-            product = Product.query.filter_by(name=item['custom']['name'][:-5]).first_or_404()
+        item_ids = json_payload['data']['object']['metadata']['item_ids'].split(',')
+        for item_id in item_ids:
+            product = Product.query.filter_by(id=item_id).first()
+            if not product:
+                current_app.logger.info(f"STRIPE: Product not found. ({item_id})")
+                page = Page.query.filter_by(slug='404-error').first()
+                return render_template(f'page/{page.template}.html', page=page), 404
             product.send([customer['email']])
-            current_app.logger.info('PURCHASE EMAIL SENT TO: ' + customer['email'])
+            current_app.logger.info(f'PURCHASE EMAIL SENT TO: {customer["email"]}  - {product.name} ({product.download_path})')
 
     return 'True'
+
+@bp.route('/shop/<string:slug>')
+def view(slug):
+    Page.set_nav()
+    product = Product.query.filter_by(slug=slug,active=True).first()
+    page = Page.query.filter_by(slug='shop').first()
+    if product:
+        if product.active or current_user.is_authenticated:
+            related = Product.query.filter(
+                    Product.linked_page_id == product.linked_page_id,
+                    Product.id != product.id,
+                ).order_by('sort','name').limit(4).all()
+            page.title = f"Shop: {product.name}"
+            price = product.price
+            sale_text = ''
+            if product.on_sale:
+                price = product.sale_price if product.sale_price else product.price
+                sale_text = "On Sale! "
+            description=f'{sale_text}{product.description} Starting at {price}'
+            return render_template(f'shop/view.html', 
+                    page=page,
+                    product=product,
+                    related=related,
+                    banner=product.image,
+                    description=description,
+                )
+    page = Page.query.filter_by(slug='404-error').first()
+    return render_template(f'page/{page.template}.html', page=page)    

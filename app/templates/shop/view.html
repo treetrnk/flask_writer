@@ -105,10 +105,12 @@
 
 			{% endif %}
 		{% else %}
-			<button type="button" class="btn btn-secondary btn-lg disabled" disabled>
-				<i class="fas fa-seedling"></i> Coming Soon!
-			</button>
-			</center>
+			{% if not product.download_path %}
+				<button type="button" class="btn btn-secondary btn-lg disabled" disabled>
+					<i class="fas fa-seedling"></i> Coming Soon!
+				</button>
+				</center>
+			{% endif %}
 		{% endif %}
 	</div>
 </div>
