@@ -16,7 +16,9 @@
 	{% else %}
 		<div class="card shadow mb-4">
 			<a href="{{ url_for('shop.view', slug=product.slug) }}">
-				<div class="product-card-image" style="background-image:url({{ product.image }});">
+				<div class="product-card-wrapper">
+					<div class="product-card-image" style="background-image:url({{ product.image }});">
+					</div>
 					{% if product.on_sale %}
 						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner" />
 					{% endif %}
