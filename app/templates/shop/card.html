@@ -58,7 +58,7 @@
 									{% if product.download_path and product.simple_price() == '000' %}
 										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block">
 											<i class="fas fa-download"></i>
-											Get the eBook
+											Free Download
 										</a>
 									{% elif product.download_path %}
 										<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block">
