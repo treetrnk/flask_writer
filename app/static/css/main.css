@@ -457,11 +457,19 @@
 			.product-card-image {
 				height:200px;
 				width:100%;
-				background-size:contain;
+				background-size: contain;
 				background-repeat:no-repeat;
 				background-position:center center;
 				background-color: rgba(230,230,230,0.3);
 				position:relative;
+				transition: background-size 0.3s ease-in;
+				-moz-transition: background-size 0.3s ease-in;
+				-ms-transition: background-size 0.3s ease-in;
+				-o-transition: background-size 0.3s ease-in;
+				-webkit-transition: background-size 0.3s ease-in;
+			}
+			.product-card-image:hover {
+				background-size: 145%;
 			}
 			.sale-banner {
 				position: absolute;
