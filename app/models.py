@@ -723,7 +723,7 @@ class Product(db.Model):
             current_app.open_resource(file_path).read(),
         )]
         send_email(
-                page.title + ' - Houston Hare Stories', #subject
+                f'{self.name} - eBook Delivery', #subject
                 sender,
                 recipients,
                 page.text_body(), #body
