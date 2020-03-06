@@ -172,7 +172,7 @@ def rss(path):
         response.headers['Content-Type'] = 'application/rss+xml'
         return response
     page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
+    return render_template(f'page/{page.template}.html', page=page), 404  
 
 @bp.route('/<path:path>/glossary')
 def glossary(path):
@@ -199,7 +199,7 @@ def glossary(path):
                 )    
     current_app.logger.debug(f'DEFINITIONS: {definitions}')
     page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
+    return render_template(f'page/{page.template}.html', page=page), 404   
 
 @bp.route('/<path:path>/latest')
 def latest(path):

@@ -20,7 +20,7 @@ def index():
                 products=products,
             )
     page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
+    return render_template(f'page/{page.template}.html', page=page), 404
 
 @bp.route('/shop/buy/<string:slug>')
 def buy(slug):
@@ -133,4 +133,4 @@ def view(slug):
                     description=description,
                 )
     page = Page.query.filter_by(slug='404-error').first()
-    return render_template(f'page/{page.template}.html', page=page)    
+    return render_template(f'page/{page.template}.html', page=page), 404   
