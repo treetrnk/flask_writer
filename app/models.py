@@ -427,7 +427,7 @@ class Page(db.Model):
     def send_to_discord_webhook(self):
         if current_app.config['DISCORD_WEBHOOK']:
             try: 
-                content = f"New {self.template.title()} released! Here's **{self.title}**:\n"
+                content = f"New {self.template} released! Here's **{self.title}**:\n"
                 content += current_app.config['BASE_URL'] + self.path
                 webhook = DiscordWebhook(url=current_app.config['DISCORD_WEBHOOK'], content=content)
                 response = webhook.execute()
