@@ -44,6 +44,18 @@
 							<i class="fas fa-edit"></i>
 						</a>
 						{{ page.title }}
+						{% if unpub and page.pub_date %}
+							<span class="d-none">scheduled</span>
+							<span class="text-danger" data-toggle="tooltip" title="Scheduled: {{ page.local_pub_date().strftime('%a. %b %-d, %Y %-I:%M %p') }}">
+								<i class="fas fa-clock"></i>
+							</span>
+							{% if page.notify_group %}
+								<span class="d-none">notify</span>
+								<span class="text-danger" data-toggle="tooltip" title="Notify Group: {{ page.notify_group }}">
+									<i class="fas fa-bell"></i>
+								</span>
+							{% endif %}
+						{% endif %}
 					</td>
 					<td>
 						<a href="{{ page.path }}{% if unpub %}{{ page.gen_view_code() }}{% endif %}" data-toggle="tooltip" title="{{ page.path }}" target="viewpage">

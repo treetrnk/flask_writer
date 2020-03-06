@@ -408,7 +408,7 @@ class Page(db.Model):
             return str(round(words / hourly_words / 24)) + " days"
         return str(round(words / hourly_words)) + " hrs."
     
-    def local_pub_date(self, tz):
+    def local_pub_date(self, tz='est'):
         if self.pub_date:
             utc = pytz.timezone('utc')
             local_tz = pytz.timezone(tz)
