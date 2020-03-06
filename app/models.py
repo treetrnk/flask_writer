@@ -13,6 +13,7 @@ from sqlalchemy.orm import backref
 from flask_mail import Mail, Message
 from app import mail
 from app.email import send_email
+from discord_webhook import DiscordWebhook
 
 tags = db.Table('tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
@@ -422,6 +423,16 @@ class Page(db.Model):
         local_tz = pytz.timezone(tz)
         pub_date = local_tz.localize(pub_date)
         self.pub_date = pub_date.astimezone(pytz.utc) 
+
+    def send_to_discord_webhook(self):
+        if current_app.config['DISCORD_WEBHOOK']:
+            try: 
+                content = f"New {self.template.title()} released! Here's **{self.title}**:\n"
+                content += current_app.config['BASE_URL'] + self.path
+                webhook = DiscordWebhook(url=current_app.config['DISCORD_WEBHOOK'], content=content)
+                response = webhook.execute()
+            except Exception as e:
+                current_app.logger.info(f'Failed to notify discord webhook ({page.title} - {page.id}). Exception: {e}')
                 
     def notify_subscribers(self, group):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
@@ -429,10 +440,16 @@ class Page(db.Model):
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
         subject=f"[New {self.template.title()}] {parent_title}{self.title}"
         body=f"Stories by Houston Hare\nNew Post: {parent_title}{self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
+
+        # DISCORD WEBHOOK
+        if group == "sprig":
+            self.send_to_discord_webhook()
+
         if group == "all":
             subs = Subscriber.query.all()
         else:
             subs = Subscriber.query.filter(Subscriber.subscription.contains(f",{group},")).all()
+        
         if subs:
             for recipient in subs:
                 send_email(

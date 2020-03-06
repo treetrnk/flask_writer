@@ -32,3 +32,4 @@ class Config(object):
     STRIPE_SECRET = os.environ.get('STRIPE_SECRET') or ''
     STRIPE_WEBHOOK = os.environ.get('STRIPE_WEBHOOK') or ''
     WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET') or 'bananas'
+    DISCORD_WEBHOOK = os.environ.get('DISCORD_WEBHOOK') or ''
