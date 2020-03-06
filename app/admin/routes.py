@@ -214,6 +214,8 @@ def edit_page(id, ver_id=None):
         local_tz = form.timezone.data if form.timezone.data else current_user.timezone
         if pdate and ptime:
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
+        else:
+            page.pub_date = None
         page.set_path()
         if form.notify_subs.data:
             current_app.logger.debug(form.notify_group.data)
