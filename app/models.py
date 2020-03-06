@@ -427,12 +427,13 @@ class Page(db.Model):
     def send_to_discord_webhook(self):
         if current_app.config['DISCORD_WEBHOOK']:
             try: 
-                content = f"New {self.template} released! Here's **{self.title}**:\n"
-                content += current_app.config['BASE_URL'] + self.path
-                webhook = DiscordWebhook(url=current_app.config['DISCORD_WEBHOOK'], content=content)
-                response = webhook.execute()
+                if self.notify_group in current_app.config['DISCORD_RELAY_GROUPS']:
+                    content = f"New {self.template} released! Here's **{self.title}**:\n"
+                    content += current_app.config['BASE_URL'] + self.path
+                    webhook = DiscordWebhook(url=current_app.config['DISCORD_WEBHOOK'], content=content)
+                    response = webhook.execute()
             except Exception as e:
-                current_app.logger.info(f'Failed to notify discord webhook ({page.title} - {page.id}). Exception: {e}')
+                current_app.logger.info(f'Failed to notify discord webhook ({self.title} - {self.id}). Exception: {e}')
                 
     def notify_subscribers(self, group):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
@@ -442,8 +443,7 @@ class Page(db.Model):
         body=f"Stories by Houston Hare\nNew Post: {parent_title}{self.title}\n{self.description()}\nRead more: {current_app.config['BASE_URL']}{self.path}"
 
         # DISCORD WEBHOOK
-        if group == "sprig":
-            self.send_to_discord_webhook()
+        self.send_to_discord_webhook()
 
         if group == "all":
             subs = Subscriber.query.all()

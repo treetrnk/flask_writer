@@ -33,3 +33,5 @@ class Config(object):
     STRIPE_WEBHOOK = os.environ.get('STRIPE_WEBHOOK') or ''
     WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET') or 'bananas'
     DISCORD_WEBHOOK = os.environ.get('DISCORD_WEBHOOK') or ''
+    DISCORD_RELAY_GROUPS = os.environ.get('DISCORD_RELAY_GROUPS') or 'all,discord'
+    DISCORD_RELAY_GROUPS = DISCORD_RELAY_GROUPS.split(',')
