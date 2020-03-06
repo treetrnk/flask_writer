@@ -293,16 +293,18 @@ def check_scheduled(): # SCHEDULED RELEASE WEBHOOK
             ).order_by(Page.pub_date).all()
         if not pages:
             current_app.logger.info('No pages found for automatic release.')
+        released_pages = 0
         for page in pages:
             if page.pub_date <= datetime.utcnow():
                 page.published = True
                 db.session.commit()
                 current_app.logger.info(f'{page.title} ({page.path}) has been released automatically.')
+                released_pages += 1
                 if page.notify_group:
                     current_app.logger.info(f'{page.notify_group} will be notified about the release of {page.title}.')
                     page.notify_subscribers(page.notify_group)
-        return 'True'
-    return 'Access Denied', 404
+        return f'Released Pages: {released_pages}\n'
+    return 'Access Denied\n', 404
 
 @bp.route('/admin/tags')
 @login_required
