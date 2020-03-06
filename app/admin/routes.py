@@ -104,7 +104,7 @@ def add_page():
         print(f"{field.name}: {field.data}")
     form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
-    form.notify_group.choices = [('all', 'All')] + Subscriber.SUBSCRIPTION_CHOICES
+    form.notify_group.choices = [('',''),('all', 'All')] + Subscriber.SUBSCRIPTION_CHOICES
     if form.validate_on_submit():
         parentid = form.parent_id.data if form.parent_id.data else None
         page = Page(
@@ -121,6 +121,7 @@ def add_page():
                 sidebar = form.sidebar.data,
                 tags = form.tags.data,
                 user_id = current_user.id,
+                notify_group = form.notify_group.data,
                 published = form.published.data,
             )
         pdate = form.pub_date.data
@@ -158,7 +159,7 @@ def edit_page(id, ver_id=None):
     form = AddPageForm()
     form.parent_id.choices = [(0,'---')] + [(p.id, f"{p.title} ({p.path})") for p in Page.query.all()]
     form.user_id.choices = [(u.id, u.username) for u in User.query.all()]
-    form.notify_group.choices = [('all', 'All')] + Subscriber.SUBSCRIPTION_CHOICES
+    form.notify_group.choices = [('',''),('all', 'All')] + Subscriber.SUBSCRIPTION_CHOICES
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -180,6 +181,7 @@ def edit_page(id, ver_id=None):
             sidebar = page.sidebar,
             tags = page.tags,
             user_id = page.user_id,
+            notify_group = page.notify_group,
             pub_date = page.pub_date,
             published = page.published,
             path = page.path,
@@ -203,6 +205,7 @@ def edit_page(id, ver_id=None):
         page.sidebar = form.sidebar.data
         page.tags = form.tags.data
         page.user_id = form.user_id.data
+        page.notify_group = form.notify_group.data
         page.published = form.published.data
         page.edit_date = datetime.utcnow()
 
@@ -238,6 +241,7 @@ def edit_page(id, ver_id=None):
         form.sidebar.data = version.sidebar
         form.tags.data = version.tags
         form.user_id.data = version.user_id
+        form.notify_group.data = version.notify_group
         form.pub_date.data = version.local_pub_date(current_user.timezone)
         form.pub_time.data = version.local_pub_date(current_user.timezone)
         form.published.data = version.published
@@ -255,6 +259,7 @@ def edit_page(id, ver_id=None):
         form.sidebar.data = page.sidebar
         form.tags.data = page.tags
         form.user_id.data = page.user_id
+        form.notify_group.data = page.notify_group
         form.pub_date.data = page.local_pub_date(current_user.timezone)
         form.pub_time.data = page.local_pub_date(current_user.timezone)
         form.published.data = page.published
@@ -268,6 +273,32 @@ def edit_page(id, ver_id=None):
             page = Page.query.filter_by(slug='admin').first()
         )
 
+class DeletePage(DeleteObjView):
+    model = Page
+    log_msg = 'deleted a page'
+    success_msg = 'Page deleted.'
+    redirect = {'endpoint': 'admin.pages'}
+
+bp.add_url_rule("/admin/page/delete", 
+        view_func = login_required(DeletePage.as_view('delete_page')))
+
+@bp.route('/admin/page/check-scheduled', methods=['POST'])
+def check_scheduled(): # SCHEDULED RELEASE WEBHOOK
+    if request.form['webhook_secret'] == current_app.config['WEBHOOK_SECRET']:
+        pages = Page.query.filter(
+                Page.published == False,
+                Page.pub_date,
+            ).order_by(Page.pub_date).all()
+        for page in pages:
+            if page.pub_date <= datetime.utcnow():
+                page.published = True
+                db.session.commit()
+                current_app.logger.info(f'{page.title} ({page.path}) has been released automatically.')
+                if page.notify_group:
+                    current_app.logger.info(f'{page.notify_group} will be notified about the release of {page.title}.')
+                    page.notify_subscribers(page.notify_group)
+        return 'True'
+    return 'Access Denied', 404
 
 @bp.route('/admin/tags')
 @login_required
