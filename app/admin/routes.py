@@ -289,6 +289,8 @@ def check_scheduled(): # SCHEDULED RELEASE WEBHOOK
                 Page.published == False,
                 Page.pub_date,
             ).order_by(Page.pub_date).all()
+        if not pages:
+            current_app.logger.info('No pages found for automatic release.')
         for page in pages:
             if page.pub_date <= datetime.utcnow():
                 page.published = True
