@@ -26,12 +26,15 @@ def index():
 def buy(slug):
     product = Product.query.filter_by(slug=slug).first()
     stripe.api_key = current_app.config['STRIPE_SECRET']
-    current_app.logger.debug(request.referrer)
     success = (current_app.config['BASE_URL'] +
             url_for('shop.process') +
             '?session_id={CHECKOUT_SESSION_ID}')
-    cancel = request.referrer if request.referrer else url_for('shop.view', slug=product.slug)
-    current_app.logger.debug(success)
+    current_app.logger.debug(request.referrer)
+    if request.referrer:
+        cancel = request.referrer 
+    else: 
+        cancel = current_app.config['BASE_URL'] + url_for('shop.view', slug=product.slug)
+    current_app.logger.debug(cancel)
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=[{
