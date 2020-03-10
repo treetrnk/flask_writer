@@ -13,4 +13,21 @@
 <p>{{ page.description(400) }}</p>
 <p><a href='https://houstonhare.com{{ page.path }}'>Read more...</a></p>
 
+{% if page.author_note %}
+	
+	<div style="margin-right:auto;margin-left:auto;max-width:400px;border:1px solid #dddddd;border-radius:7px;background-color:#f9f9f9;padding:10px;">
+
+		{% if page.author.avatar %}
+			 <div style="width:50px;height:50px;border-radius:100px;background:url({{ page.author.avatar }}) center center;background-size:cover;float:left;margin:7px;"></div> 
+		{% endif %}
+
+		<h2>A Note From {{ page.author.username.title() }}</h2>
+
+		{{ page.html('author_note')|safe }}
+	
+	</div>
+	<br />
+
+{% endif %}
+
 {% endblock %}
