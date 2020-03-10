@@ -6,7 +6,7 @@ from flask import current_app, url_for, session, jsonify, render_template
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from markdown import markdown
 from sqlalchemy import desc
 from sqlalchemy.orm import backref
@@ -409,10 +409,13 @@ class Page(db.Model):
             return str(round(words / hourly_words / 24)) + " days"
         return str(round(words / hourly_words)) + " hrs."
     
-    def local_pub_date(self, tz='est'):
+    def local_pub_date(self, tz=None):
         if self.pub_date:
             utc = pytz.timezone('utc')
-            local_tz = pytz.timezone(tz)
+            try: 
+                local_tz = pytz.timezone(tz)
+            except:
+                local_tz = datetime.now(timezone(timedelta(0))).astimezone().tzinfo 
             pub_date = datetime.strptime(str(self.pub_date), '%Y-%m-%d %H:%M:%S')
             utcdate = pytz.UTC.localize(self.pub_date)
             return utcdate.astimezone(tz=local_tz)
