@@ -81,23 +81,26 @@
 					{% for format in product.grouped_links() %}
 						<li class="nav-item">
 							<button class="btn btn-link btn-block nav-link toggle-tab {% if loop.index == 1 %}active{% endif %}" data-target="#{{ format[0].format if format[0].format else 'morelinks' }}">
-								{% if format[0].format %}
-									{{ format[0].format }}
-								{% else %}
-									More Links
-								{% endif %}
-							</a>
+                <h4 class="mb-0">
+                  {% if format[0].format %}
+                    {{ format[0].format }}
+                  {% else %}
+                  More Links
+                  {% endif %}
+                </h4>
+							</button>
 						</li>
 					{% endfor %}
 				</ul>
 
 
 				{% for format in product.grouped_links() %}
-					<div id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}style="display:none"{% endif %}>
+        <div {% if format|length > 1 %}class="text-center"{% endif %} id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}style="display:none"{% endif %}>
 						{% for link in format %}
-							&nbsp;&nbsp;&nbsp;&nbsp;
-							<i class="{{ link.icon }}"></i>
-							<a href="{{ link.url }}" target="_blank">{{ link.text_simple() }}</a><br />
+							<a href="{{ link.url }}" class="btn btn-secondary m-1 btn-lg" target="_blank">
+                <i class="{{ link.icon }}"></i>
+                {{ link.text_simple() }}
+              </a>
 						{% endfor %}
 					</div>
 				{% endfor %}
