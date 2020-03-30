@@ -81,7 +81,7 @@
 					{% for format in product.grouped_links() %}
 						<li class="nav-item">
 							<button class="btn btn-link btn-block nav-link toggle-tab {% if loop.index == 1 %}active{% endif %}" data-target="#{{ format[0].format if format[0].format else 'morelinks' }}">
-                <h4 class="mb-0 mt-3">
+                <h4 class="mb-0 mt-2">
                   {% if format[0].format %}
                     {{ format[0].format }}
                   {% else %}
