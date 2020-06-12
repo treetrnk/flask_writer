@@ -38,20 +38,6 @@
 		</div>
 
 		<div class="form-group col">
-			{{ form.overall_words.label(class="control-label") }}
-			{% if form.overall_words.errors %}
-				{{ form.overall_words(class="form-control is-invalid") }}
-				<div class="invalid-feedback">
-					{% for error in form.overall_words.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.overall_words(class="form-control") }}
-			{% endif %}
-		</div>
-
-		<div class="form-group col">
 			{{ form.minutes.label(class="control-label") }}
 			{% if form.minutes.errors %}
 				{{ form.minutes(class="form-control is-invalid") }}
@@ -62,6 +48,20 @@
 				</div>
 			{% else %}
 				{{ form.minutes(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
+			{{ form.overall_words.label(class="control-label") }}
+			{% if form.overall_words.errors %}
+				{{ form.overall_words(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.overall_words.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.overall_words(class="form-control") }}
 			{% endif %}
 		</div>
 
