@@ -7,6 +7,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from datetime import datetime, timedelta, timezone
+from time import sleep
 from markdown import markdown
 from sqlalchemy import desc
 from sqlalchemy.orm import backref
@@ -428,9 +429,12 @@ class Page(db.Model):
         self.pub_date = pub_date.astimezone(pytz.utc) 
 
     def send_to_discord_webhook(self):
+        current_app.logger.debug(current_app.config['DISCORD_WEBHOOK'])
         if current_app.config['DISCORD_WEBHOOK']:
             try: 
+                current_app.logger.debug('Trying to contact discord webhook')
                 if self.notify_group in current_app.config['DISCORD_RELAY_GROUPS']:
+                    sleep(3)
                     content = f"New {self.template} released! Here's **{self.title}**:\n"
                     content += current_app.config['BASE_URL'] + self.path
                     webhook = DiscordWebhook(url=current_app.config['DISCORD_WEBHOOK'], content=content)
@@ -439,6 +443,7 @@ class Page(db.Model):
                 current_app.logger.info(f'Failed to notify discord webhook ({self.title} - {self.id}). Exception: {e}')
                 
     def notify_subscribers(self, group):
+        current_app.logger.debug('Notifying Group: ' + group)
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         parent_title = self.parent.title + ' - ' if self.parent else ''
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title

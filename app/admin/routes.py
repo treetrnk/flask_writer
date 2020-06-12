@@ -130,10 +130,10 @@ def add_page():
         if pdate and ptime:
             page.set_local_pub_date(f"{pdate} {ptime}", local_tz)
         page.set_path()
-        if form.notify_subs.data:
-            page.notify_subscribers(form.notify_group.data)
         db.session.add(page)
         db.session.commit()
+        if form.notify_subs.data:
+            page.notify_subscribers(form.notify_group.data)
         flash("Page added successfully.", "success")
         log_new(page, 'added a page')
         Page.set_nav()
@@ -217,11 +217,11 @@ def edit_page(id, ver_id=None):
         else:
             page.pub_date = None
         page.set_path()
+        log_change(log_orig, page, 'edited a page')
+        db.session.commit()
         if form.notify_subs.data:
             current_app.logger.debug(form.notify_group.data)
             page.notify_subscribers(form.notify_group.data)
-        log_change(log_orig, page, 'edited a page')
-        db.session.commit()
         flash("Page updated successfully.", "success")
         Page.set_nav()
         return redirect(url_for('admin.edit_page', id=id))
