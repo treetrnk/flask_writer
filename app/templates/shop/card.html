@@ -21,6 +21,8 @@
 					</div>
 					{% if product.on_sale %}
 						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner" />
+          {% elif product.download_path and product.simple_price() == '000' %}
+						<img src="{{ url_for('static', filename='images/free-ribbon.png') }}" class="sale-banner" />
 					{% endif %}
 				</div>
 			</a>
