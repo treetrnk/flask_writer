@@ -137,3 +137,15 @@ def view(slug):
                 )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404   
+
+@bp.route('/shop/download/<int:obj_id>')
+def download(obj_id):
+    days_until_expired = 7
+    Page.set_nav()
+    product = Product.query.filter_by(id=obj_id,active=True).first()
+    access_code = request.args.get('code')
+    if product.verify_download(access_code, days=days_until_expired):
+        return send_from_directory(current_app.config['PRODUCT_DIR'], product.download_path, as_attachment=True)
+    flash(f'The access code for <b>{product.name}</b> is either invalid or expired. Download links expire after {days_until_expired} days. If there was a problem with your purchase, please contact <a href="mailto:{current_app.config.get("ADMINS")[0]}">{current_app.config.get("ADMINS")[0]}</a>.')
+    return redirect(url_for('shop.index'))
+

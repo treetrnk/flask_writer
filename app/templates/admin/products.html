@@ -15,6 +15,7 @@
 			<th>Name</th>
 			<th>Price</th>
 			<th>Description</th>
+			<th>Download</th>
 			<th>Image</th>
 			<th>Links</th>
 		</tr>
@@ -41,6 +42,14 @@
 				</td>
 				<td>
 					{{ obj.description }}
+				</td>
+				<td class="text-center">
+          {% if obj.download_path %}
+            <a href="{{ url_for('shop.download', obj_id=obj.id) }}{{ obj.gen_download_code() }}">
+              <i class="fas fa-download"></i>
+              Link
+            </a>
+          {% endif %}
 				</td>
 				<td>
 					<a href="{{ obj.image }}" target="_blank">

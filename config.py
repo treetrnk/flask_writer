@@ -4,6 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 datadir = os.path.join(os.path.dirname(basedir), 'data/flask_writer/')
 templatedir = os.path.join(basedir, 'app/templates/')
 uploaddir = os.path.join(basedir, 'uploads/')
+productdir = os.path.join(basedir, 'products/')
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
@@ -22,6 +23,7 @@ class Config(object):
     DATA_DIR = datadir
     TEMPLATE_DIR = templatedir
     UPLOAD_DIR = uploaddir
+    PRODUCT_DIR = productdir
     BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'
     ADMINS=[os.environ.get('ADMINS')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None

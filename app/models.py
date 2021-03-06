@@ -31,6 +31,9 @@ tags_defs = db.Table('tags_defs',
     db.Column('definition_id', db.Integer, db.ForeignKey('definition.id'), primary_key=True)
 )
 
+##########
+## USER ##
+##########
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -60,6 +63,9 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
+#################
+## PAGEVERSION ##
+#################
 class PageVersion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     original_id = db.Column('Page', db.ForeignKey('page.id'), nullable=False)
@@ -110,6 +116,9 @@ class PageVersion(db.Model):
     def __repr__(self):
         return f"<PageVersion({self.id}, {self.title}, {self.path})>"
 
+##########
+## PAGE ##
+##########
 class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -507,6 +516,9 @@ class Page(db.Model):
     def __repr__(self):
         return f"<Page({self.id}, {self.title}, {self.path})>"
 
+#########
+## TAG ##
+#########
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75), nullable=False)
@@ -518,6 +530,9 @@ class Tag(db.Model):
     def __repr__(self):
         return f"<Tag({self.name})>"
 
+################
+## SUBSCRIBER ##
+################
 class Subscriber(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True) 
@@ -604,6 +619,9 @@ class Subscriber(db.Model):
     def __repr__(self):
         return f"<Subscriber({self.email}, {self.first_name} {self.last_name})>"
 
+################
+## DEFINITION ##
+################
 class Definition(db.Model):
     
     TYPE_CHOICES = [
@@ -651,6 +669,9 @@ class Definition(db.Model):
         return f"<Definition({self.id}, {self.name}, {self.short_body()})>"
 
 
+##########
+## LINK ##
+##########
 class Link(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
@@ -677,6 +698,9 @@ class Link(db.Model):
         return f"<Link({self.id}, {self.text}, {self.url[:20]}...)>"
     
 
+#############
+## PRODUCT ##
+#############
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
@@ -762,12 +786,35 @@ class Product(db.Model):
                 attachments = attachments,
             )
 
+    def download_code(self, day_offset=0):
+        today = datetime.now().date() + timedelta(days=day_offset)
+        return today.strftime('%Y%m%d') + str(self.id) + current_app.config['SECRET_KEY']
+
+    def gen_download_code(self, day_offset=0):
+        current_app.logger.debug(f'GENERATING: {self.download_code(day_offset=day_offset)}')
+        return '?code=' + generate_password_hash(self.download_code(day_offset=day_offset))
+
+    def verify_download(self, access_code, days=7):
+        result = False
+        if access_code:
+            current_app.logger.debug(f'CODE1: {access_code}')
+            while days >= 0 and result == False:
+                current_app.logger.debug(f'CHECKING: {self.download_code(day_offset = 0 - days)}')
+                if check_password_hash(access_code, self.download_code(day_offset = 0 - days)):
+                    result = True
+                current_app.logger.debug(f'RESULT: {result} - DAYS: {days}')
+                days -= 1
+        return result
+
     def __str__(self):
         return f"{self.name}"
 
     def __repr__(self):
         return f"<Product({self.id}, {self.name})>"
 
+############
+## RECORD ##
+############
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     words = db.Column(db.Integer)
