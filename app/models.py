@@ -769,21 +769,37 @@ class Product(db.Model):
         current_app.logger.debug(path)
         current_app.logger.debug('..' + relative_path)
         file_path = path + '/' + self.download_path
-        attachments = [(
-            os.path.basename(file_path), 
-            magic.Magic(mime=True).from_file(file_path), 
-            current_app.open_resource(file_path).read(),
-        )]
+        valid_until = (datetime.now() + timedelta(days = 7)).strftime('%b. %-d, %Y')
+        download_text = f"The following link is valid until {valid_until}. Please download your file before then.\n\r"
+        download_html = f"""
+            <br />
+            <h2>Your Download</h2>
+            <p>{download_text}</p>
+            <ul>
+                <li>
+                    <h4>
+                        <a href="{self.download_link()}">
+                            Download {self.name} here
+                        </a>
+                    </h4>
+                </li>
+            </ul>
+            """
+        #attachments = [(
+        #    os.path.basename(file_path), 
+        #    magic.Magic(mime=True).from_file(file_path), 
+        #    current_app.open_resource(file_path).read(),
+        #)]
         send_email(
                 f'{self.name} - eBook Delivery', #subject
                 sender,
                 recipients,
-                page.text_body(), #body
+                page.text_body() + download_text + self.name + ' - ' + self.download_link(), #body
                 render_template('email/manual.html', 
                         page=page, 
-                        body=page.html_body(),
+                        body=page.html_body() + download_html,
                     ),
-                attachments = attachments,
+         #       attachments = attachments,
             )
 
     def download_code(self, day_offset=0):
@@ -805,6 +821,9 @@ class Product(db.Model):
                 current_app.logger.debug(f'RESULT: {result} - DAYS: {days}')
                 days -= 1
         return result
+
+    def download_link(self, day_offset=0):
+        return current_app.config.get('BASE_URL') + url_for('shop.download', obj_id=self.id) + self.gen_download_code(day_offset=day_offset)
 
     def __str__(self):
         return f"{self.name}"
