@@ -574,29 +574,34 @@ class Subscriber(db.Model):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         relative_path = '/products/subscriber-downloads'
         path = current_app.config['BASE_DIR'] + relative_path
-        attachments = []
-        current_app.logger.debug(path)
-        current_app.logger.debug('..' + relative_path)
-        if os.path.isdir(path):
-            current_app.logger.debug('IT IS A DIR')
-            for filename in os.listdir(path):
-                file_path = path + '/' + filename
-                attachments += [(
-                    filename, 
-                    magic.Magic(mime=True).from_file(file_path), 
-                    current_app.open_resource(file_path).read(),
-                )]
+        product = Product.query.filter_by(active=True,download_path='subscriber-download.zip').first()
+        if product:
+            dl_output = product.download_output()
+        else:
+            dl_output = {'text':'','html':''}
+        #attachments = []
+        #current_app.logger.debug(path)
+        #current_app.logger.debug('..' + relative_path)
+        #if os.path.isdir(path):
+        #    current_app.logger.debug('IT IS A DIR')
+        #    for filename in os.listdir(path):
+        #        file_path = path + '/' + filename
+        #        attachments += [(
+        #            filename, 
+        #            magic.Magic(mime=True).from_file(file_path), 
+        #            current_app.open_resource(file_path).read(),
+        #        )]
         send_email(
                 page.title, #subject
                 sender,
                 [self.email],
-                page.text_body(), #body
+                page.text_body() + dl_output['text'], #body
                 render_template('email/with-greeting.html', 
                         page=page, 
-                        html=page.html_body(),
+                        html=page.html_body() + dl_output['html'],
                         recipient=self,
                     ),
-                attachments = attachments,
+                #attachments = attachments,
             )
         """
         [
@@ -769,22 +774,7 @@ class Product(db.Model):
         current_app.logger.debug(path)
         current_app.logger.debug('..' + relative_path)
         file_path = path + '/' + self.download_path
-        valid_until = (datetime.now() + timedelta(days = 7)).strftime('%b. %-d, %Y')
-        download_text = f"The following link is valid until {valid_until}. Please download your file before then.\n\r"
-        download_html = f"""
-            <br />
-            <h2>Your Download</h2>
-            <p>{download_text}</p>
-            <ul>
-                <li>
-                    <h4>
-                        <a href="{self.download_link()}">
-                            Download {self.name} here
-                        </a>
-                    </h4>
-                </li>
-            </ul>
-            """
+        dl_output = self.download_output()
         #attachments = [(
         #    os.path.basename(file_path), 
         #    magic.Magic(mime=True).from_file(file_path), 
@@ -794,10 +784,10 @@ class Product(db.Model):
                 f'{self.name} - eBook Delivery', #subject
                 sender,
                 recipients,
-                page.text_body() + download_text + self.name + ' - ' + self.download_link(), #body
+                page.text_body() + dl_output['text'], #body
                 render_template('email/manual.html', 
                         page=page, 
-                        body=page.html_body() + download_html,
+                        body=page.html_body() + dl_output['html'],
                     ),
          #       attachments = attachments,
             )
@@ -807,23 +797,46 @@ class Product(db.Model):
         return today.strftime('%Y%m%d') + str(self.id) + current_app.config['SECRET_KEY']
 
     def gen_download_code(self, day_offset=0):
-        current_app.logger.debug(f'GENERATING: {self.download_code(day_offset=day_offset)}')
         return '?code=' + generate_password_hash(self.download_code(day_offset=day_offset))
 
     def verify_download(self, access_code, days=7):
         result = False
         if access_code:
-            current_app.logger.debug(f'CODE1: {access_code}')
             while days >= 0 and result == False:
-                current_app.logger.debug(f'CHECKING: {self.download_code(day_offset = 0 - days)}')
                 if check_password_hash(access_code, self.download_code(day_offset = 0 - days)):
                     result = True
-                current_app.logger.debug(f'RESULT: {result} - DAYS: {days}')
                 days -= 1
         return result
 
     def download_link(self, day_offset=0):
         return current_app.config.get('BASE_URL') + url_for('shop.download', obj_id=self.id) + self.gen_download_code(day_offset=day_offset)
+
+    def download_output(self, include_instructions=True):
+        valid_until = (datetime.now() + timedelta(days = 7)).strftime('%b. %-d, %Y')
+        instructions = f"The following link is valid until {valid_until}. Please download your file before then.\n\r"
+        text = "\n\r"
+        html = "<br />"
+        if include_instructions:
+            text += f"YOUR DOWNLOAD\n{instructions}\n\r"
+            html += f"<h3>Your Download</h3><p>{instructions}</p>"
+        text += self.name + ' - ' + self.download_link()
+        html += f"""
+            <ul>
+                <li>
+                    <h4>
+                        <a href="{self.download_link()}">
+                            {self.name} - Download Here
+                        </a>
+                    </h4>
+                </li>
+            </ul>
+            """
+        return {
+                'text': text,
+                'html': html
+            }
+
+
 
     def __str__(self):
         return f"{self.name}"
