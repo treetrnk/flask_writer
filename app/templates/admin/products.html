@@ -15,7 +15,6 @@
 			<th>Name</th>
 			<th>Price</th>
 			<th>Description</th>
-			<th>Download</th>
 			<th>Image</th>
 			<th>Links</th>
 		</tr>
@@ -29,6 +28,16 @@
 					</a>
 					{{ obj.name }} 
 					<a href="{{ url_for('shop.view', slug=obj.slug) }}" target="product"><i class="fas fa-link"></i></a>
+
+          {% if obj.download_path %}
+            <a href="{{ url_for('shop.download', obj_id=obj.id) }}{{ obj.gen_download_code() }}">
+              <i class="fas fa-download" data-toggle="tooltip" title="Download Link"></i>
+            </a>
+            <a href="{{ url_for('admin.send_product', obj_id=obj.id) }}">
+              <i class="fas fa-paper-plane" data-toggle="tooltip" title="Send File"></i>
+            </a>
+          {% endif %}
+
 					<span style="display:none;">
 					{% if obj.active %}
 						active
@@ -44,12 +53,6 @@
 					{{ obj.description }}
 				</td>
 				<td class="text-center">
-          {% if obj.download_path %}
-            <a href="{{ url_for('shop.download', obj_id=obj.id) }}{{ obj.gen_download_code() }}">
-              <i class="fas fa-download"></i>
-              Link
-            </a>
-          {% endif %}
 				</td>
 				<td>
 					<a href="{{ obj.image }}" target="_blank">

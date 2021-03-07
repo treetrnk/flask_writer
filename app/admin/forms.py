@@ -90,6 +90,9 @@ class DefinitionEditForm(FlaskForm):
     #        raise ValidationError('Definition already exists.', 'Error')
     #    return True
 
+class SendProductForm(FlaskForm):
+    email = StringField(f'Email{required}', validators=[DataRequired(),Email()])
+
 class ProductEditForm(FlaskForm):
     name = StringField(f'Name{required}', validators=[DataRequired()], render_kw={'id':'page_title_input'})
     slug = StringField(f'Slug{required}', validators=[DataRequired()], render_kw={'id':'page_slug_input'})

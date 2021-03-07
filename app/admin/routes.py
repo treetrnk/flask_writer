@@ -6,7 +6,8 @@ from app.admin import bp
 from app.admin.functions import log_new, log_change
 from app.admin.forms import (
         AddUserForm, AddPageForm, AddTagForm, EditUserForm, DefinitionEditForm, 
-        EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm
+        EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm,
+        SendProductForm,
     )
 from app.admin.generic_views import SaveObjView, DeleteObjView
 from app.models import (
@@ -496,6 +497,21 @@ def products():
             tab='shop',
             page=page,
             products=products,
+        )
+
+@bp.route('/admin/send-product/<obj_id>', methods=['GET','POST'])
+@login_required
+def send_product(obj_id):
+    product = Product.query.filter_by(id=obj_id).first()
+    form = SendProductForm()
+    if form.validate_on_submit():
+        product.send([form.email.data])
+        flash(f'Sent product <b>{product.name}</b> to <b>{form.email.data}</b>.', 'success')
+        return redirect(url_for('admin.products'))
+    return render_template('admin/send-product.html',
+            form=form,
+            product=product,
+            title='Send Product',
         )
 
 class AddProduct(SaveObjView):
