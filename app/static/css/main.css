@@ -498,4 +498,8 @@
 			.product-image-div {
 				background-color: rgba(230,230,230,0.3);
 			}
+      .scroll-div-150 {
+        overflow: auto;
+        max-height: 150px;
+      }
 		</style>

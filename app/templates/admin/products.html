@@ -31,10 +31,10 @@
 
           {% if obj.download_path %}
             <a href="{{ url_for('shop.download', obj_id=obj.id) }}{{ obj.gen_download_code() }}">
-              <i class="fas fa-download" data-toggle="tooltip" title="Download Link"></i>
+              <i class="fas fa-download jquery-tooltip" title="Download Link"></i>
             </a>
             <a href="{{ url_for('admin.send_product', obj_id=obj.id) }}">
-              <i class="fas fa-paper-plane" data-toggle="tooltip" title="Send File"></i>
+              <i class="fas fa-paper-plane jquery-tooltip" title="Send File"></i>
             </a>
           {% endif %}
 
@@ -52,31 +52,31 @@
 				<td>
 					{{ obj.description }}
 				</td>
-				<td class="text-center">
-				</td>
 				<td>
 					<a href="{{ obj.image }}" target="_blank">
 						<img src="{{ obj.image }}" width="150" />
 					</a>
 				</td>
 				<td>
-					<small>
-						{% for link in obj.links %}
-							<a href="{{ url_for('admin.edit_link', obj_id=link.id) }}" target='link' data-toggle='tooltip' title="Edit">
-								<i class="fas fa-edit"></i>
-							</a>
-							<a href="{{ link.url }}" target='_blank'>
-								<i class="{{ link.icon }}"></i>
-								{{ link.text }}
-								{% if link.format %}
-									({{ link.format[0:3] }})
-								{% endif %}
-							</a><br />
-						{% endfor %}
-						<a href="{{ url_for('admin.add_link') }}?product_id={{ obj.id }}" target='link' class="text-success">
-							<i class="fas fa-plus"></i> Add Link
-						</a>
-					</small>
+          <div class="scroll-div-150">
+            <small>
+              {% for link in obj.links %}
+                <a href="{{ url_for('admin.edit_link', obj_id=link.id) }}" target='link' data-toggle='tooltip' title="Edit">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ link.url }}" target='_blank'>
+                  <i class="{{ link.icon }}"></i>
+                  {{ link.text }}
+                  {% if link.format %}
+                    ({{ link.format[0:3] }})
+                  {% endif %}
+                </a><br />
+              {% endfor %}
+              <a href="{{ url_for('admin.add_link') }}?product_id={{ obj.id }}" target='link' class="text-success">
+                <i class="fas fa-plus"></i> Add Link
+              </a>
+            </small>
+          </div>
 				</td>
 			</tr>
 		{% endfor %}
