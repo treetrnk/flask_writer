@@ -7,6 +7,11 @@ uploaddir = os.path.join(basedir, 'uploads/')
 productdir = os.path.join(basedir, 'products/')
 
 class Config(object):
+    env = os.environ.get('FLASK_ENV')
+    if env and env == 'development':
+        DEBUG = True
+        DEVELOPMENT = True
+        MAIL_SUPPRESS_SEND = False if os.environ.get('MAIL_SUPPRESS_SEND') == 'False' else True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
         'sqlite:///' + os.path.join(datadir, 'app.db')

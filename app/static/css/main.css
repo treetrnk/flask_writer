@@ -185,6 +185,17 @@
         padding: 20px 20px 20px 5px;
       }
 			*/
+			.dev-banner {
+				background-color: rgba(200,0,0,0.6);
+				color: #fff;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				position: fixed;
+				top: 0px;
+				height: 20px;
+				z-index: 10;
+			}
 			div.jumbotron {
 				background-position: center center;
 				background-color: #444;

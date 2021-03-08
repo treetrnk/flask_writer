@@ -206,6 +206,12 @@
 				</div>
 			</div>
 		</nav>
+		{% if config['DEVELOPMENT'] %}
+			<div class="dev-banner">
+				<h6 class="text-center">DEVELOPMENT SERVER</h6>
+			</div>
+		{% endif %}
+
 
 		<div class="jumbotron banner">
 			<div class="container">
