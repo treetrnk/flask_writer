@@ -10,9 +10,9 @@ from app.models import Link, Product, Page, Category
 from app import db
 
 @bp.route('/shop')
-@bp.route('/shop/<string:category>')
 def index(category=None):
     Page.set_nav()
+    category = request.args.get('category')
     if category:
         category = Category.query.filter_by(name=category.lower()).first()
     products = Product.query.filter_by(active=True)

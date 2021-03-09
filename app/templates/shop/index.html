@@ -16,7 +16,7 @@
 					</li>
 					{% for loop_category in categories %}
 						<li class="nav-item">
-							<a href="{{ url_for('shop.index', category=loop_category.name) }}" class="nav-link {% if category.name == loop_category.name %}active{% endif %}">
+							<a href="{{ url_for('shop.index') }}?category={{ loop_category.name }}" class="nav-link {% if category.name == loop_category.name %}active{% endif %}">
 								<i class="{{ loop_category.icon }}"></i>
 								{{ loop_category.name.title() }}
 							</a>
