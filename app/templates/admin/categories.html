@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_category') }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Add Category
+</a>
+
+<h2>Categories</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th width="100">Default</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for category in categories %}
+			<tr>
+				<td>
+					<a href="{{ url_for('admin.edit_category', obj_id=category.id) }}">
+						<i class="fas fa-edit"></i>
+					</a>
+					<i class="{{ category.icon }}"></i>
+					{{ category.name }}
+				</td>
+        <td class="text-center">
+          {% if category.default %}
+            <i class="fas fa-check-circle text-success"></i>
+          {% endif %}
+        </td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

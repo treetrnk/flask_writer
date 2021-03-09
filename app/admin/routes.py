@@ -7,12 +7,12 @@ from app.admin.functions import log_new, log_change
 from app.admin.forms import (
         AddUserForm, AddPageForm, AddTagForm, EditUserForm, DefinitionEditForm, 
         EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm,
-        SendProductForm,
+        SendProductForm, CategoryEditForm,
     )
 from app.admin.generic_views import SaveObjView, DeleteObjView
 from app.models import (
         Page, User, Tag, PageVersion, Subscriber, Definition, Link, Product, 
-        Record
+        Record, Category
     )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -528,6 +528,7 @@ class AddProduct(SaveObjView):
     def extra(self):
         self.context['tab'] = 'shop'
         self.form.linked_page_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
+        self.form.category_id.choices = [(0,'')] + [(c.id, c.name) for c in Category.query.all()]
 
     def pre_post(self):
         self.obj.updater_id = current_user.id
@@ -549,6 +550,7 @@ class EditProduct(SaveObjView):
     def extra(self):
         self.context['tab'] = 'shop'
         self.form.linked_page_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
+        self.form.category_id.choices = [(0,'')] + [(c.id, c.name) for c in Category.query.all()]
 
     def pre_post(self):
         self.obj.updater_id = current_user.id
@@ -564,6 +566,66 @@ class DeleteProduct(DeleteObjView):
 
 bp.add_url_rule("/admin/product/delete", 
         view_func = login_required(DeleteProduct.as_view('delete_product')))
+
+@bp.route('/admin/categories')
+@login_required
+def categories():
+    page = Page.query.filter_by(slug='admin').first()
+    categories = Category.query.all()
+    return render_template('admin/categories.html',
+            tab='shop',
+            page=page,
+            categories=categories,
+        )
+
+class AddCategory(SaveObjView):
+    title = "Add Category"
+    model = Category
+    form = CategoryEditForm
+    action = 'Add'
+    log_msg = 'added a category'
+    success_msg = 'Category added.'
+    delete_endpoint = 'admin.delete_category'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.categories'}
+
+    def extra(self):
+        self.context['tab'] = 'shop'
+
+    def pre_post(self):
+        self.obj.updater_id = current_user.id
+
+bp.add_url_rule("/admin/category/add", 
+        view_func=login_required(AddCategory.as_view('add_category')))
+
+class EditCategory(SaveObjView):
+    title = "Edit Category"
+    model = Category
+    form = CategoryEditForm
+    action = 'Edit'
+    log_msg = 'updated a category'
+    success_msg = 'Category updated.'
+    delete_endpoint = 'admin.delete_category'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.categories'}
+
+    def extra(self):
+        self.context['tab'] = 'shop'
+
+    def pre_post(self):
+        self.obj.updater_id = current_user.id
+
+bp.add_url_rule("/admin/category/edit/<int:obj_id>", 
+        view_func=login_required(EditCategory.as_view('edit_category')))
+
+class DeleteCategory(DeleteObjView):
+    model = Category
+    log_msg = 'deleted a category'
+    success_msg = 'Category deleted.'
+    redirect = {'endpoint': 'admin.categories'}
+
+bp.add_url_rule("/admin/category/delete", 
+        view_func = login_required(DeleteCategory.as_view('delete_category')))
 
 @bp.route('/admin/records', methods=['GET','POST'])
 @bp.route('/admin/records/<string:day>', methods=['GET','POST'])

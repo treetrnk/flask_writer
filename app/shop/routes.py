@@ -6,18 +6,27 @@ from flask import (
     )
 from app.shop import bp
 from sqlalchemy import or_, desc
-from app.models import Link, Product, Page
+from app.models import Link, Product, Page, Category
 from app import db
 
 @bp.route('/shop')
-def index():
+@bp.route('/shop/<string:category>')
+def index(category=None):
     Page.set_nav()
-    products = Product.query.filter_by(active=True).order_by('sort','name').all()
+    if category:
+        category = Category.query.filter_by(name=category.lower()).first()
+    products = Product.query.filter_by(active=True)
+    if category:
+        products = products.filter_by(category_id=category.id)
+    products = products.order_by('sort','name').all()
+    categories = Category.query.filter(Category.products.any()).all()
     page = Page.query.filter_by(slug='shop').first()
     if products and page:
         return render_template(f'shop/index.html', 
                 page=page,
                 products=products,
+                category=category,
+                categories=categories,
             )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404

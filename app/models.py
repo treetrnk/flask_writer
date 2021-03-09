@@ -144,6 +144,7 @@ class Page(db.Model):
     pub_date = db.Column(db.DateTime(), nullable=True)
     published = db.Column(db.Boolean(), default=False)
     edit_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+    products = db.relationship('Product', backref='linked_page', lazy=True)
     versions = db.relationship('PageVersion', backref='current', primaryjoin=
                 id==PageVersion.original_id)
 
@@ -717,7 +718,7 @@ class Product(db.Model):
     download_path = db.Column(db.String(500))
     sort = db.Column(db.Integer, default=500)
     linked_page_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
-    linked_page = db.relationship('Page', backref='products')
+    category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=True)
     on_sale = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
 
@@ -843,6 +844,25 @@ class Product(db.Model):
 
     def __repr__(self):
         return f"<Product({self.id}, {self.name})>"
+
+##############
+## CATEGORY ##
+##############
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    icon = db.Column(db.String(150), nullable=True)
+    default = db.Column(db.Boolean, default=False, nullable=False)
+    products = db.relationship('Product', backref='category', lazy=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+    updater_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=True)
+    updated = db.Column(db.DateTime, onupdate=datetime.utcnow, default=datetime.utcnow)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def __repr__(self):
+        return f"<Category({self.id}, {self.name})>"
 
 ############
 ## RECORD ##
