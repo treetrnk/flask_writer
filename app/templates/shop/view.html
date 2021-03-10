@@ -68,7 +68,7 @@
 				</a>
 			{% else %}
 				<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
-					<i class="fas fa-credit-card"></i> Buy the eBook Here
+					<i class="fas fa-credit-card"></i> Buy the eBook
 				</a>
 			{% endif %}
 		{% endif %}
@@ -85,14 +85,14 @@
 	
 			{% if product.links|length > 1 %}
 				
-				<h3 class="mt-5">Other Marketplaces</h3>
+        <!--<h3 class="mt-5">Other Marketplaces</h3>-->
 			
 
-				<ul class="nav nav-tabs nav-fill mb-3">
+				<ul class="nav nav-tabs nav-fill mb-3 mt-5">
 					{% for format in product.grouped_links() %}
 						<li class="nav-item">
 							<button class="btn btn-link btn-block nav-link toggle-tab {% if loop.index == 1 %}active{% endif %}" data-target="#{{ format[0].format if format[0].format else 'morelinks' }}">
-                <h4 class="mb-0 mt-2">
+                <h3 class="mb-0 mt-2">
                   {% if format[0].format %}
                     {% if format[0].format == 'Paperback' %}
                       <i class="fas fa-book"></i>
@@ -103,7 +103,7 @@
                   {% else %}
                   More Links
                   {% endif %}
-                </h4>
+                </h3>
 							</button>
 						</li>
 					{% endfor %}
