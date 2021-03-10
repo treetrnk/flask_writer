@@ -7,8 +7,7 @@
 		<div class="row mb-5">
 			<div class="col">
 	
-				<hr />
-				<ul class="nav nav-pills nav-fill">
+				<ul class="nav nav-pills nav-fill bg-subtle rounded">
 					<li class="nav-item">
 						<a href="{{ url_for('shop.index') }}" class="nav-link {% if not category %}active{% endif %}">
 							All
@@ -23,7 +22,6 @@
 						</li>
 					{% endfor %}
 				</ul>
-				<hr />
 			</div>
 		</div>
 		<div class="row justify-content-center">

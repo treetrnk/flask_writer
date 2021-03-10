@@ -447,6 +447,9 @@
 				position: relative;
 				z-index: 1;
 			}
+			.bg-subtle {
+				background-color: rgba(125,125,125,0.06);
+			}
 			.author-note {
 				border: 1px solid #eee;
 				/*
