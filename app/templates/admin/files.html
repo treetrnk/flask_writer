@@ -47,6 +47,9 @@
           {% endif %}
 				</td>
         <td>
+          <span style="display:none;">
+            {{ f[1].strftime('%Y%m%d%H%M') }}
+          </span>
           {{ moment(f[1]).format('lll') }}
         </td>
 				<td>
