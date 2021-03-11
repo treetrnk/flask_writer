@@ -40,11 +40,11 @@
 				<td>
           {% if f[-3:].lower() in ['png','jpg','jpeg','gif'] %}
             {% if folder == 'upload' %}
-              <a herf="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
+              <a href="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
                 <img src="{{ url_for('page.uploads', filename=f) }}" width="125" />
               </a>
             {% else %}
-              <a herf="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
+              <a href="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
                 <img src="{{ url_for('admin.product_direct', filename=f) }}" width="125" />
               </a>
             {% endif %}

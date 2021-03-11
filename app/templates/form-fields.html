@@ -1,0 +1,91 @@
+  {% for field in form if field.widget.input_type != 'hidden' %}
+
+    <div class="form-group row">
+      {{ field.label(class="col-form-label col-md-3 text-md-right") }}
+      <div class="col">
+        {% if field.type == 'FieldList' %}
+          
+          <div class="fieldlist">
+
+            {% for entry in field.entries %}
+              <div class="card mb-3 bg-light fieldlist-card">
+                <div class="card-body" style="position: relative">
+                  {{ entry.form.hidden_tag() }}
+
+                  <button type="button" class="jquery-tooltip text-center fieldlist-remove rounded-circle btn btn-danger btn-sm {% if action == 'Edit' %}ajax-delete{% endif %}" title="Remove" aria-label="Close" style="position: absolute;top:-10px;right:-15px;width:30px;{% if field.entries|length < 2 %}display: none;{% endif %}">
+                    <i class="fas fa-times text-light"></i>
+                  </button>
+                  {% for f in entry.form if f.widget.input_type != 'hidden' %}
+                    <div class="form-group row">
+                      {{ f.label(class="col-form-label col-md-2 text-md-right") }}
+                      <div class="col">
+                        {% if f.errors %}
+                          {{ f(class="form-control is-invalid") }}
+                          <div class="invalid-feedback">
+                            {% for error in f.errors %}
+                              <span>{{ error|safe }}</span>
+                            {% endfor %}
+                          </div>
+                        {% else %}
+                          {{ f(class="form-control") }}
+                        {% endif %}
+                        {{ f.form_text }}
+                        {% if f.description %}
+                          {{ f.description|safe }}
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="row">
+            <div class="col">
+              {% if action == 'Edit' %}
+                <a href="{{ url_for(add_child_endpoint, parent_id=form.obj_id.data) }}" class="btn btn-block btn-sm btn-outline-success">
+                  <i class="fas fa-plus"></i> 
+                  Add More {{ field.label.text }}
+                </a>
+              {% else %}
+                <button type="button" class="btn btn-block btn-sm btn-outline-success fieldlist-add">
+                  <i class="fas fa-plus"></i> 
+                  Add More {{ field.label.text }}
+                </button>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if field.errors %}
+            <div class="invalid-feedback">
+              {% for error in field.errors %}
+                <span>{{ error|safe }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+        {% else %}
+
+          {% if field.errors %}
+            {{ field(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in field.errors %}
+                <span>{{ error|safe }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ field(class="form-control") }}
+          {% endif %}
+          {{ field.form_text }}
+          {% if field.description %}
+            {{ field.description|safe }}
+          {% endif %}
+
+        {% endif %}
+      </div>
+    </div>
+
+  {% endfor %}
+

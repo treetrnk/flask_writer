@@ -1,5 +1,6 @@
 import pytz
 import re
+import os
 from flask import render_template, redirect, flash, url_for, send_from_directory, current_app, request
 from app import db
 from app.admin import bp
@@ -7,7 +8,7 @@ from app.admin.functions import log_new, log_change
 from app.admin.forms import (
         AddUserForm, AddPageForm, AddTagForm, EditUserForm, DefinitionEditForm, 
         EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm,
-        SendProductForm, CategoryEditForm,
+        SendProductForm, CategoryEditForm, FileUploadForm,
     )
 from app.admin.generic_views import SaveObjView, DeleteObjView
 from app.models import (
@@ -20,7 +21,7 @@ from datetime import datetime, time, timedelta
 from markdown import markdown
 from app.email import send_email
 from dateutil.relativedelta import relativedelta
-from os import listdir
+from werkzeug.utils import secure_filename
 
 @bp.route('/admin/users')
 @login_required
@@ -742,7 +743,7 @@ bp.add_url_rule("/admin/record/delete",
 @login_required
 def files(folder='upload'):
     page = Page.query.filter_by(slug='admin').first()
-    files = [f for f in listdir(current_app.config.get(folder.upper() + "_DIR"))]
+    files = [f for f in os.listdir(current_app.config.get(folder.upper() + "_DIR"))]
     return render_template('admin/files.html',
             tab='files',
             folder=folder,
@@ -750,25 +751,38 @@ def files(folder='upload'):
             files=files,
         )
 
-@bp.route('/admin/files/<string:folder>/upload')
+@bp.route('/admin/files/<string:folder>/add', methods=['GET','POST'])
 @login_required
 def add_file(folder):
     page = Page.query.filter_by(slug='admin').first()
-    return render_template('admin/files.html',
+    form = FileUploadForm()
+    form.folder.choices = [('product', 'Products'),('upload','Uploads')] 
+    if form.validate_on_submit():
+        current_app.logger.debug(form.file_data.data)
+        form.file_data.data.save(
+                os.path.join(
+                    current_app.config.get(form.folder.data.upper() + '_DIR'), 
+                    secure_filename(form.file_data.data.filename)
+                )
+            )
+        flash(f'The file <b>{form.file_data.data.filename}</b> was uploaded successfully', 'success')
+        return redirect(url_for('admin.files', folder=form.folder.data))
+    form.folder.data = folder.lower()
+    return render_template('admin/file-upload.html',
             tab='files',
             folder=folder,
             page=page,
+            form=form,
         )
 
 @bp.route('/admin/files/<string:folder>/<string:filename>/delete')
 @login_required
 def delete_file(folder,filename):
     page = Page.query.filter_by(slug='admin').first()
-    return render_template('admin/files.html',
-            tab='files',
-            folder=folder,
-            page=page,
-        )
+    directory = current_app.config.get(folder.upper() + '_DIR')
+    os.remove(os.path.join(directory, filename))
+    flash(f'The file <b>{filename}</b> was deleted from {folder.title()}s', 'success')
+    return redirect(url_for('admin.files', folder=folder))
 
 @bp.route('/admin/products/<string:filename>')
 @login_required

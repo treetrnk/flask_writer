@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (
         StringField, TextAreaField, SelectField, IntegerField, SubmitField, 
         BooleanField, SubmitField, DateTimeField, SelectMultipleField, 
-        PasswordField, HiddenField, DateField, TimeField
+        PasswordField, HiddenField, DateField, TimeField, FileField,
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError, InputRequired
@@ -141,5 +141,9 @@ class RecordEditForm(FlaskForm):
     comment = StringField('Comment', validators=[Length(max=200)])
     date = DateField('Date', render_kw={'type': 'date'})
     
+class FileUploadForm(FlaskForm):
+    file_data = FileField(f'File{required}')
+    folder = SelectField(f'Folder{required}')
+
 class DeleteObjForm(FlaskForm):
     obj_id = HiddenField('Object id', validators=[DataRequired()])
