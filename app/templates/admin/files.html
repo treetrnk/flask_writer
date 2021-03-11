@@ -35,7 +35,15 @@
 		{% for f in files %}
 			<tr>
 				<td>
-					{{ f }}
+          {% if folder == 'upload' %}
+            <a href="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
+              {{ f }}
+            </a>
+          {% else %}
+            <a href="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
+              {{ f }}
+            </a>
+          {% endif %}
 				</td>
 				<td>
           {% if f[-3:].lower() in ['png','jpg','jpeg','gif'] %}
