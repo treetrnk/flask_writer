@@ -20,6 +20,7 @@ from datetime import datetime, time, timedelta
 from markdown import markdown
 from app.email import send_email
 from dateutil.relativedelta import relativedelta
+from os import listdir
 
 @bp.route('/admin/users')
 @login_required
@@ -735,6 +736,44 @@ class DeleteRecord(DeleteObjView):
 
 bp.add_url_rule("/admin/record/delete", 
         view_func = login_required(DeleteRecord.as_view('delete_record')))
+
+@bp.route('/admin/files')
+@bp.route('/admin/files/<string:folder>')
+@login_required
+def files(folder='upload'):
+    page = Page.query.filter_by(slug='admin').first()
+    files = [f for f in listdir(current_app.config.get(folder.upper() + "_DIR"))]
+    return render_template('admin/files.html',
+            tab='files',
+            folder=folder,
+            page=page,
+            files=files,
+        )
+
+@bp.route('/admin/files/<string:folder>/upload')
+@login_required
+def add_file(folder):
+    page = Page.query.filter_by(slug='admin').first()
+    return render_template('admin/files.html',
+            tab='files',
+            folder=folder,
+            page=page,
+        )
+
+@bp.route('/admin/files/<string:folder>/<string:filename>/delete')
+@login_required
+def delete_file(folder,filename):
+    page = Page.query.filter_by(slug='admin').first()
+    return render_template('admin/files.html',
+            tab='files',
+            folder=folder,
+            page=page,
+        )
+
+@bp.route('/admin/products/<string:filename>')
+@login_required
+def product_direct(filename):
+    return send_from_directory(current_app.config['PRODUCT_DIR'], filename)
 
 @bp.route('/admin/subscribers')
 @login_required

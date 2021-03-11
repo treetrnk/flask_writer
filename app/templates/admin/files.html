@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<a href="{{ url_for('admin.add_file', folder=folder) }}" class="btn btn-primary float-right">
+	<i class="fas fa-plus"></i> Upload File
+</a>
+
+<h2>Files</h2>
+
+
+<ul class="nav nav-tabs my-4">
+  <li class="nav-item">
+    <a href="{{ url_for('admin.files', folder='upload') }}" class="nav-link {% if folder == 'upload' %}active{% endif %}">
+      <h3>Uploads</h3>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ url_for('admin.files', folder='product') }}" class="nav-link {% if folder == 'product' %}active{% endif %}">
+      <h3>Products</h3>
+    </a>
+  </li>
+</ul>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Filename</th>
+      <th width="130">Thumbnail</th>
+			<th width="100">Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for f in files %}
+			<tr>
+				<td>
+					{{ f }}
+				</td>
+				<td>
+          {% if f[-3:].lower() in ['png','jpg','jpeg','gif'] %}
+            {% if folder == 'upload' %}
+              <a herf="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
+                <img src="{{ url_for('page.uploads', filename=f) }}" width="125" />
+              </a>
+            {% else %}
+              <a herf="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
+                <img src="{{ url_for('admin.product_direct', filename=f) }}" width="125" />
+              </a>
+            {% endif %}
+          {% endif %}
+				</td>
+        <td class="text-center">
+					<a href="{{ url_for('admin.delete_file', filename=f, folder=folder) }}" class="btn btn-danger btn-sm">
+						<i class="fas fa-times"></i>
+					</a>
+        </td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
