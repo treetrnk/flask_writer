@@ -27,6 +27,7 @@
 	<thead>
 		<tr>
 			<th>Filename</th>
+			<th>Modified</th>
       <th width="130">Thumbnail</th>
 			<th width="100">Delete</th>
 		</tr>
@@ -36,30 +37,33 @@
 			<tr>
 				<td>
           {% if folder == 'upload' %}
-            <a href="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
-              {{ f }}
+            <a href="{{ url_for('page.uploads', filename=f[0]) }}" target='_blank'>
+              {{ f[0] }}
             </a>
           {% else %}
-            <a href="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
-              {{ f }}
+            <a href="{{ url_for('admin.product_direct', filename=f[0]) }}" target='_blank'>
+              {{ f[0] }}
             </a>
           {% endif %}
 				</td>
+        <td>
+          {{ moment(f[1]).format('lll') }}
+        </td>
 				<td>
-          {% if f[-3:].lower() in ['png','jpg','jpeg','gif'] %}
+          {% if f[0][-3:].lower() in ['png','jpg','jpeg','gif'] %}
             {% if folder == 'upload' %}
-              <a href="{{ url_for('page.uploads', filename=f) }}" target='_blank'>
-                <img src="{{ url_for('page.uploads', filename=f) }}" width="125" />
+              <a href="{{ url_for('page.uploads', filename=f[0]) }}" target='_blank'>
+                <img src="{{ url_for('page.uploads', filename=f[0]) }}" width="125" />
               </a>
             {% else %}
-              <a href="{{ url_for('admin.product_direct', filename=f) }}" target='_blank'>
-                <img src="{{ url_for('admin.product_direct', filename=f) }}" width="125" />
+              <a href="{{ url_for('admin.product_direct', filename=f[0]) }}" target='_blank'>
+                <img src="{{ url_for('admin.product_direct', filename=f[0]) }}" width="125" />
               </a>
             {% endif %}
           {% endif %}
 				</td>
         <td class="text-center">
-					<a href="{{ url_for('admin.delete_file', filename=f, folder=folder) }}" class="btn btn-danger btn-sm">
+					<a href="{{ url_for('admin.delete_file', filename=f[0], folder=folder) }}" class="btn btn-danger btn-sm">
 						<i class="fas fa-times"></i>
 					</a>
         </td>

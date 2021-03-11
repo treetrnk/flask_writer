@@ -17,7 +17,7 @@ from app.models import (
     )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
 from markdown import markdown
 from app.email import send_email
 from dateutil.relativedelta import relativedelta
@@ -743,7 +743,13 @@ bp.add_url_rule("/admin/record/delete",
 @login_required
 def files(folder='upload'):
     page = Page.query.filter_by(slug='admin').first()
-    files = [f for f in os.listdir(current_app.config.get(folder.upper() + "_DIR"))]
+    config_folder = current_app.config.get(folder.upper() + "_DIR")
+    filenames = [f for f in os.listdir(config_folder)]
+    files = []
+    for f in filenames:
+        mtime = os.stat(os.path.join(config_folder, f)).st_mtime
+        modified = datetime.fromtimestamp(mtime, tz=timezone.utc)
+        files += [(f, modified)]
     return render_template('admin/files.html',
             tab='files',
             folder=folder,
