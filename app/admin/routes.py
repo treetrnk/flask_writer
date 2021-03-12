@@ -771,6 +771,7 @@ def add_file(folder):
                     secure_filename(form.file_data.data.filename)
                 )
             )
+        current_app.logger.info(f'{current_user.username} uploaded the file "{form.file_data.data.filename}" to {folder.title()}s.')
         flash(f'The file <b>{form.file_data.data.filename}</b> was uploaded successfully', 'success')
         return redirect(url_for('admin.files', folder=form.folder.data))
     form.folder.data = folder.lower()
@@ -787,7 +788,8 @@ def delete_file(folder,filename):
     page = Page.query.filter_by(slug='admin').first()
     directory = current_app.config.get(folder.upper() + '_DIR')
     os.remove(os.path.join(directory, filename))
-    flash(f'The file <b>{filename}</b> was deleted from {folder.title()}s', 'success')
+    current_app.logger.info(f'{current_user.username} deleted the file "{filename}" from {folder.title()}s.')
+    flash(f'The file <b>{filename}</b> was deleted from {folder.title()}s.', 'success')
     return redirect(url_for('admin.files', folder=folder))
 
 @bp.route('/admin/products/<string:filename>')
