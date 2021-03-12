@@ -66,3 +66,4 @@ uploads/
 textlogs/
 app/templates/analytics.html
 products/
+app/static/datatables/*
