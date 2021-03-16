@@ -314,7 +314,11 @@ def check_scheduled(): # SCHEDULED RELEASE WEBHOOK
 def tags():
     page = Page.query.filter_by(slug='admin').first()
     tags = Tag.query.order_by('name')
-    return render_template('admin/tags.html', tab='tags', tags=tags, page=page)
+    return render_template('admin/tags.html', 
+            tab='pages', 
+            tags=tags, 
+            page=page
+        )
 
 @bp.route('/admin/tag/add', methods=['GET', 'POST'])
 @login_required
@@ -333,7 +337,7 @@ def add_tag():
             return redirect(url_for('admin.tags'))
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
-    return render_template('admin/tag-edit.html', form=form, tab='tags', action='Add', page=page)
+    return render_template('admin/tag-edit.html', form=form, tab='pages', action='Add', page=page)
 
 @bp.route('/admin/tag/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -352,7 +356,7 @@ def edit_tag(id):
         else:
             flash("<b>Error!</b> That tag already exists.", "danger")
     form.name.data = tag.name
-    return render_template('admin/tag-edit.html', form=form, tab='tags', tag=tag, action='Edit', page=page)
+    return render_template('admin/tag-edit.html', form=form, tab='pages', tag=tag, action='Edit', page=page)
 
 @bp.route('/admin/definitions')
 @login_required
@@ -360,7 +364,7 @@ def definitions():
     page = Page.query.filter_by(slug='admin').first()
     definitions = Definition.query.order_by('name')
     return render_template('admin/definitions.html', 
-            tab='definitions', 
+            tab='pages', 
             definitions=definitions, 
             page=page,
             len=len,
@@ -381,7 +385,7 @@ class AddDefinition(SaveObjView):
         self.form.type.choices = Definition.TYPE_CHOICES
         self.form.tag_id.choices = [(0,'')] + [(t.id, t.name) for t in Tag.query.order_by('name').all()]
         self.form.parent_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
-        self.context['tab'] = 'definitions'
+        self.context['tab'] = 'pages'
         #self.context.update({'form': self.form})
 
     def pre_post(self):
@@ -408,7 +412,7 @@ class EditDefinition(SaveObjView):
         self.form.type.choices = Definition.TYPE_CHOICES
         self.form.tag_id.choices = [(0,'')] + [(t.id, t.name) for t in Tag.query.all()]
         self.form.parent_id.choices = [(0,'')] + [(p.id, str(p)) for p in Page.query.all()]
-        self.context['tab'] = 'definitions'
+        self.context['tab'] = 'pages'
         #self.context.update({'form': self.form})
 
     def pre_post(self):
@@ -701,7 +705,7 @@ def records(day=None):
         chart_records += [Record.words_by_day(prev_month)]
         prev_month += timedelta(days=1)
     return render_template('admin/records.html', 
-            tab='records', 
+            tab='pages', 
             chart_records=chart_records,
             records=records,
             page=page,
@@ -721,6 +725,9 @@ class EditRecord(SaveObjView):
     delete_endpoint = 'admin.delete_record'
     template = 'admin/object-edit.html'
     redirect = {'endpoint': 'admin.records'}
+
+    def extra(self):
+        self.context['tab'] = 'pages'
 
     def pre_post(self):
         self.obj.words = self.form.end_words.data - self.form.start_words.data
