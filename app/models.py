@@ -193,9 +193,11 @@ class Page(db.Model):
         return data
 
     def html_body(self):
-        body = markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
-        body = Product.replace_product_markup(body)
-        return body
+        if self.body:
+            body = markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+            body = Product.replace_product_markup(body)
+            return body
+        return ''
 
     def text_body(self):
         pattern = re.compile(r'<.*?>')
@@ -365,12 +367,15 @@ class Page(db.Model):
         return descendents
 
     def word_count(self):
-        try:
+        if self.body:
+            try:
+                return self.words
+            except:
+                words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
+                read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+                self.words = words
             return self.words
-        except:
-            words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
-            read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
-            self.words = words
+        self.words = 0
         return self.words
 
     def read_time(self):

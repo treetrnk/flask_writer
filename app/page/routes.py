@@ -11,7 +11,7 @@ from app import db
 @bp.route('/')
 def home():
     Page.set_nav()
-    page = Page.query.filter_by(path='/home',published=True).first()
+    page = Page.query.filter_by(slug='home',published=True).first()
     if page:
         return render_template(f'page/{page.template}.html', page=page)
     return render_template('home.html', page='page')

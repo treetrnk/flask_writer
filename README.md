@@ -13,6 +13,10 @@ To use it first install all packages in `/requirements.txt`:
 # pip install -r requirements.txt
 ```
 
+### Set Up Database
+
+Refer to your database's manual for this. Create a blank DB with a user that has full access to it.
+
 ### Set Environment Variables
 
 Next set the following environment variables, replacing the bracketed sections with data for your setup:
@@ -34,12 +38,15 @@ See `/config.py` for a list of variables used.
 
 ```python
 $ flask shell
->>> user = User(username=[YOUR USERNAME])
->>> user.set_password([YOUR PASSWORD])
+>>> user = User(username='[YOUR USERNAME]')
+>>> user.set_password('[YOUR PASSWORD]')
 >>> db.session.add(user)
 >>> db.session.commit()
->>> admin_page = Page(title='Admin',slug='admin',user_id=user.id,sort=9999)
+>>> home_page = Page(title='Home',slug='home',template='page',published=True,user_id=user.id,sort=1)
+>>> admin_page = Page(title='Admin',slug='admin',template='page',published=False,user_id=user.id,sort=9999)
+>>> home_page.set_path()
 >>> admin_page.set_path()
+>>> db.session.add(home_page)
 >>> db.session.add(admin_page)
 >>> db.session.commit()
 >>> exit()
