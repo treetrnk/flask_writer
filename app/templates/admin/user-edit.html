@@ -8,155 +8,19 @@
 <form class="form" method="post">
 	{{ form.hidden_tag() }}
 	
-	<!--USERNAME-->
-	<div class="form-group row">
-		{{ form.username.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.username.errors %}
-				{{ form.username(class="form-control is-invalid") }}
-				<div class="invalid-feedback">
-					{% for error in form.username.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.username(class="form-control") }}
-			{% endif %}
-		</div>
-	</div>
-
-	<!--EMAIL-->
-	<div class="form-group row">
-		{{ form.email.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.email.errors %}
-				{{ form.email(class="form-control is-invalid") }}
-				<div class="invalid-feedback">
-					{% for error in form.email.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.email(class="form-control") }}
-			{% endif %}
-		</div>
-	</div>
-
-	<!--AVATAR-->
-	<div class="form-group row">
-		{{ form.avatar.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.avatar.errors %}
-				{{ form.avatar(class="form-control is-invalid") }}
-				<div class="invalid-feedback">
-					{% for error in form.avatar.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.avatar(class="form-control") }}
-			{% endif %}
-		</div>
-	</div>
-
-	<!--ABOUT ME-->
-	<div class="form-group row">
-		{{ form.about_me.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.about_me.errors %}
-				{{ form.about_me(class="form-control is-invalid") }}
-				<div class="invalid-feedback">
-					{% for error in form.about_me.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.about_me(class="form-control") }}
-			{% endif %}
-		</div>
-	</div>
-
-	<!--TIMEZONE-->
-	<div class="form-group row">
-		{{ form.timezone.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.timezone.errors %}
-				{{ form.timezone(class="form-control is-invalid mkSelect2") }}
-				<div class="invalid-feedback">
-					{% for error in form.timezone.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.timezone(class="form-control mkSelect2") }}
-			{% endif %}
-		</div>
-	</div>
-
-	{% if action == 'Edit' %}
-		<h3 class="mt-4">Change Password</h3>
-		<hr class="mb-4" />
-	{% endif %}
-
-	<!--PASSWORD-->
-	<div class="form-group row">
-		{{ form.password.label(class="col-sm-2 control-from-label text-md-right") }} 
-		<div class="col-sm-8">
-			{% if form.password.errors %}
-				{{ form.password(class="form-control is-invalid", placeholder="Password") }}
-				<div class="invalid-feedback">
-					{% for error in form.password.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.password(class="form-control", placeholder="Password") }}
-			{% endif %}
-		</div>
-	</div>
-
-	{% if action == 'Edit' %}
-	<!--NEW PASSWORD-->
-	<div class="form-group row mt-4">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-8">
-			{% if form.new_password.errors %}
-				{{ form.new_password(class="form-control is-invalid", placeholder="New Password") }}
-				<div class="invalid-feedback">
-					{% for error in form.new_password.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.new_password(class="form-control", placeholder="New Password") }}
-			{% endif %}
-		</div>
-	</div>
-	{% endif %}
-
-	<!--CONFIRM PASSWORD-->
-	<div class="form-group row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-8">
-			{% if form.confirm_password.errors %}
-				{{ form.confirm_password(class="form-control is-invalid", placeholder="Confirm Password") }}
-				<div class="invalid-feedback">
-					{% for error in form.confirm_password.errors %}
-						{{ error }}
-					{% endfor %}
-				</div>
-			{% else %}
-				{{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
-			{% endif %}
-		</div>
-	</div>
+  {% include 'form-fields.html' %}
 
 	<div class="row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
-			{{ form.submit(class="btn btn-primary") }}
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i>
+        Save User
+      </button>
 			<a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Cancel</a>
 		</div>
 	</div>
+
+</form>
 
 {% endblock %}

@@ -1,7 +1,11 @@
   {% for field in form if field.widget.input_type != 'hidden' %}
 
     <div class="form-group row">
-      {{ field.label(class="col-form-label col-md-3 text-md-right")|safe }}
+      {% if field.flags.required %}
+        {{ field.label(class="col-form-label col-md-3 text-md-right required-label")|safe }}
+      {% else %}
+        {{ field.label(class="col-form-label col-md-3 text-md-right")|safe }}
+      {% endif %}
       <div class="col">
         {% if field.type == 'FieldList' %}
           
@@ -17,7 +21,11 @@
                   </button>
                   {% for f in entry.form if f.widget.input_type != 'hidden' %}
                     <div class="form-group row">
-                      {{ f.label(class="col-form-label col-md-2 text-md-right")|safe }}
+                      {% if f.flags.required %}
+                        {{ f.label(class="col-form-label col-md-2 text-md-right required-label")|safe }}
+                      {% else %}
+                        {{ f.label(class="col-form-label col-md-2 text-md-right")|safe }}
+                      {% endif %}
                       <div class="col">
                         {% if f.errors %}
                           {{ f(class="form-control is-invalid") }}

@@ -55,7 +55,7 @@
 	
 	<!--TITLE-->
 	<div class="form-group row mt-4">
-		{{ form.title.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.title.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 		<div class="col-sm-8">
 			{% if form.title.errors %}
 				{{ form.title(class="form-control is-invalid", id="page_title_input") }}
@@ -72,7 +72,7 @@
 
 	<!--SLUG-->
 	<div class="form-group row">
-		{{ form.slug.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.slug.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 		<div class="col-sm-8">
 			{% if form.slug.errors %}
 				{{ form.slug(class="form-control is-invalid", id="page_slug_input") }}
@@ -89,7 +89,7 @@
 
 	<!--TEMPLATE-->
 	<div class="form-group row">
-		{{ form.template.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.template.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 		<div class="col-sm-8">
 			{% if form.template.errors %}
 				{{ form.template(class="form-control is-invalid") }}
@@ -140,7 +140,7 @@
 
 	<!--BODY-->
 	<div class="form-group row">
-		{{ form.body.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.body.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 		<div class="col-sm-8">
 			{% if form.body.errors %}
 				{{ form.body(class="form-control is-invalid", rows="10", id="page_body_input") }}
@@ -266,7 +266,7 @@
 
 	<!--AUTHOR-->
 	<div class="form-group row">
-		{{ form.user_id.label(class="col-sm-2 control-from-label text-md-right") }} 
+		{{ form.user_id.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 		<div class="col-sm-8">
 			{% if form.user_id.errors %}
 				{{ form.user_id(class="form-control is-invalid mkSelect2") }}

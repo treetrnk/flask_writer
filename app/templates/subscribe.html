@@ -12,7 +12,7 @@
 
 			<!--EMAIL-->
 			<div class="form-group row">
-				{{ form.email.label(class="col-sm-2 control-from-label text-md-right") }} 
+				{{ form.email.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 				<div class="col-sm-8">
 					{% if form.email.errors %}
 						{{ form.email(class="form-control is-invalid") }}
@@ -60,7 +60,7 @@
 
 			<!--SUBSCRIPTION-->
 			<div class="form-group row">
-				{{ form.subscription.label(class="col-sm-2 control-from-label text-md-right") }} 
+				{{ form.subscription.label(class="col-sm-2 control-from-label text-md-right required-label") }} 
 				<div class="col-sm-8">
 					{% if form.subscription.errors %}
 						{{ form.subscription(class="list-unstyled border border-danger rounded") }}

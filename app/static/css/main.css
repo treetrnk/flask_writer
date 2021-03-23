@@ -272,6 +272,10 @@
 					-moz-border-radius: 6px 0 6px 6px;
 					border-radius: 6px 0 6px 6px;
 			}
+      .required-label::after {
+        content: "*";
+        color: #f00;
+      }
 			blockquote::before {
 				content: '❝';
 				position: absolute;
