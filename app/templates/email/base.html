@@ -37,9 +37,8 @@
 					<td>
 					</td>
 					<td width="700" style="padding:0 20px 0 20px;">
-						<a href="https://houstonhare.com" style="text-decoration:none; color:#fff;">
-							<h1 style="padding:0;margin:0;font-weight:normal;"><span style="font-family:'Yesteryear'">Houston Hare</span><span style="font-size:55%;font-style:italic;"> Stories</span></h1>
-						</a>
+            <a href="{{ config['BASE_URL'] }}" style="text-decoration:none; color:#fff;">
+              {% include 'logo.html' %}
 					</td>
 					<td></td>
 				</tr>
@@ -67,11 +66,12 @@
 
 						<p style="color:#666;text-align:center;"><small>
 							{% if recipient %}
-								You are receiving this email because your email address has been subscribed to new posts on <a href="https://houstonhare.com">HoustonHare.com</a>.<br /> 
+              You are receiving this email because your email address has been subscribed to new posts on <a href="{{ config['BASE_URL'] }}">{{ config['PRETTY_URL'] }}</a>.<br /> 
 								To change which emails you receive, <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">update your subscription prefrences</a>.<br /> 
-								If you no longer wish to receive any emails from HoustonHare.com, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
+                If you no longer wish to receive any emails from {{ config['PRETTY_URL'] }}, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
 							{% endif %}
-							&copy; Houston Hare, 2020<br />
+              {% include 'footer.html' %}
+							<br />
 						</small></p>
 					</td>
 					<td></td>

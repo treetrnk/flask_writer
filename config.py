@@ -30,6 +30,7 @@ class Config(object):
     UPLOAD_DIR = uploaddir
     PRODUCT_DIR = productdir
     BASE_URL = os.environ.get('BASE_URL') or 'http://localhost:5000'
+    PRETTY_URL = os.environ.get('PRETTY_URL') or BASE_URL
     ADMINS=[os.environ.get('ADMINS')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None

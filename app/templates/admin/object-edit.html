@@ -11,38 +11,7 @@
 		<form method="post" action="">
 			{{ form.hidden_tag() }}
 
-			{% for field in form if field.widget.input_type != 'hidden' %}
-
-				<div class="form-group row">
-					{{ field.label(class="col-form-label col-md-3 text-md-right") }}
-					<div class="col">
-						{% if field.errors %}
-							{% if field.widget.input_type == 'checkbox' %}
-								{{ field(class="mt-2 is-invalid") }}
-							{% else %}
-								{{ field(class="form-control is-invalid") }}
-							{% endif %}
-							<div class="invalid-feedback">
-								{% for error in field.errors %}
-									<span>{{ error }}</span>
-								{% endfor %}
-							</div>
-						{% else %}
-							{% if field.widget.input_type == 'checkbox' %}
-								{{ field(class="mt-2") }}
-							{% else %}
-								{{ field(class="form-control") }}
-							{% endif %}
-						{% endif %}
-						{% if field.description %}
-							<small class="form-text text-muted">
-								{{ field.description }}
-							</small>
-						{% endif %}
-					</div>
-				</div>
-
-			{% endfor %}
+      {% include 'form-fields.html' %}
 
 			<div class="row">
 				<div class="col-md-3"></div>
