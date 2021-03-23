@@ -42,7 +42,7 @@ def upgrade():
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('template', sa.String(length=100), nullable=True),
     sa.Column('banner', sa.String(length=500), nullable=True),
-    sa.Column('body', sa.String(length=10000000), nullable=True),
+    sa.Column('body', sa.Text(length=10000000), nullable=True),
     sa.Column('summary', sa.String(length=300), nullable=True),
     sa.Column('sidebar', sa.String(length=1000), nullable=True),
     sa.Column('User', sa.Integer(), nullable=False),

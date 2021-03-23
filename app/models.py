@@ -76,7 +76,7 @@ class PageVersion(db.Model):
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     template = db.Column(db.String(100))
     banner = db.Column(db.String(500), nullable=True)
-    body = db.Column(db.String(10000000))
+    body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=ver_tags, lazy='subquery', 
             backref=db.backref('page_versions', lazy=True))
@@ -129,7 +129,7 @@ class Page(db.Model):
     parent = db.relationship('Page', remote_side=[id], backref='children')
     template = db.Column(db.String(100))
     banner = db.Column(db.String(500), nullable=True)
-    body = db.Column(db.String(10000000))
+    body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
             backref=db.backref('pages', order_by='Page.path', lazy=True))
