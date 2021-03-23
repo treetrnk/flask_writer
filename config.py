@@ -29,7 +29,7 @@ class Config(object):
     TEMPLATE_DIR = templatedir
     UPLOAD_DIR = uploaddir
     PRODUCT_DIR = productdir
-    BASE_URL = os.environ.get('BASE_URL') or 'https://houstonhare.com'
+    BASE_URL = os.environ.get('BASE_URL') or 'http://localhost:5000'
     ADMINS=[os.environ.get('ADMINS')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
@@ -42,3 +42,5 @@ class Config(object):
     DISCORD_WEBHOOK = os.environ.get('DISCORD_WEBHOOK') or ''
     DISCORD_RELAY_GROUPS = os.environ.get('DISCORD_RELAY_GROUPS') or 'all,discord'
     DISCORD_RELAY_GROUPS = DISCORD_RELAY_GROUPS.split(',')
+    TWITTER_HANDLE = os.environ.get('TWITTER_HANDLE') or ''
+    SITE_NAME = os.environ.get('SITE_NAME') or 'Flask Writer'

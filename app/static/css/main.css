@@ -11,23 +11,12 @@
         font-family: "Montserrat SemiBold";
         src: url(../fonts/Montserrat-SemiBold.ttf);
       }
-      @font-face {
-        font-family: "Yesteryear";
-        src: url(../fonts/Yesteryear-Regular.ttf);
-      }
-			nav.navbar.bg-blue {
-				background-color: #0b5394; /*let user set*/
-				/*position: fixed;
-        top: 0;
-				width: 100%;*/
+			#topNavbar {
 				-moz-box-shadow:    3px 3px 25px 1px #222;
 				-webkit-box-shadow: 3px 3px 25px 1px #222;
 				box-shadow:         3px 3px 25px 1px #222;
 				z-index: 4;
 				transition: top 0.3s;
-				/*
-				height: 68px;
-				*/
 			}
 			nav#topNavbar a.nav-link:link, nav#topNavbar a.nav-link:visited, nav#topNavbar a.nav-link:active {
 				color: #fff;
@@ -44,147 +33,10 @@
 				line-height: 20px;
 				color: #fff;
 			}
-			a.site-title h2 {
-				margin: 0;
-        font-family: "Yesteryear", cursive;
-				text-transform: none;
-        font-weight: normal;
-        font-size: 1.7em;
-			}
 			.small {
 				font-size: 14px;
 				text-transform: none;
 			}
-			a.site-title h2 .small {
-				font-size: 16px;
-        font-family: "Open Sans", sans-serif;
-				font-style: italic;
-			}
-			/*
-			a.site-title h2 .small {
-        font-family: "Open Sans", sans-serif;
-			}
-			nav.navlinks i.nav-menu {
-				font-size: 35px;
-				line-height: 68px;
-				color: #ffffff;
-				cursor: pointer;
-			}
-			ul.navlinks {
-				list-style: none;
-				position: relative;
-				float: right;
-			}
-			ul.navlinks a {
-				display: block;
-        font-family: "Montserrat", Arial, sans-serif;
-				line-height: 68px;
-			}
-			ul.navlinks li {
-				margin-left: 10px;
-				position: relative;
-				float: left;
-				padding: 0 5px;
-			}
-			ul.navlinks li:hover {
-				background-color: rgba(256,256,256, .06);
-			}
-			ul.navlinks li .navdrop {
-				display: none;
-				line-height: initial;
-				position: absolute;
-				float: left;
-				left: 0;
-				background-color: #222;
-				-moz-box-shadow:    3px 3px 25px 1px #222;
-				-webkit-box-shadow: 3px 3px 25px 1px #222;
-				box-shadow:         3px 3px 25px 1px #222;
-				padding: 0;
-				min-width: 150px;
-        max-height: calc(100%-68px);
-        overflow-y: auto;
-			}
-			ul.navlinks li:hover .navdrop {
-				display: block;
-			}
-      .navdrop ul, .navdrop ul li {
-        margin: 0;
-        padding: 0;
-        float: none;
-        list-style: none;
-      }
-			.navdrop ul a {
-				display: block;
-				width: 100%;
-        margin: 0px;
-				text-align: left;
-				padding: 0 7px 0 7px;
-				text-transform: none;
-        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-				line-height: 35px;
-        white-space: nowrap;
-      }
-			.navdrop ul ul {
-				display: none;
-			}
-      .navdrop ul ul a {
-        padding-left: 20px;
-        border-top: 1px solid #000;
-        border-bottom: 1px solid #444;
-        background-color: rgba(0, 0, 0, 0.25);
-      }
-      .navdrop a i.glyphicon {
-        padding: 7px;
-      }
-      #toggle-nav {
-				background-color: #222222;
-				min-width: 250px;
-				position: fixed;
-				top: 0;
-				right: 0;
-				height: 100vh;
-				padding-top: 68px;
-				z-index: 3;
-				overflow-y: auto;
-				overflow-x: hidden;
-				white-space: nowrap;
-				border-left: 1px solid #444;
-				border-right: 1px solid #000;
-				display: none;
-			}
-			#toggle-nav ul {
-				list-style: none;
-				padding: 0;
-			}
-			#toggle-nav li {
-				color: #ffffff;
-				line-height: 50px;
-				margin: 0;
-			}
-			#toggle-nav a {
-				display: block;
-				padding: 0 10px;
-				color: #dddddd;
-				font-size: 14px;
-        font-family: "Montserrat", Arial, sans-serif;
-			}
-			#toggle-nav a:hover {
-				text-decoration: none;
-				background-color: rgba(256,256,256, .06);
-			}
-			#toggle-nav a:active #toggle-nav a:visited {
-				text-decoration: none;
-			}
-			#toggle-nav ul ul, #toggle-nav ul ul ul {
-				display: none;
-        border-top: 1px solid #000;
-        border-bottom: 1px solid #444;
-        background-color: rgba(0, 0, 0, 0.25);
-			}
-      #toggle-nav a i.glyphicon {
-        padding: 20px 20px 20px 5px;
-      }
-			*/
 			.dev-banner {
 				background-color: rgba(200,0,0,0.6);
 				color: #fff;
@@ -452,14 +304,6 @@
 			}
 			.author-note {
 				border: 1px solid #eee;
-				/*
-				border-left: solid 3px #eee;
-				border-top: solid 3px #eee;
-				font-size: 19px !important;
-        -moz-box-shadow:    5px 5px 5px 1px rgba(0,0,0, .1);
-        -webkit-box-shadow: 5px 5px 5px 1px rgba(0,0,0, .1);
-        box-shadow:         5px 5px 5px 1px rgba(0,0,0, .1);
-				*/
 				padding-top: 15px;
 				padding-bottom: 1px;
 				padding-left: 15px;
