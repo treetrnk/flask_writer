@@ -47,7 +47,7 @@ $ flask shell
 
 ### Customization
 
-The following files can be added to allow site-specific customization of the website. The first two files will need to be added in order to run the website.
+The following files can be added to allow site-specific customization of the website. The first two files will need to be added in order to run the website. You can find example versions of the html files in `/app/templates/examples/`. Copy these into their correct directories to use the example files.
 
 - **/app/templates/logo.html** - Required. Used for placing your logo in the navbar.
 - **/app/templates/footer.html** - Required. Can be used for copyright or other information at the bottom of the page.

@@ -1,0 +1,17 @@
+						<p style="color:#666;text-align:center;"><small>
+							{% if recipient %}
+              You are receiving this email because your email address has been subscribed to new posts on <a href="{{ config['BASE_URL'] }}">{{ config['PRETTY_URL'] }}</a>.<br /> 
+								To change which emails you receive, <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">update your subscription prefrences</a>.<br /> 
+                If you no longer wish to receive any emails from {{ config['PRETTY_URL'] }}, please <a href="{{ config['BASE_URL'] }}{{ url_for('page.subscription', email=recipient.email, code=recipient.gen_update_code()) }}">unsubscribe here</a>.<br />
+							{% endif %}
+              {% include 'footer.html' %}
+							<br />
+						</small></p>
+					</td>
+					<td></td>
+				</tr>
+
+			</table>
+			<br /><br />
+		</center>
+	</body>
