@@ -71,5 +71,7 @@ app/static/datatables/*
 # Install Specific
 app/templates/logo.html
 app/templates/footer.html
+app/templates/email/base-top.html
+app/templates/email/base-bottom.html
 app/static/css/custom.css
 app/static/js/custom.js

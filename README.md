@@ -49,10 +49,12 @@ $ flask shell
 
 The following files can be added to allow site-specific customization of the website. The first two files will need to be added in order to run the website.
 
-- **/app/templates/logo.html** (Required. Used for placing your logo in the navbar.)
-- **/app/templates/footer.html** (Required. Can be used for copyright or other information at the bottom of the page.
-- **/app/static/css/custom.css** (Optional. For custom site-wide styling)
-- **/app/static/js/custom.js** (Optional. For custom site-wide javascript)
+- **/app/templates/logo.html** - Required. Used for placing your logo in the navbar.
+- **/app/templates/footer.html** - Required. Can be used for copyright or other information at the bottom of the page.
+- **/app/templates/email/base-top.html** - Optional. Makes up the top half of the base of all emails.
+- **/app/templates/email/base-bottom.html** - Optional. Makes up the bottom half of the base of all emails.
+- **/app/static/css/custom.css** - Optional. For custom site-wide styling
+- **/app/static/js/custom.js** - Optional. For custom site-wide javascript
 
 ### Run the App
 
