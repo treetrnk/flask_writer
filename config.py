@@ -45,3 +45,4 @@ class Config(object):
     DISCORD_RELAY_GROUPS = DISCORD_RELAY_GROUPS.split(',')
     TWITTER_HANDLE = os.environ.get('TWITTER_HANDLE') or ''
     SITE_NAME = os.environ.get('SITE_NAME') or 'Flask Writer'
+    DISQUS_SITE_NAME = os.environ.get('DISQUS_SITE_NAME') or SITE_NAME
