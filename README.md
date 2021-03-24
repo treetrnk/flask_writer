@@ -13,6 +13,13 @@ To use it first install all packages in `/requirements.txt`:
 # pip install -r requirements.txt
 ```
 
+### Create Folders
+
+Add the following folders to the root directory of the project.
+
+- `/uploads`
+- `/products`
+
 ### Set Up Database
 
 Refer to your database's manual for this. Create a blank DB with a user that has full access to it.
@@ -36,21 +43,16 @@ See `/config.py` for a list of variables used.
 
 ### Add Starter Objects
 
-```python
+Before the website will be accessible, you will need to create a few starter objects. To do this, run the following commands:
+
+```bash
 $ flask shell
->>> user = User(username='[YOUR USERNAME]')
->>> user.set_password('[YOUR PASSWORD]')
->>> db.session.add(user)
->>> db.session.commit()
->>> home_page = Page(title='Home',slug='home',template='page',published=True,user_id=user.id,sort=1)
->>> admin_page = Page(title='Admin',slug='admin',template='page',published=False,user_id=user.id,sort=9999)
->>> home_page.set_path()
->>> admin_page.set_path()
->>> db.session.add(home_page)
->>> db.session.add(admin_page)
->>> db.session.commit()
+>>> install()
 >>> exit()
 ```
+
+`install()` is a function found in `/flask_writer.py` that creates a user account with the username: `admin` and the password: `password`. It also creates all of the Special Pages listed later in this guide.
+
 
 ### Customization
 
@@ -73,7 +75,9 @@ flask run
 
 ### Special Pages
 
-Some pages like the shop and search pages will not work unless you create them first through the admin panel. Creating them allows them to be used, and also gives you control over certain parts of the page. For these pages to work properly, they must have the specified slug as well as the `page` type. These pages **should not be published**, as that would make them show up in the site's navigation incorrectly. Below is a list of the required slugs and the ways you can affect each page's appearance.
+Some pages with special functions need to also be created as Pages to work properly. The `install()` command earlier should have already created all of these pages, but you can change them to style them and change their content. 
+
+For these pages to work properly, they must have the specified slug as well as the `page` template. These pages **should not be published**, as that would make them show up in the site's navigation incorrectly. Below is a list of the required slugs and the ways you can affect each page's appearance.
 
 - **admin** - You can change the Title, Banner, and Summary when editing this page.
 - **search** - You can change the Title, Banner, and Summary.
