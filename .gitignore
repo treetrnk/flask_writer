@@ -67,6 +67,7 @@ textlogs/
 app/templates/analytics.html
 products/
 app/static/datatables/*
+app/static/fonts/
 
 # Install Specific
 app/templates/logo.html
