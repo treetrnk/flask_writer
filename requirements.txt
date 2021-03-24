@@ -1,5 +1,5 @@
 acme==1.13.0
-aiohttp==3.7.3
+aiohttp==3.7.4
 appdirs==1.4.4
 Archey3==0.4.1
 asn1crypto==1.4.0
