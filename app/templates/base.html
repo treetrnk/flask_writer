@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
-		<title>{% if page %}{{ page.title }} {% if glossary %}Glossary{% endif %} - {% endif %}Houston Hare Stories</title>
+		<title>{% if page %}{{ page.title }} {% if glossary %}Glossary{% endif %} - {% endif %}{{ config['SITE_NAME'] }}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		{% if page %}
 			<meta name="description" content="{{ page.description() }}" />
