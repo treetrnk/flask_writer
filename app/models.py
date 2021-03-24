@@ -93,12 +93,15 @@ class PageVersion(db.Model):
     edit_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
 
     def word_count(self):
-        try:
+        if self.body:
+            try:
+                return self.words
+            except:
+                words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
+                read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
+                self.words = words
             return self.words
-        except:
-            words = len(re.findall("[a-zA-Z']+-?[a-zA-Z']*", self.body))
-            read_time = str(round(words / 200)) + " - " + str(round(words / 150)) + " mins."
-            self.words = words
+        self.words = 0
         return self.words
 
     def local_pub_date(self, tz):
