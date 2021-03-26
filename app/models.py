@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 from time import sleep
 from markdown import markdown
 from sqlalchemy import desc
+from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import backref
 from flask_mail import Mail, Message
 from app import mail
@@ -368,6 +369,16 @@ class Page(db.Model):
             for c in child.all_children():
                 descendents.append(c)
         return descendents
+
+    def live_products(self, total=0, random=False):
+        products = Product.query.filter_by(linked_page_id=self.id, active=True)
+        if random:
+            .order_by(func.rand())
+        else:
+            .order_by('sort','name')
+        if total > 0:
+            products = products.limit(total)
+        return products.all()
 
     def word_count(self):
         if self.body:

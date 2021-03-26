@@ -7,35 +7,37 @@
 		{% include 'theme-chooser.html' %}
 
     <h1>{{ page.title }}</h1>
-    <p>
-			<span class="text-muted">
-        <small>Published:</small>
-				<span title="Published Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
-				<span title="Published Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time() }}</span>
-				<span title="Published Pages (275 words per page)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-copy"></i> {{ page.page_count() }}</span> <!--&#8226;-->
-				<span title="Published Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count() }}</span>
-				<span title="Avg. Published Words Per Chapter" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-file-alt"></i> {{ page.avg_child_word_count() }}</span>
-				<!--<span title="Published Time Spent Writing (approx.)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-pen-alt"></i> {{ page.child_write_time() }}</span>-->
-        <br />
-        <small class="mr-3">Written:</small>
-				<span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count(False) }}</span> <!--&#8226;-->
-				<span title="Total Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time(False) }}</span>
-				<span title="Total Pages (275 words per page)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-copy"></i> {{ page.page_count(False) }}</span> <!--&#8226;-->
-				<span title="Total Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count(True) }}</span>
-				<span title="Avg. Total Words Per Chapter" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-file-alt"></i> {{ page.avg_child_word_count(published_only=False) }}</span>
-				<!--<span title="Total Time Spent Writing (approx.)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-pen-alt"></i> {{ page.child_write_time(False) }}</span>-->
-			</span>
-    </p>
+    {% if page.pub_children(chapter_post_only=True) %}
+      <p>
+        <span class="text-muted">
+          <small>Published:</small>
+          <span title="Published Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count() }}</span> <!--&#8226;-->
+          <span title="Published Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time() }}</span>
+          <span title="Published Pages (275 words per page)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-copy"></i> {{ page.page_count() }}</span> <!--&#8226;-->
+          <span title="Published Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count() }}</span>
+          <span title="Avg. Published Words Per Chapter" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-file-alt"></i> {{ page.avg_child_word_count() }}</span>
+          <!--<span title="Published Time Spent Writing (approx.)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-pen-alt"></i> {{ page.child_write_time() }}</span>-->
+          <br />
+          <small class="mr-3">Written:</small>
+          <span title="Total Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.child_word_count(False) }}</span> <!--&#8226;-->
+          <span title="Total Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> {{ page.child_read_time(False) }}</span>
+          <span title="Total Pages (275 words per page)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-copy"></i> {{ page.page_count(False) }}</span> <!--&#8226;-->
+          <span title="Total Chapters" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-book-open"></i> {{ page.child_count(True) }}</span>
+          <span title="Avg. Total Words Per Chapter" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-file-alt"></i> {{ page.avg_child_word_count(published_only=False) }}</span>
+          <!--<span title="Total Time Spent Writing (approx.)" data-toggle="tooltip" class="badge badge-secondary"><i class="fas fa-pen-alt"></i> {{ page.child_write_time(False) }}</span>-->
+        </span>
+      </p>
+    {% endif %}
 
+		{% include 'page/edit.html' %}
 		{% if page.pub_date %}
 			<p class="text-muted"><small>{{ moment(page.pub_date).format("LLL") }}</small></p>
 		{% endif %}    
 
-		{% include 'page/edit.html' %}
-		<div class="content">
+		<div class="content mb-5">
 			{{ page.html_body()|safe }}
-			{% if page.pub_children() %}
-				<div class="text-center">
+			{% if page.pub_children(chapter_post_only=True) %}
+				<div class="text-center mb-4">
 					<a href='{{ page.pub_children(chapter_post_only=True)[0].path }}' class="btn btn-primary btn-lg mt-3">
 						<i class="fas fa-book"></i>
 						Start Reading
@@ -46,41 +48,40 @@
 						Latest Chapter
 					</a>
 				</div>
-			{% endif %}
 
-			<br /><br />
+        <br /><br />
 
-			<h2>Table of Contents</h2>
-			<table class="datatable-sort3d table table-striped table-sm table-hover mt-5">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Word Count</th>
-						<th>Published</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for child in page.pub_children(chapter_post_only=True) %}
-						<tr>
-							<th>
-								<a href="{{ child.path }}">
-									{{ child.title }}
-								</a>
-							</th>
-							<td>
-								{{ child.word_count() }}
-							</td>
-							<td>
-								<span class='d-none'>{{ child.pub_date }}</span>
-								{{ moment(child.pub_date).fromNow() }}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+        <h2>Table of Contents</h2>
+        <table class="datatable-sort3d table table-striped table-sm table-hover mt-5">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Word Count</th>
+              <th>Published</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for child in page.pub_children(chapter_post_only=True) %}
+              <tr>
+                <th>
+                  <a href="{{ child.path }}">
+                    {{ child.title }}
+                  </a>
+                </th>
+                <td>
+                  {{ child.word_count() }}
+                </td>
+                <td>
+                  <span class='d-none'>{{ child.pub_date }}</span>
+                  {{ moment(child.pub_date).fromNow() }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
     </div>
   
-    <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
@@ -91,13 +92,33 @@
       <div class="col-sm-6 col-xs-12 text-right share-btns">
 				{% include 'share.html' %}
       </div>
-    </div><br />
+    </div>
+
   </div>
   <aside class="col-md-3 col-12">
 		{% include 'page/table-of-contents.html' %}
 		{{ page.html_sidebar()|safe }}
   </aside>
 </div>
+
+{% with products = page.live_products(3) %}
+  {% if products %}
+    <div class="row justify-content-md-center">
+      <div class="col-md-10 col">
+        <h2 class="my-4">
+          Related Products
+        </h2>
+        <div class="row">
+          {% for product in products %}
+            <div class="col-md-4 col-12">
+              {{ product.card(hide='description,links')|safe }} 
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endwith %}
 
 {% include 'page/comments.html' %}
 

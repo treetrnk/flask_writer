@@ -58,4 +58,25 @@
 
 {% include 'page/comments.html' %}
 
+{% if page.parent and page.parent.published and page.parent.template == 'story' %}
+  {% with products = page.parent.live_products(total=3,random=True) %}
+    {% if products %}
+      <div class="row justify-content-md-center">
+        <div class="col-md-10 col">
+          <h2 class="my-4">
+            Related Products
+          </h2>
+          <div class="row">
+            {% for product in products %}
+              <div class="col-md-4 col-12">
+                {{ product.card(hide='description,links')|safe }} 
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endif %}
+
 {% endblock %}
