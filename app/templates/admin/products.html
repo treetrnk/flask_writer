@@ -23,6 +23,9 @@
 		{% for obj in products %}
 			<tr {% if not obj.active %}class="table-dark"{% endif %}>
 				<td>
+          <div style="display:none">
+            {{ obj.name }} 
+          </div>
 					<a href="{{ url_for('admin.edit_product', obj_id=obj.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
