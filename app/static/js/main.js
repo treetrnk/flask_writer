@@ -263,7 +263,7 @@ $(document).ready(function() {
 				$("#scroll-top").css("right","20px");
 			} 
 		} else {
-			$("#topNavbar").css("top","-80px");
+			$("#topNavbar").css("top","-200px");
 			$("#sub-btn").css("bottom","-80px");
 			$("#scroll-top").css("right","-80px");
 		}
