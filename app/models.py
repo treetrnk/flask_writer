@@ -857,7 +857,7 @@ class Product(db.Model):
         new_self.id = self.id + 5555
         new_self.name = data.get('name') or self.name
         new_self.slug = self.slug
-        new_self.slug = self.ghost_link
+        new_self.ghost_link = self.ghost_link
         new_self.price = data.get('price') or self.price
         new_self.sale_price = data.get('sale_price') or self.sale_price
         new_self.description = data.get('description') or self.description
