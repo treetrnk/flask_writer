@@ -373,9 +373,9 @@ class Page(db.Model):
     def live_products(self, total=0, random=False):
         products = Product.query.filter_by(linked_page_id=self.id, active=True)
         if random:
-            .order_by(func.rand())
+            products = products.order_by(func.rand())
         else:
-            .order_by('sort','name')
+            products = products.order_by('sort','name')
         if total > 0:
             products = products.limit(total)
         return products.all()
