@@ -26,6 +26,9 @@
 					<a href="{{ url_for('admin.edit_product', obj_id=obj.id) }}">
 						<i class="fas fa-edit"></i>
 					</a>
+          {% if obj.ghost_link %}
+            <i class="fas fa-ghost jquery-tooltip" title="Ghost: {{ obj.ghost_link }}"></i>
+          {% endif %}
 					{{ obj.name }} 
 					<a href="{{ url_for('shop.view', slug=obj.slug) }}" target="product"><i class="fas fa-link"></i></a>
 
