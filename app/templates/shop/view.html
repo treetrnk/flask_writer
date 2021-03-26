@@ -29,7 +29,7 @@
 					<img src="{{ product.image }}" class="img-fluid product-image" />
 					{% if product.on_sale %}
 						<img src="{{ url_for('static', filename='images/sale-ribbon.png') }}" class="sale-banner sale-banner-lg" />
-          {% elif product.download_path and product.simple_price() == '000' %}
+          {% elif product.simple_price() == '000' %}
 						<img src="{{ url_for('static', filename='images/free-ribbon.png') }}" class="sale-banner sale-banner-lg" />
 					{% endif %}
 			</a>
