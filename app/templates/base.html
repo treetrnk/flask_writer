@@ -33,7 +33,7 @@
 			{% if banner %}
 				<meta name="twitter:image:src" content="{{ banner }}">
 			{% else %}
-				<meta name="twitter:image:src" content="{{ page.banner_path() }}">
+				<meta name="twitter:image:src" content="{{ page.meta_img() }}">
 			{% endif %}
 
 			<!-- Open Graph data -->
@@ -43,7 +43,7 @@
 			{% if banner %}
 				<meta property="og:image" content="{{ banner }}" />
 			{% else %}
-				<meta property="og:image" content="{{ page.banner_path() }}" />
+				<meta property="og:image" content="{{ page.meta_img() }}" />
 			{% endif %}
 			{% if description %}
 				<meta property="og:description" content="{{ description }}" />
