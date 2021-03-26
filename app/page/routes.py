@@ -1,12 +1,14 @@
+import sys
 from flask import (
         render_template, redirect, url_for, flash, session, request, 
-        current_app, make_response, send_from_directory
+        current_app, make_response, send_from_directory, send_file
     )
 from app.page import bp
 from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm
 from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product
 from app import db
+from gtts import gTTS
 
 @bp.route('/')
 def home():
@@ -173,6 +175,18 @@ def rss(path):
         return response
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404  
+
+@bp.route('/tts/<path:path>')
+def tts(path):
+    path = f"/{path}"
+    page = Page.query.filter_by(path=path,published=True).first()
+    if page:
+        parent = page.parent.title if page.parent and page.template in ['post','chapter'] else ''
+        text = f'You are listening to a generated audio file of {parent}, {page.title} by {current_app.config["SITE_NAME"]}. For more of this storie, please visit {current_app.config["PRETTY_URL"]}. '
+        output = gTTS(text=text + page.text_body(), lang='en')
+        filename = '/tmp/' + parent + page.slug + '.mp3'
+        output.save(filename)
+        return send_file(filename, as_attachment=True)
 
 @bp.route('/<path:path>/glossary')
 def glossary(path):
