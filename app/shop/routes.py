@@ -2,7 +2,7 @@ import stripe
 import json
 from flask import (
         render_template, redirect, url_for, flash, session, request, 
-        current_app, make_response, send_from_directory
+        current_app, make_response, send_from_directory, jsonify
     )
 from app.shop import bp
 from sqlalchemy import or_, desc
@@ -123,6 +123,7 @@ def success():
 def view(slug):
     Page.set_nav()
     product = Product.query.filter_by(slug=slug,active=True).first()
+    product = product.unghosted()
     page = Page.query.filter_by(slug='shop').first()
     if product:
         if product.active or current_user.is_authenticated:
@@ -146,6 +147,15 @@ def view(slug):
                 )
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404   
+
+@bp.route('/shop/<string:slug>/data')
+def product_data(slug):
+    Page.set_nav()
+    product = Product.query.filter_by(slug=slug,active=True).first()
+    page = Page.query.filter_by(slug='shop').first()
+    if product:
+        current_app.logger.debug(product.__dict__)
+        return jsonify(product.ghosted())
 
 @bp.route('/shop/download/<int:obj_id>')
 def download(obj_id):

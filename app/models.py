@@ -2,6 +2,8 @@ import re
 import pytz
 import os
 import magic
+import requests
+import json
 from flask import current_app, url_for, session, jsonify, render_template
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -730,6 +732,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     slug = db.Column(db.String(150), nullable=False)
+    ghost_link = db.Column(db.String(500))
     price = db.Column(db.String(10), nullable=False, default='$0.00')
     sale_price = db.Column(db.String(10), default='$0.00')
     description = db.Column(db.String(1000))
@@ -743,7 +746,7 @@ class Product(db.Model):
 
     def card(self, hide=[]):
         return render_template('shop/card.html',
-                product=self,
+                product=self.unghosted(),
                 hide=hide,
             )
 
@@ -752,7 +755,12 @@ class Product(db.Model):
             return self.sale_price.replace('$', '').replace('.','')
         return self.price.replace('$', '').replace('.','')
 
-    def grouped_links(self):
+    def grouped_links(self, export_json=False):
+        try:
+            if self.ghost:
+                return self.glinks
+        except:
+            pass
         links = Link.query.filter_by(product_id=self.id).order_by('format','sort','text').all()
         link_list = []
         current_format = ''
@@ -762,7 +770,17 @@ class Product(db.Model):
                 current_format = link.format
                 link_list.insert(0, current_list)
                 current_list = []
-            current_list += [link]
+            if export_json:
+                ldata = {}
+                ldata['id'] = link.id
+                ldata['text'] = link.text
+                ldata['icon'] = link.icon
+                ldata['format'] = link.format
+                ldata['url'] = link.url
+                ldata['sort'] = link.sort
+                current_list += [ldata]
+            else:
+                current_list += [link]
         link_list.insert(0, current_list)
         link_list = [i for i in link_list if i]
         current_app.logger.debug(link_list)
@@ -785,6 +803,103 @@ class Product(db.Model):
             else:
                 result = result.replace(f'p[{pid}]', '')
         return result
+
+    def ghosted(self):
+        current_app.logger.debug('SOURCE LINKS')
+        current_app.logger.debug(self.links)
+        data = {}
+        data['name'] = self.name
+        data['ghost_link'] = self.ghost_link
+        data['price'] = self.price
+        data['sale_price'] = self.sale_price
+        data['description'] = self.description
+        data['image'] = self.image
+        data['on_sale'] = self.on_sale
+        data['links'] = []
+
+        ldata = {}
+        ldata['text'] = current_app.config.get('SITE_NAME')
+        ldata['icon'] = 'fas fa-shopping-bag'
+        ldata['format'] = ''
+        ldata['url'] = f'{current_app.config.get("BASE_URL")}/shop/{self.slug}'
+        ldata['sort'] = 1
+
+        data['links'] += [ldata]
+            
+        for link in self.links:
+            ldata = {}
+            ldata['id'] = link.id
+            ldata['text'] = link.text
+            ldata['icon'] = link.icon
+            ldata['format'] = link.format
+            ldata['url'] = link.url
+            ldata['sort'] = link.sort
+
+            data['links'] += [ldata]
+        
+        data['grouped_links'] = self.grouped_links(export_json=True)
+        current_app.logger.debug('GROUPED LINKS')
+        current_app.logger.debug(data['grouped_links'])
+
+        return data
+
+    def unghosted(self):
+        if not self.ghost_link:
+            return self
+
+        try:
+            response = requests.get(self.ghost_link)
+        except requests.ConnectionError:
+            return self
+        
+        data = json.loads(response.text)
+        new_self = Product()
+        new_self.id = self.id + 5555
+        new_self.name = data.get('name') or self.name
+        new_self.slug = self.slug
+        new_self.slug = self.ghost_link
+        new_self.price = data.get('price') or self.price
+        new_self.sale_price = data.get('sale_price') or self.sale_price
+        new_self.description = data.get('description') or self.description
+        new_self.image = data.get('image') or self.image
+        new_self.on_sale = data.get('on_sale') or self.on_sale
+        new_self.active = self.active
+        new_self.glinks = []
+        
+        current_app.logger.debug('MID SELF LINKS')
+        current_app.logger.debug(data.get('links'))
+        for link_data in data.get('links'):
+            link = Link()
+            link.id = (link_data.get('id') or 0) + 5555
+            link.product_id = new_self.id
+            link.text = link_data.get('text')
+            link.icon = link_data.get('icon')
+            link.format = link_data.get('format')
+            link.url = link_data.get('url')
+            link.sort = link_data.get('sort')
+
+            new_self.links.append(link)
+
+        for form in data.get('grouped_links'):
+            format_group = []
+            for link_data in form:
+                link = Link()
+                link.id = (link_data.get('id') or 0) + 5555
+                link.product_id = new_self.id
+                link.text = link_data.get('text')
+                link.icon = link_data.get('icon')
+                link.format = link_data.get('format')
+                link.url = link_data.get('url')
+                link.sort = link_data.get('sort')
+                
+                format_group += [link]
+            new_self.glinks += [format_group]
+
+        current_app.logger.debug('NEW SELF LINKS')
+        current_app.logger.debug(new_self.links)
+
+        new_self.ghost = True
+        return new_self
 
     def send(self, recipients=[]):
         page=Page.query.filter_by(slug='purchase-thank-you').order_by('pub_date').first()

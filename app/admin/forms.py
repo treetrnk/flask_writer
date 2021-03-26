@@ -94,6 +94,7 @@ class SendProductForm(FlaskForm):
 class ProductEditForm(FlaskForm):
     name = StringField(f'Name', validators=[DataRequired()], render_kw={'id':'page_title_input'})
     slug = StringField(f'Slug', validators=[DataRequired()], render_kw={'id':'page_slug_input'})
+    ghost_link = StringField(f'Ghost Link')
     price = StringField(f'Price', validators=[DataRequired()])
     sale_price = StringField(f'Sale Price')
     description = TextAreaField('Description', validators=[Length(max=1000)])
