@@ -1,0 +1,27 @@
+{% if pagination.pages > 1 %}
+  <nav class="mt-5">
+    <ul class="pagination justify-content-center">
+      {% if pagination.page > 1 %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ pagination.prev_num }}">
+            <span aria-hidden="true">&laquo; Prev</span>
+          </a>
+        </li>
+      {% endif %}
+      {% for p in pagination.iter_pages() %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+          <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ p }}">
+            {{ p }}
+          </a>
+        </li>
+      {% endfor %}
+      {% if pagination.page < pagination.pages %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ pagination.next_num }}">
+            <span aria-hidden="true">Next &raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
