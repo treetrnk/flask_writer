@@ -376,7 +376,7 @@
         z-index: 0;
       }
       .card-banner-overlay {
-        background-color: rgba(0,0,0,.3);
+        background-color: rgba(0,0,0,.2);
         width: 100%;
         height: 100%;
         margin: 0;
@@ -386,15 +386,16 @@
         padding-left: 25px;
         padding-right: 25px;
       }
-      .card-banner h2,
-      .card-banner h3 {
+      .card-banner-overlay h2,
+      .card-banner-overlay h3 {
         line-height: 100px;
+      }
+      .card-banner-overlay a {
         color: #fff;
         text-decoration: none;
       }
-      .card-banner h2:hover, 
-      .card-banner h3:hover {
-        color: #007bff;
+      .card-banner-overlay a:hover{
+        text-decoration: underline;
       }
       .text-outline {
         text-shadow: 0 0 5px #000000;
