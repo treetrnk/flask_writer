@@ -59,7 +59,7 @@
 		{% endif %}
 
 		{% if page and page.slug == "admin" %}
-			<link rel="shortcut icon" href="{{ url_for('static', filename='uploads/favicon-admin.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('page.uploads', filename='favicon-admin.png') }}" type="image/x-icon">
 		{% else %}
 			<link rel="shortcut icon" href="{{ config['DEFAULT_FAVICON'] }}" type="image/x-icon">
 		{% endif %}
