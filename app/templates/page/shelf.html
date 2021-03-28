@@ -14,7 +14,7 @@
 
       <br />
 			{% for child in page.pub_children() %}
-        {{ child.card(hide=['date'])|safe }}
+        {{ child.card(hide=['date','bannertext'])|safe }}
 			{% endfor %}
     </div>
   
