@@ -3,7 +3,7 @@
 </a>
 <div class="toggled-div hidden">
 	<ul>
-		{% if page.template == "chapter" or page.template == "post" %}
+		{% if page.template in ["chapter","post"] %}
 			{% for child in page.pub_siblings(chapter_post_only=True) %}
 				<li>
 					<a href='{{ child.path }}'>{{ child.title }}</a>
@@ -17,8 +17,14 @@
 					</a>
 				</li>
 			{% endif %}
+		{% elif page.template == "shelf" %}
+      {% for child in page.pub_children(chapter_post_only=False) %}
+				<li>
+					<a href='{{ child.path }}'>{{ child.title }}</a>
+				</li>
+			{% endfor %}
 		{% elif page.template == "blog" %}
-		{% for child in page.pub_children(chapter_post_only=True)[::-1] %}
+      {% for child in page.pub_children(chapter_post_only=True)[::-1] %}
 				<li>
 					<a href='{{ child.path }}'>{{ child.title }}</a>
 				</li>

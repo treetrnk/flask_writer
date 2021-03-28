@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row justify-content-md-center">
-  <div class="col-md-8 col content">
+  <div class="col-md-10 col content">
     
 		{% include 'theme-chooser.html' %}
 
@@ -13,17 +13,13 @@
 			{{ page.html_body()|safe }}
 
       <br />
-			{% for child in page.pub_children()[::-1] %}
+			{% for child in page.pub_children() %}
         {{ child.card()|safe }}
 			{% endfor %}
     </div>
   
     <br />
   </div>
-  <aside class="col-md-4 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
-		{% include 'page/table-of-contents.html' %}
-		{{ page.html_sidebar()|safe }}
-  </aside>
 </div>
 {% endblock %}
 
