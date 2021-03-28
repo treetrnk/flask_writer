@@ -14,23 +14,7 @@
 
       <br />
 			{% for child in page.pub_children()[::-1] %}
-				<div class='card mb-4'>
-					<div class='card-body'>
-						<p class='text-muted float-right'><small>{{ moment(child.pub_date).format('llll') }}</small></p>
-						<h3><a href='{{ child.path }}'>{{ child.title }}</a></h3>
-						<p>{{ child.description() }}</p>
-						{# if child.template in ['chapter', 'post', 'story'] %}
-							<small class='float-right text-muted'>
-								<i class="fas fa-comment-alt"></i>
-								<a href='{{ child.path }}#disqus_thread'>Post a comment</a>
-							</small>
-						{% endif #}
-						<i class="fa fa-tags"></i> Tags:
-						{% for tag in child.tags %}
-							<a href="{{ url_for('page.search', tag=tag) }}"><span class="badge badge-secondary">{{ tag }}</span></a>
-						{% endfor %}
-					</div>
-				</div>
+        {{ child.card()|safe }}
 			{% endfor %}
     </div>
   

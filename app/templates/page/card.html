@@ -4,11 +4,21 @@
 
   <div class="card-body position-relative">
 
-    <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path() }});">
-      <a href="{{ card_page.path }}">
-        <h2 class="card-title text-shadow text-right d-none d-md-block">{{ card_page.title }}</h2>
-      </a>
-    </div>
+    {% if not 'banner' in hide %}
+      <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path(always_return_img=True) }});">
+        {% if not 'banner-text' in hide %}
+          <a href="{{ card_page.path }}">
+            <h3 class="card-title text-shadow text-right d-none d-md-block">
+              {% if card_page.title|length > 35 %}
+                {{ card_page.title[0:32] }}...
+              {% else %}
+                {{ card_page.title }}
+              {% endif %}
+            </h3>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
 
     {% if card_page.cover_path() and 'cover' not in hide %}
       <a href="{{ card_page.path }}">
@@ -16,12 +26,16 @@
       </a>
     {% endif %}
 
-    <div class="mt-100">
+    <div {% if not 'banner' in hide %}class="mt-100"{% endif %}>
     
       <a href="{{ card_page.path }}">
-        <h3 class="card-title d-md-none d-block">{{ card_page.title }}</h3>
+        <h3 class="card-title {% if not 'banner' in hide and not 'banner-text' in hide %}d-md-none{% endif %} d-block">{{ card_page.title }}</h3>
       </a>
       
+      {% if not 'date' in hide %}
+        <small class="text-muted">{{ moment(card_page.pub_date).format('llll') }}</small><br />
+      {% endif %}
+
       {{ card_page.description() }}
       
       <a href="{{ card_page.path }}">Read More</a>
@@ -34,6 +48,7 @@
           {% endfor %}
         </p>
       {% endif %}
+
     </div>
 
   </div>

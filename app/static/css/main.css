@@ -376,13 +376,15 @@
         left: 0px;
         z-index: 0;
       }
-      .card-banner h2 {
+      .card-banner h2,
+      .card-banner h3 {
         line-height: 100px;
         color: #fff;
         text-decoration: none;
         text-align: right;
       }
-      .card-banner h2:hover {
+      .card-banner h2:hover, 
+      .card-banner h3:hover {
         color: #007bff;
       }
       .text-shadow {
