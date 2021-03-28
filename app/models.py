@@ -190,6 +190,24 @@ class Page(db.Model):
             self.path = f"/{self.slug}"
             self.dir_path = "/"
 
+    def replace_page_markup(text, hide=[]):
+        result = text
+        matches = re.findall('page\[(\d*)\|([a-zA-Z,]*)\]', text)
+        current_app.logger.debug(f'MATCHES: {matches}')
+        for match in matches:
+            pid = match[0]
+            current_app.logger.debug(f'PID: {pid}')
+            hide = []
+            hide = hide + match[1].split(',')
+            current_app.logger.debug(f'HIDE: {hide}')
+            page = Page.query.filter_by(id = pid).first()
+            if page:
+                result = result.replace(f'page[{pid}|{match[1]}]', page.card(hide=hide))
+                #current_app.logger.debug(result)
+            else:
+                result = result.replace(f'page[{pid}]', '')
+        return result
+
     def html(self, field):
         if field == 'body':
             data = self.body
@@ -199,12 +217,14 @@ class Page(db.Model):
             data = self.author_note
         data = markdown(data.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
         data = Product.replace_product_markup(data)
+        data = Page.replace_page_markup(data)
         return data
 
     def html_body(self):
         if self.body:
             body = markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
             body = Product.replace_product_markup(body)
+            body = Page.replace_page_markup(body)
             return body
         return ''
 
@@ -219,6 +239,7 @@ class Page(db.Model):
                 sidebar = self.parent.sidebar
         sidebar = markdown(sidebar)
         sidebar = Product.replace_product_markup(sidebar)
+        sidebar = Page.replace_page_markup(sidebar)
         return sidebar
     
     def description(self, length=247):
@@ -812,7 +833,7 @@ class Product(db.Model):
 
     def replace_product_markup(text, hide=[]):
         result = text
-        matches = re.findall('p\[(\d*)\|([a-zA-Z,]*)\]', text)
+        matches = re.findall('product\[(\d*)\|([a-zA-Z,]*)\]', text)
         current_app.logger.debug(f'MATCHES: {matches}')
         for match in matches:
             pid = match[0]
@@ -822,10 +843,10 @@ class Product(db.Model):
             current_app.logger.debug(f'HIDE: {hide}')
             product = Product.query.filter_by(id = pid).first()
             if product:
-                result = result.replace(f'p[{pid}|{match[1]}]', product.card(hide=hide))
+                result = result.replace(f'product[{pid}|{match[1]}]', product.card(hide=hide))
                 #current_app.logger.debug(result)
             else:
-                result = result.replace(f'p[{pid}]', '')
+                result = result.replace(f'product[{pid}]', '')
         return result
 
     def ghosted(self):
