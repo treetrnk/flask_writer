@@ -75,7 +75,7 @@
 
 		<style>
 			div.jumbotron {
-				{% if not page or page.template == 'page' or page.template == 'blog' %}
+				{% if not page or page.template in ['page','blog','shelf'] %}
 					height: 280px;
 				{% else %}
 					height: 500px;
@@ -214,7 +214,7 @@
 			<div class="container">
 				<br /><br /><br /><br /><br /><br />
 				{% if page %}
-					{% if page.template != 'page' and page.template != 'blog' %}
+					{% if not page.template in ['page','blog','shelf'] %}
 						<h1 class="display-4">{{ page.section_name() }}</h1>
 					{% endif %}
 				{% endif %}

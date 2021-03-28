@@ -364,4 +364,29 @@
         overflow: auto;
         max-height: 150px;
       }
+      .card-banner {
+        height: 100px;
+        background-size: cover;
+        background-repeat: none;
+        background-position: center center;
+        padding-right: 25px;
+      }
+      .card-banner h2 {
+        line-height: 100px;
+        color: #fff;
+        text-decoration: none;
+      }
+      .card-banner h2:hover {
+        color: #007bff;
+      }
+      .text-shadow {
+        text-shadow: 0 0 30px #000000;
+      }
+      .page-card-cover {
+        position: relative;
+        top: -80px;
+        max-width: 150px;
+        margin: 0 20px 20px 5px;
+
+      }
 		</style>

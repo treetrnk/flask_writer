@@ -38,6 +38,7 @@ class AddPageForm(FlaskForm):
    slug = StringField(f'Slug', validators=[DataRequired()]) 
    template = SelectField(f'Template', choices=Page.TEMPLATE_CHOICES)
    parent_id = SelectField('Parent', coerce=int)
+   cover = StringField('Cover Image')
    banner = StringField('Banner Image')
    summary = TextAreaField('Summary', validators=[Length(max=300),Optional()])
    author_note = TextAreaField("Author's Note", validators=[Length(max=5000),Optional()], render_kw={'rows':4})

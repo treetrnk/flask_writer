@@ -78,6 +78,7 @@ class PageVersion(db.Model):
     path = db.Column(db.String(500), nullable=True)
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     template = db.Column(db.String(100))
+    cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
@@ -134,6 +135,7 @@ class Page(db.Model):
     parent_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     parent = db.relationship('Page', remote_side=[id], backref='children')
     template = db.Column(db.String(100))
+    cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
@@ -157,6 +159,7 @@ class Page(db.Model):
     TEMPLATE_CHOICES = [
         ('page', 'Page'),
         ('post', 'Post'),
+        ('shelf', 'Shelf'),
         ('story', 'Story'),
         ('book', 'Book'),
         ('chapter', 'Chapter'),
@@ -236,6 +239,21 @@ class Page(db.Model):
         if code:
             return check_password_hash(code, self.view_code())
         return False
+        
+    def cover_path(self, always_return_img=False):
+        cover = self.cover 
+        if not self.cover and (self.template == 'chapter' or self.template == 'post'):
+            if self.parent_id:
+                cover = self.parent.cover 
+        if cover:
+            if 'http' in cover[0:5]:
+                return cover
+            else:
+                return str(current_app.config['BASE_URL']) + cover
+        if not always_return_img:
+            return False
+        else: 
+            return str(current_app.config.get('DEFAULT_COVER_PATH'))
         
     def banner_path(self, always_return_img=False):
         banner = self.banner 
@@ -371,6 +389,12 @@ class Page(db.Model):
             for c in child.all_children():
                 descendents.append(c)
         return descendents
+
+    def card(self, hide=[]):
+        return render_template('page/card.html',
+                card_page=self,
+                hide=hide,
+            )
 
     def live_products(self, total=0, random=False):
         products = Product.query.filter_by(linked_page_id=self.id, active=True)

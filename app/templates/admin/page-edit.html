@@ -121,6 +121,23 @@
 		</div>
 	</div>
 
+	<!--COVER-->
+	<div class="form-group row">
+		{{ form.cover.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.cover.errors %}
+				{{ form.cover(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.cover.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.cover(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--BANNER-->
 	<div class="form-group row">
 		{{ form.banner.label(class="col-sm-2 control-from-label text-md-right") }} 
