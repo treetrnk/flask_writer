@@ -34,7 +34,7 @@ def all_tags():
     return Tag.query.order_by('name')
     
 class AddPageForm(FlaskForm):
-   title = StringField(f'Title', validators=[DataRequired()], Length(max=200)) 
+   title = StringField(f'Title', validators=[DataRequired(), Length(max=200)]) 
    slug = StringField(f'Slug', validators=[DataRequired(), Length(max=200)]) 
    template = SelectField(f'Template', choices=Page.TEMPLATE_CHOICES)
    parent_id = SelectField('Parent', coerce=int)
