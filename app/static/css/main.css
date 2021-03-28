@@ -366,15 +366,21 @@
       }
       .card-banner {
         height: 100px;
+        width: 100%;
         background-size: cover;
         background-repeat: none;
         background-position: center center;
         padding-right: 25px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 0;
       }
       .card-banner h2 {
         line-height: 100px;
         color: #fff;
         text-decoration: none;
+        text-align: right;
       }
       .card-banner h2:hover {
         color: #007bff;
@@ -383,10 +389,15 @@
         text-shadow: 0 0 30px #000000;
       }
       .page-card-cover {
-        position: relative;
-        top: -80px;
         max-width: 150px;
         margin: 0 20px 20px 5px;
-
+        position: relative;
+        z-index: 2;
+      }
+      .position-relative {
+        position: relative;
+      }
+      .mt-100 {
+        margin-top: 100px;
       }
 		</style>

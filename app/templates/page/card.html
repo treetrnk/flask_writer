@@ -2,32 +2,39 @@
 <div class="card mb-4">
 {% endif %}
 
-  <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path() }});">
-    <a href="{{ card_page.path }}">
-      <h2 class="card-title text-shadow text-right">{{ card_page.title }}</h2>
-    </a>
-  </div>
+  <div class="card-body position-relative">
 
-  <div class="card-body">
+    <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path() }});">
+      <a href="{{ card_page.path }}">
+        <h2 class="card-title text-shadow text-right d-none d-md-block">{{ card_page.title }}</h2>
+      </a>
+    </div>
 
     {% if card_page.cover_path() and 'cover' not in hide %}
       <a href="{{ card_page.path }}">
         <img src="{{ card_page.cover_path() }}" class="float-left img-thumbnail page-card-cover" alt="{{ card_page.title }}" />
       </a>
     {% endif %}
-    
-    {{ card_page.description() }}
-    
-    <a href="{{ card_page.path }}">Read More</a>
 
-    {% if card_page.tags %}
-      <p class="mt-3">
-        <i class="fa fa-tags"></i> Tags:
-        {% for tag in card_page.tags %}
-          <a href="{{ url_for('page.search', tag=tag) }}"><span class="badge badge-secondary">{{ tag }}</span></a>
-        {% endfor %}
-      </p>
-    {% endif %}
+    <div class="mt-100">
+    
+      <a href="{{ card_page.path }}">
+        <h3 class="card-title d-md-none d-block">{{ card_page.title }}</h3>
+      </a>
+      
+      {{ card_page.description() }}
+      
+      <a href="{{ card_page.path }}">Read More</a>
+
+      {% if card_page.tags %}
+        <p class="mt-3">
+          <i class="fa fa-tags"></i> Tags:
+          {% for tag in card_page.tags %}
+            <a href="{{ url_for('page.search', tag=tag) }}"><span class="badge badge-secondary">{{ tag }}</span></a>
+          {% endfor %}
+        </p>
+      {% endif %}
+    </div>
 
   </div>
 
