@@ -2,7 +2,7 @@
 <div class="card mb-4">
 {% endif %}
 
-  <div class="card-body position-relative">
+<div class="card-body position-relative {% if not 'shadow' in hide %}shadow{% endif %}">
 
     {% if not 'banner' in hide %}
       <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path(always_return_img=True) }});">
