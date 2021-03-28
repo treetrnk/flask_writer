@@ -6,9 +6,10 @@
 
     {% if not 'banner' in hide %}
       <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path(always_return_img=True) }});">
-        {% if not 'banner-text' in hide %}
+        <div class="card-banner-overlay">
+        {% if not 'bannertext' in hide %}
           <a href="{{ card_page.path }}">
-            <h3 class="card-title text-shadow text-right d-none d-md-block">
+            <h3 class="card-title text-outline {% if not 'cover' in hide %}text-right{% endif %} d-none d-md-block">
               {% if card_page.title|length > 35 %}
                 {{ card_page.title[0:32] }}...
               {% else %}
@@ -17,6 +18,7 @@
             </h3>
           </a>
         {% endif %}
+      </div>
       </div>
     {% endif %}
 
@@ -29,7 +31,7 @@
     <div {% if not 'banner' in hide %}class="mt-100"{% endif %}>
     
       <a href="{{ card_page.path }}">
-        <h3 class="card-title {% if not 'banner' in hide and not 'banner-text' in hide %}d-md-none{% endif %} d-block">{{ card_page.title }}</h3>
+        <h3 class="card-title {% if not 'banner' in hide and not 'bannertext' in hide %}d-md-none{% endif %} d-block">{{ card_page.title }}</h3>
       </a>
       
       {% if not 'date' in hide %}
