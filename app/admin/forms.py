@@ -11,41 +11,41 @@ from app.models import Page, User, Tag, Definition, Link, Product
 required = "<span class='text-danger'>*</span>"
 
 class AddUserForm(FlaskForm):
-    username = StringField(f'Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[Email(), Optional()])
-    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional()])
-    about_me = TextAreaField('About Me')
-    timezone = SelectField('Timezone')
-    password = PasswordField(f'Password', validators=[DataRequired()])
+    username = StringField(f'Username', validators=[DataRequired(), Length(max=64)])
+    email = StringField('Email', validators=[Email(), Optional(), Length(max=120)])
+    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional(), Length(max=500)])
+    about_me = TextAreaField('About Me', validators=[Length(max=140)])
+    timezone = SelectField('Timezone', validators=[Length(max=150)])
+    password = PasswordField(f'Password', validators=[DataRequired(), Length(min=6,max=20)])
     confirm_password = PasswordField(f'Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
 class EditUserForm(FlaskForm):
-    username = StringField(f'Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[Email(), Optional()])
-    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional()])
-    about_me = TextAreaField('About Me')
-    timezone = SelectField('Timezone')
+    username = StringField(f'Username', validators=[DataRequired(), Length(max=64)])
+    email = StringField('Email', validators=[Email(), Optional(), Length(max=120)])
+    avatar = StringField('Avatar URL', validators=[Length(max=500), Optional(), Length(max=500)])
+    about_me = TextAreaField('About Me', validators=[Length(max=140)])
+    timezone = SelectField('Timezone', validators=[Length(max=150)])
 
     password = PasswordField('Password')
-    new_password = PasswordField(f'New Password')
+    new_password = PasswordField(f'New Password', validators=[Length(min=6, max=20)])
     confirm_password = PasswordField(f'Confirm Password', validators=[EqualTo('password')])
 
 def all_tags():
     return Tag.query.order_by('name')
     
 class AddPageForm(FlaskForm):
-   title = StringField(f'Title', validators=[DataRequired()]) 
-   slug = StringField(f'Slug', validators=[DataRequired()]) 
+   title = StringField(f'Title', validators=[DataRequired()], Length(max=200)) 
+   slug = StringField(f'Slug', validators=[DataRequired(), Length(max=200)]) 
    template = SelectField(f'Template', choices=Page.TEMPLATE_CHOICES)
    parent_id = SelectField('Parent', coerce=int)
-   cover = StringField('Cover Image')
-   banner = StringField('Banner Image')
+   cover = StringField('Cover Image', validators=[Length(max=500)])
+   banner = StringField('Banner Image', validators=[Length(max=500)])
    summary = TextAreaField('Summary', validators=[Length(max=300),Optional()])
    author_note = TextAreaField("Author's Note", validators=[Length(max=5000),Optional()], render_kw={'rows':4})
    author_note_location = SelectField('Note Location', coerce=str, choices=Page.AUTHOR_NOTE_LOCATIONS)
    sidebar = TextAreaField('Sidebar', validators=[Length(max=5000), Optional()])
-   body = TextAreaField(f'Body', validators=[DataRequired()])
-   notes = TextAreaField('Notes')
+   body = TextAreaField(f'Body', validators=[DataRequired(), Length(max=10000000)])
+   notes = TextAreaField('Notes', validators=[Length(max=5000000)])
    tags = QuerySelectMultipleField('Tags', query_factory=all_tags, allow_blank=True)
    user_id = SelectField(f'Author', coerce=int, validators=[DataRequired()])
    pub_date = DateField('Published Date', validators=[Optional()])
@@ -57,7 +57,7 @@ class AddPageForm(FlaskForm):
    submit = SubmitField('Submit Post')
 
 class AddTagForm(FlaskForm):
-    name = StringField('Tag', validators=[DataRequired()])
+    name = StringField('Tag', validators=[DataRequired(), Length(max=75)])
     submit = SubmitField('Save Tag')
 
     def validate_tag(self, tag, id=0):
@@ -74,10 +74,10 @@ class AddTagForm(FlaskForm):
         return True
 
 class DefinitionEditForm(FlaskForm):
-    name = StringField(f'Name', validators=[DataRequired()])
+    name = StringField(f'Name', validators=[DataRequired(), Length(max=150)])
     type = SelectField(f'Type', validators=[DataRequired()])
-    body = TextAreaField(f'Body', validators=[DataRequired()])
-    hidden_body = TextAreaField("Author's Notes")
+    body = TextAreaField(f'Body', validators=[DataRequired(), Length(max=5000)])
+    hidden_body = TextAreaField("Author's Notes", validators=[Length(max=5000)])
     parent_id = SelectField('Parent', coerce=int, render_kw={'data_type': 'select2'})
     tag_id = SelectField(f'Linked Tag', coerce=int, render_kw={'data_type': 'select2'})
     active = BooleanField(f'Active', description="Uncheck to hide from readers")
@@ -90,14 +90,14 @@ class DefinitionEditForm(FlaskForm):
     #    return True
 
 class SendProductForm(FlaskForm):
-    email = StringField(f'Email', validators=[DataRequired(),Email()])
+    email = StringField(f'Email', validators=[DataRequired(),Email(), Length(max=200)])
 
 class ProductEditForm(FlaskForm):
-    name = StringField(f'Name', validators=[DataRequired()], render_kw={'id':'page_title_input'})
-    slug = StringField(f'Slug', validators=[DataRequired()], render_kw={'id':'page_slug_input'})
-    ghost_link = StringField(f'Ghost Link')
-    price = StringField(f'Price', validators=[DataRequired()])
-    sale_price = StringField(f'Sale Price')
+    name = StringField(f'Name', validators=[DataRequired(), Length(max=150)], render_kw={'id':'page_title_input'})
+    slug = StringField(f'Slug', validators=[DataRequired(), Length(max=150)], render_kw={'id':'page_slug_input'})
+    ghost_link = StringField(f'Ghost Link', validators=[Length(max=500)])
+    price = StringField(f'Price', validators=[DataRequired(), Length(max=10)])
+    sale_price = StringField(f'Sale Price', validators=[Length(max=10)])
     description = TextAreaField('Description', validators=[Length(max=1000)])
     image = StringField('Image URL', validators=[Length(max=500)])
     download_path = StringField('Download Path', validators=[Length(max=500)])
@@ -121,7 +121,7 @@ class LinkEditForm(FlaskForm):
     sort = IntegerField('Sort #', render_kw={'placeholder':"500"})
 
 class EmailForm(FlaskForm):
-    subject = StringField('Subject')
+    subject = StringField('Subject', validators=[Length(max=100)])
     recipients = SelectMultipleField('Recipients', coerce=int)
     banner = StringField('Banner URL')
     body = TextAreaField('Body')
