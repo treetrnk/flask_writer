@@ -12,18 +12,25 @@ from app import db
 @bp.route('/shop')
 def index(category=None):
     Page.set_nav()
+    pagination = request.args.get('page')
+    try:
+        pagination = int(pagination)
+    except:
+        pagination = 1
     category = request.args.get('category')
     if category:
         category = Category.query.filter_by(name=category.lower()).first()
     products = Product.query.filter_by(active=True)
     if category:
         products = products.filter_by(category_id=category.id)
-    products = products.order_by('sort','name').all()
+    products = products.order_by('sort','name').paginate(
+            page=pagination, per_page=6)
     categories = Category.query.filter(Category.products.any()).all()
     page = Page.query.filter_by(slug='shop').first()
     if products and page:
         return render_template(f'shop/index.html', 
                 page=page,
+                pagination=pagination,
                 products=products,
                 category=category,
                 categories=categories,

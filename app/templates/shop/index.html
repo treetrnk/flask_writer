@@ -26,14 +26,42 @@
 		</div>
 		<div class="row justify-content-center">
 
-			{% for product in products %}
+			{% for product in products.items %}
           <div class="col-md-4 col-sm-6 col">
             {{ product.unghosted().card()|safe }}
           </div>
 			{% endfor %}
 
+		</div> 
 
-		</div>
+    {% if products.pages > 1 %}
+      <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+          {% if pagination > 1 %}
+            <li class="page-item">
+              <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ products.prev_num }}">
+                <span aria-hidden="true">&laquo; Prev</span>
+              </a>
+            </li>
+          {% endif %}
+          {% for p in products.iter_pages() %}
+            <li class="page-item {% if p == products.page %}active{% endif %}">
+              <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ p }}">
+                {{ p }}
+              </a>
+            </li>
+          {% endfor %}
+          {% if pagination < products.pages %}
+            <li class="page-item">
+              <a class="page-link" href="{{ url_for('shop.index') }}?category={{ category }}&page={{ products.next_num }}">
+                <span aria-hidden="true">Next &raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+
   </div>
 </div>
 {% endblock %}
