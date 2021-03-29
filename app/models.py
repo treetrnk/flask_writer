@@ -162,7 +162,6 @@ class Page(db.Model):
     products = db.relationship('Product', backref='linked_page', lazy=True)
     versions = db.relationship('PageVersion', backref='current', primaryjoin=
                 id==PageVersion.original_id)
-    comments = db.relationship('Comment', backref='page', lazy=True)
 
     TEMPLATE_CHOICES = [
         ('page', 'Page'),
@@ -808,7 +807,6 @@ class Product(db.Model):
     category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=True)
     on_sale = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
-    comments = db.relationship('Comment', backref='product', lazy=True)
 
     def card(self, hide=[]):
         return render_template('shop/card.html',
@@ -1123,7 +1121,9 @@ class Comment(db.Model):
     reply_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)
     replied_comment = db.relationship('Comment', remote_side=[id], backref='replies')
     page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=True)
+    page = db.relationship('Page', backref=backref('comments', order_by='Comment.created.asc()', lazy=True))
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=True)
+    product = db.relationship('Product', backref=backref('comments', order_by='Comment.created.asc()', lazy=True))
     ip = db.Column(db.String(40), nullable=False)
     session_id =db.Column(db.String(200), nullable=True)
     created = db.Column(db.DateTime, default=datetime.utcnow)
