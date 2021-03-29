@@ -1,5 +1,5 @@
 import re
-from flask import current_app, flash
+from flask import current_app, flash, request
 from flask_login import current_user
 
 def convert_to_dict(obj):
@@ -33,8 +33,9 @@ def convert_to_dict(obj):
     return obj
 
 def log_new(obj, message=''):
+    identifier = current_user.usernam if current_user.is_authenticated else request.remote_addr
     data = convert_to_dict(obj)
-    output = f'{current_user.username} {message}:\n'
+    output = f'{identifier} {message}:\n'
     for key, value in data.items():
         char_cap = 1000
         value = value if type(value) is not str or len(value) < char_cap else f"{value[0:100]}...{value[-100:]}"
@@ -44,9 +45,10 @@ def log_new(obj, message=''):
     return True
 
 def log_change(original, updated=None, message='changed something'):
+    identifier = current_user.usernam if current_user.is_authenticated else request.remote_addr
     original_data = convert_to_dict(original)
     if updated:
-        output = f'{current_user.username} {message}:\n'
+        output = f'{identifier} {message}:\n'
         output += f"Changed object: {original['repr']}\n"
         updated_data = convert_to_dict(updated)
         for key, value in original_data.items():
