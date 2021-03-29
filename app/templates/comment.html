@@ -8,7 +8,9 @@
       <div class="card-body">
         
         <small>
-          <span class="float-right">{{ moment(comment.created).fromNow() }}</span>
+          <span class="float-right jquery-tooltip" title="{{ comment.created }}">
+            {{ moment(comment.created).fromNow() }}
+          </span>
           <b>{% if comment.user_id %}{{ comment.user.display_name() }}{% else %}{{ comment.name }}{% endif %}</b> said: 
           <br />
           {{ comment.html_body()|safe }}
