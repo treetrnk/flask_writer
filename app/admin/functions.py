@@ -1,4 +1,6 @@
 import re
+import pytz
+from datetime import datetime
 from flask import current_app, flash, request
 from flask_login import current_user
 
@@ -79,3 +81,16 @@ def flash_form_errors(form_obj):
             msg += f"<li>{error}</li>"
     
         flash(msg, 'danger')
+
+def to_utc_date(date, tz):
+    date = datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S")
+    local_tz = pytz.timezone(tz)
+    local_date = local_tz.localize(date)
+    return local_date.astimezone(pytz.utc)
+
+def to_local_tz_date(date, timezone='America/New_York'):
+    current_app.logger.debug(date)
+    date = datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S")
+    local_tz = pytz.timezone(timezone)
+    utc_date = pytz.UTC.localize(date)
+    return utc_date.astimezone(tz=local_tz)

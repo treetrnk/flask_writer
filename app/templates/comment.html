@@ -14,6 +14,13 @@
           {{ comment.html_body()|safe }}
         </small>
 
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('admin.edit_comment', obj_id=comment.id) }}" class="float-right btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+            Edit
+          </a>
+        {% endif %}
+
       </div>
     </div>
   </div>

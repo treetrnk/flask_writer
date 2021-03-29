@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'admin/nav.html' %}
+
+<h2>Comments</h2>
+
+<table class="table table-sm table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>Object</th>
+			<th>Name</th>
+			<th>Body</th>
+			<th>Created</th>
+			<th width="100">Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comment in comments %}
+			<tr>
+				<td>
+          {% if comment.page_id %}
+            <a href="{{ comment.page.title }}" target='_blank'>
+              {{ comment.page.title }}
+            </a>
+          {% else %}
+            <a href="{{ comment.product.name }}" target='_blank'>
+              {{ comment.product.name }}
+            </a>
+          {% endif %}
+				</td>
+        <td>
+          {% if comment.user_id %}
+            <i class="fas fa-user"></i>
+            {{ comment.user.display_name() }}
+          {% else %}
+            {{ comment.name }}
+          {% endif %}
+        </td>
+				<td>
+          {{ comment.snippet() }}
+				</td>
+				<td>
+          {{ moment(comment.created).format('LLL') }}
+				</td>
+        <td class="text-center">
+          <a href="{{ url_for('admin.edit_comment', obj_id=comment.id) }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

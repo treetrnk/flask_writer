@@ -147,5 +147,16 @@ class FileUploadForm(FlaskForm):
     file_data = FileField(f'File')
     folder = SelectField(f'Folder')
 
+class CommentEditForm(FlaskForm):
+    name = StringField('Your Name', validators=[DataRequired(), Length(max=100)]) 
+    email = StringField('Email', validators=[Optional(), Email(), Length(max=150)]) 
+    body = TextAreaField('Comment', validators=[DataRequired(), Length(max=1000)]) 
+    created_date = DateField('Created', validators=[DataRequired()], render_kw={'type': 'date'})
+    created_time = TimeField('', validators=[DataRequired()], render_kw={'type': 'time'})
+    user_id = SelectField('User', coerce=int)
+    timezone = HiddenField('Timezone')
+    #page_id = HiddenField('page id')
+    #product_id = HiddenField('product id')
+
 class DeleteObjForm(FlaskForm):
     obj_id = HiddenField('Object id', validators=[DataRequired()])

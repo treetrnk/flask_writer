@@ -49,6 +49,11 @@ $(document).ready(function() {
 	
 	$("blockquote").addClass("blockquote");
 	
+	$('input[type="hidden"]#timezone').each(function() {
+		var $this = $(this);
+    $this.val( moment.tz.guess() );
+	});
+
 	$('.page-toggle').click(function(e) {
 		e.stopPropigation;
 		e.preventDefault();
@@ -85,6 +90,7 @@ $(document).ready(function() {
 			$(this).val(date);
 		}
 	});
+
 
 	$(".toggle-tab").click(function(e) {
 		e.stopPropagation();

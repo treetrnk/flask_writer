@@ -4,16 +4,16 @@ import os
 from flask import render_template, redirect, flash, url_for, send_from_directory, current_app, request
 from app import db
 from app.admin import bp
-from app.admin.functions import log_new, log_change
+from app.admin.functions import log_new, log_change, to_utc_date, to_local_tz_date
 from app.admin.forms import (
         AddUserForm, AddPageForm, AddTagForm, EditUserForm, DefinitionEditForm, 
         EmailForm, LinkEditForm, ProductEditForm, RecordForm, RecordEditForm,
-        SendProductForm, CategoryEditForm, FileUploadForm,
+        SendProductForm, CategoryEditForm, FileUploadForm, CommentEditForm
     )
 from app.admin.generic_views import SaveObjView, DeleteObjView
 from app.models import (
         Page, User, Tag, PageVersion, Subscriber, Definition, Link, Product, 
-        Record, Category
+        Record, Category, Comment
     )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -794,6 +794,53 @@ def delete_file(folder,filename):
     current_app.logger.info(f'{current_user.username} deleted the file "{filename}" from {folder.title()}s.')
     flash(f'The file <b>{filename}</b> was deleted from {folder.title()}s.', 'success')
     return redirect(url_for('admin.files', folder=folder))
+
+@bp.route('/admin/comments')
+def comments():
+    page = Page.query.filter_by(slug='admin').first()
+    comments = Comment.query.all()
+    return render_template('admin/comments.html',
+            tab='comments',
+            page=page,
+            comments=comments,
+        )
+
+class EditComment(SaveObjView):
+    title = "Edit Comment"
+    model = Comment
+    form = CommentEditForm
+    action = 'Edit'
+    log_msg = 'updated a comment'
+    success_msg = 'Comment updated.'
+    delete_endpoint = 'admin.delete_comment'
+    template = 'admin/object-edit.html'
+    redirect = {'endpoint': 'admin.comments'}
+
+    def extra(self):
+        self.context['tab'] = 'comments'
+        self.form.user_id.choices = [(0, '')] + [(u.id, u.username) for u in User.query.all()]
+
+    def pre_get(self):
+        if self.obj:
+            created = to_local_tz_date(self.obj.created, current_user.timezone)
+            self.form.created_date.data = created.date()
+            self.form.created_time.data = created.time()
+
+    def post_post(self):
+        self.obj.created = to_utc_date(f'{self.form.created_date.data} {self.form.created_time.data}', self.form.timezone.data)
+        self.obj.user_id = self.form.user_id.data if self.form.user_id.data > 0 else None
+
+bp.add_url_rule("/admin/comment/edit/<int:obj_id>", 
+        view_func=login_required(EditComment.as_view('edit_comment')))
+
+class DeleteComment(DeleteObjView):
+    model = Comment
+    log_msg = 'deleted a comment'
+    success_msg = 'Comment deleted.'
+    redirect = {'endpoint': 'admin.comments'}
+
+bp.add_url_rule("/admin/comment/delete", 
+        view_func = login_required(DeleteComment.as_view('delete_comment')))
 
 @bp.route('/admin/products/<string:filename>')
 @login_required

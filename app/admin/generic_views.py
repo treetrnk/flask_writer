@@ -94,6 +94,9 @@ class SaveObjView(MethodView):
     def extra(self): ## For extra case-by-case functionality
         pass
 
+    def pre_get(self): ## For extra case-by-case functionality
+        pass
+
     def pre_post(self): ## For extra case-by-case functionality
         pass
 
@@ -107,6 +110,7 @@ class SaveObjView(MethodView):
         self.context.update({'page':Page.query.filter_by(slug='admin').first()})
         self.set_object(obj_id)
         self.extra()
+        self.pre_get()
         current_app.logger.debug(self.context)
         return render_template(self.template, **self.context)
 
