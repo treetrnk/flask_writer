@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import User, Page, Tag, Subscriber, Definition, Link, Product, Record
+from app.models import User, Page, Tag, Subscriber, Definition, Link, Product, Record, Comment
 
 app = create_app()
 
@@ -57,6 +57,7 @@ def make_shell_context():
             'Link': Link,
             'Product': Product,
             'Record': Record,
+            'Comment': Comment,
             'install': install,
         }
 
