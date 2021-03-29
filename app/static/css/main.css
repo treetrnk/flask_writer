@@ -415,4 +415,10 @@
       .mt-100 {
         margin-top: 100px;
       }
+      input[type='checkbox'].form-control {
+        width: 20px;
+        display: inline;
+        height: 20px;
+        margin-top: 13px;
+      }
 		</style>

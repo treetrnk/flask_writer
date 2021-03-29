@@ -4,19 +4,24 @@ from flask import (
         current_app, make_response, send_from_directory, send_file
     )
 from app.page import bp
-from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm
+from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm, CommentForm
 from sqlalchemy import or_, desc
-from app.models import Page, Tag, Subscriber, Definition, Link, Product
+from app.models import Page, Tag, Subscriber, Definition, Link, Product, Comment
 from app import db
 from gtts import gTTS
+from app.admin.functions import log_new
+from flask_login import current_user
 
 @bp.route('/')
 def home():
+    comment_form=CommentForm()
+    comment_form.subscribe.data = True
     Page.set_nav()
     page = Page.query.filter_by(slug='home',published=True).first()
     if page:
+        comment_form.page_id.data = page.id
         return render_template(f'page/{page.template}.html', page=page)
-    return render_template('home.html', page='page')
+    return render_template('home.html', page='page', comment_form=comment_form)
 
 @bp.route('/set-theme')
 @bp.route('/set-theme/<string:theme>')
@@ -156,6 +161,41 @@ def unsubscribe(email, code):
 def uploads(filename):
     return send_from_directory(current_app.config['UPLOAD_DIR'], filename)
 
+@bp.route('/submit-comment', methods=['POST'])
+def submit_comment():
+    form = CommentForm()
+    if form.validate_on_submit():
+        form.page_id.data = form.page_id.data if form.page_id.data else None
+        form.product_id.data = form.product_id.data if form.product_id.data else None
+        comment = Comment()
+        form.populate_obj(comment)
+        comment.ip = request.remote_addr
+        if current_user.is_authenticated:
+            comment.user_id = current_user.id
+        db.session.add(comment)
+        db.session.commit()
+        log_new(comment, 'added a comment')
+        flash('Comment added.', 'success')
+        if form.subscribe.data:
+            if form.email.data:
+                subscriber = Subscriber.query.filter_by(email=form.email.data).first()
+                if not subscriber: 
+                    subscriber = Subscriber(
+                            first_name = form.name.data,
+                            email = form.email.data,
+                            subscription = 'all'
+                        )
+                    db.session.add(subscriber)
+                    db.session.commit()
+                    log_new(subscriber, 'subscriberd')
+                    flash('Subscribed!', 'success')
+                    subscriber.welcome()
+                else:
+                    flash('You are already subscribed!', 'info')
+            else:
+                flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
+    return redirect(request.referrer)
+
 @bp.route('/rss/<path:path>')
 def rss(path):
     path = f"/{path}"
@@ -220,11 +260,12 @@ def latest(path):
     Page.set_nav()
     path = f"/{path}"
     page = Page.query.filter_by(path=path).first()
-    return redirect(url_for('page.index', path=page.latest().path))
-    
+    return redirect(url_for('page.index', path=page.latest().path))    
 
 @bp.route('/<path:path>')
 def index(path):
+    comment_form = CommentForm()
+    comment_form.subscribe.data = True
     Page.set_nav()
     current_app.logger.debug(request.host_url)
     current_app.logger.debug(request.host.lower())
@@ -236,9 +277,10 @@ def index(path):
     print(f"path: {path}")
     print(f"page: {page}")
     if page:
+        comment_form.page_id.data = page.id
         code = request.args['code'] if 'code' in request.args else None
         if page.published or page.check_view_code(code):
-            return render_template(f'page/{page.template}.html', page=page)    
+            return render_template(f'page/{page.template}.html', page=page, comment_form=comment_form)    
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404
 

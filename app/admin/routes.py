@@ -37,13 +37,8 @@ def add_user():
     form = AddUserForm()
     form.timezone.choices = [(t, t) for t in pytz.common_timezones]
     if form.validate_on_submit():
-        user = User(
-                username=form.username.data, 
-                email=form.email.data,
-                avatar=form.avatar.data,
-                about_me=form.about_me.data,
-                timezone=form.timezone.data,
-            )
+        user = User()
+        form.populate_obj(user)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -57,15 +52,11 @@ def add_user():
 def edit_user(id):
     page = Page.query.filter_by(slug='admin').first()
     user = User.query.filter_by(id=id).first()
-    form = EditUserForm()
+    form = EditUserForm(obj=user)
     form.timezone.choices = [(t, t) for t in pytz.common_timezones]
     if form.validate_on_submit():
         log_orig = log_change(user)
-        user.username = form.username.data
-        user.email = form.email.data
-        user.avatar = form.avatar.data
-        user.about_me = form.about_me.data
-        user.timezone = form.timezone.data
+        form.populate_obj(user)
         if form.password.data and user.check_password(form.password.data):
             user.set_password(form.new_password.data)
         log_change(log_orig, user, 'edited a user')

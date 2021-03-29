@@ -2,7 +2,34 @@
   <div class="col-md-8 col">
     <h2>Comments</h2>
 
-		{% if page.published %}
+    <form action="{{ url_for('page.submit_comment') }}" method="post">
+      {{ comment_form.hidden_tag() }}
+
+      {% with form = comment_form %}
+        {% include 'form-fields.html' %}
+      {% endwith %}
+
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fas fa-comment"></i>
+          Comment
+        </button>
+      </div>
+
+    </form>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10  col">
+
+        {% for comment in obj.comments %}
+          {% include 'comment.html' %}
+        {% endfor %}
+
+      </div>
+    </div>
+
+		{# if page.published %}
+    
     <div id="disqus_thread"></div>
     <script>
 
@@ -23,7 +50,8 @@
     })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-		{% endif %}
+
+		{% endif #}
 
   </div>
 </div>

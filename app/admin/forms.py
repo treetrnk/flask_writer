@@ -11,6 +11,7 @@ from app.models import Page, User, Tag, Definition, Link, Product
 required = "<span class='text-danger'>*</span>"
 
 class AddUserForm(FlaskForm):
+    name = StringField(f'Name', validators=[Length(max=100)])
     username = StringField(f'Username', validators=[DataRequired(), Length(max=64)])
     email = StringField('Email', validators=[Email(), Optional(), Length(max=120)])
     avatar = StringField('Avatar URL', validators=[Length(max=500), Optional(), Length(max=500)])
@@ -20,6 +21,7 @@ class AddUserForm(FlaskForm):
     confirm_password = PasswordField(f'Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
 class EditUserForm(FlaskForm):
+    name = StringField(f'Name', validators=[Length(max=100)])
     username = StringField(f'Username', validators=[DataRequired(), Length(max=64)])
     email = StringField('Email', validators=[Email(), Optional(), Length(max=120)])
     avatar = StringField('Avatar URL', validators=[Length(max=500), Optional(), Length(max=500)])
@@ -27,8 +29,8 @@ class EditUserForm(FlaskForm):
     timezone = SelectField('Timezone', validators=[Length(max=150)])
 
     password = PasswordField('Password')
-    new_password = PasswordField(f'New Password', validators=[Length(min=6, max=20)])
-    confirm_password = PasswordField(f'Confirm Password', validators=[EqualTo('password')])
+    new_password = PasswordField(f'New Password', validators=[Optional(), Length(min=6, max=20)])
+    confirm_password = PasswordField(f'Confirm Password', validators=[EqualTo('new_password')])
 
 def all_tags():
     return Tag.query.order_by('name')

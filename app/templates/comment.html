@@ -1,0 +1,20 @@
+<div class="row my-4">
+
+
+  <img src="{% if comment.user_id %}{{ comment.user.avatar }}{% else %}{{ url_for('page.uploads', 'default-profile.png') }}{% endif %}" width="50"  height="50" />
+  
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        
+        <small>
+          <span class="float-right">{{ moment(comment.created).fromNow() }}</span>
+          <b>{% if comment.user_id %}{{ comment.user.display_name() }}{% else %}{{ comment.name }}{% endif %}</b> said: 
+          <br />
+          {{ comment.html_body()|safe }}
+        </small>
+
+      </div>
+    </div>
+  </div>
+</div>

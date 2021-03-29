@@ -56,6 +56,8 @@
   </aside>
 </div>
 
-{% include 'page/comments.html' %}
+{% with obj = page %}
+  {% include 'page/comments.html' %}
+{% endwith %}
 
 {% endblock %}

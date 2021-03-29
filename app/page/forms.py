@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectMultipleField, widgets
-from wtforms.validators import DataRequired, Email, ValidationError
+from wtforms import StringField, SubmitField, SelectMultipleField, widgets, TextAreaField, BooleanField, HiddenField
+from wtforms.validators import DataRequired, Email, ValidationError, Length, Optional
 from app.models import Subscriber
 
 class MultiCheckboxField(SelectMultipleField):
@@ -30,3 +30,11 @@ class SubscriptionForm(FlaskForm):
             validators=[DataRequired()], 
             description="Please select one or more.",
         )
+
+class CommentForm(FlaskForm):
+    name = StringField('Your Name', validators=[DataRequired(), Length(max=100)]) 
+    email = StringField('Email', validators=[Optional(), Email(), Length(max=150)]) 
+    body = TextAreaField('Comment', validators=[DataRequired(), Length(max=500)]) 
+    subscribe = BooleanField('Subscribe', description=f'<small class="text-muted">Subscribe for stroy updates, news, and promotions</small>')
+    page_id = HiddenField('page id')
+    product_id = HiddenField('product id')

@@ -39,12 +39,19 @@ tags_defs = db.Table('tags_defs',
 ##########
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
     username = db.Column(db.String(64), index=True, unique=True)
     avatar = db.Column(db.String(500))
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     timezone = db.Column(db.String(150))
+    comments = db.relationship('Comment', backref='user', lazy=True)
+
+    def display_name(self):
+        if self.name:
+            return self.name
+        return self.username
 
     def total_subscribers(self):
         return len(Subscriber.query.all())
@@ -155,6 +162,7 @@ class Page(db.Model):
     products = db.relationship('Product', backref='linked_page', lazy=True)
     versions = db.relationship('PageVersion', backref='current', primaryjoin=
                 id==PageVersion.original_id)
+    comments = db.relationship('Comment', backref='page', lazy=True)
 
     TEMPLATE_CHOICES = [
         ('page', 'Page'),
@@ -788,6 +796,7 @@ class Product(db.Model):
     category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=True)
     on_sale = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
+    comments = db.relationship('Comment', backref='product', lazy=True)
 
     def card(self, hide=[]):
         return render_template('shop/card.html',
@@ -1087,3 +1096,52 @@ class Record(db.Model):
 
     def __repr__(self):
         return f"<Record:{self.date} ({self.words} words)>"
+
+#############
+## COMMENT ##
+#############
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150))
+    body = db.Column(db.String(5000), nullable=False)
+    reaction = db.Column(db.String(50), nullable=True)
+    rating = db.Column(db.Integer, nullable=True)
+    reply_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)
+    replied_comment = db.relationship('Comment', remote_side=[id], backref='replies')
+    page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=True)
+    ip = db.Column(db.String(40), nullable=False)
+    session_id =db.Column(db.String(200), nullable=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def html_body(self):
+        links = re.findall(r'https?:\/\/\S*', self.body)
+        unique_links = []
+        for link in links:
+            if link not in unique_links:
+                unique_links += [link]
+        body = re.sub('<[^<]+?>', '', self.body)
+        for link in unique_links:
+            body = body.replace(
+                    link,
+                    f' <a href="{link}" target="_blank">{link}</a> '
+                )
+        body = re.sub(r'\n[\n\r]+', '<br /><br />', body)
+        body = body.replace('\n', '<br />')
+
+        return body
+
+    def snippet(self):
+        cutoff = 40
+        if len(self.body) > cutoff:
+            return self.body[0:cutoff] + '...'
+        return self.body
+
+    def __str__(self):
+        return f"{self.name} - {self.snippet()}"
+
+    def __repr__(self):
+        return f"<Comment:{self.name} {self.snippet()}>"
+

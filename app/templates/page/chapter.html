@@ -56,7 +56,9 @@
   </aside>
 </div>
 
-{% include 'page/comments.html' %}
+{% with obj = page %}
+  {% include 'page/comments.html' %}
+{% endwith %}
 
 {% if page.parent and page.parent.published and page.parent.template == 'story' %}
   {% with products = page.parent.live_products(total=3,random=True) %}
