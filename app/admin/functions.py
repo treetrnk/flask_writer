@@ -33,7 +33,7 @@ def convert_to_dict(obj):
     return obj
 
 def log_new(obj, message=''):
-    identifier = current_user.usernam if current_user.is_authenticated else request.remote_addr
+    identifier = current_user.username if current_user.is_authenticated else request.remote_addr
     data = convert_to_dict(obj)
     output = f'{identifier} {message}:\n'
     for key, value in data.items():
@@ -45,7 +45,7 @@ def log_new(obj, message=''):
     return True
 
 def log_change(original, updated=None, message='changed something'):
-    identifier = current_user.usernam if current_user.is_authenticated else request.remote_addr
+    identifier = current_user.username if current_user.is_authenticated else request.remote_addr
     original_data = convert_to_dict(original)
     if updated:
         output = f'{identifier} {message}:\n'
