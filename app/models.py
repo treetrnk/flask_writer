@@ -333,6 +333,18 @@ class Page(db.Model):
                     parent_id=self.id,
             ).order_by('sort','pub_date','title').all()
 
+    def child_comments(self, published_only=True, chapter_post_only=False):
+        children = self.pub_children(published_only, chapter_post_only)
+        comment_count = len(self.comments) or 0
+        for child in children:
+            comment_count += len(child.comments)
+        return comment_count
+
+    def comment_count(self):
+        if self.template in ['blog','shelf','story']:
+            return self.child_comments()
+        return len(self.comments)
+
     def latest(self):
         if self.template == 'chapter' or self.template == 'post':
             return self.pub_siblings(chapter_post_only=True)[::-1][0]

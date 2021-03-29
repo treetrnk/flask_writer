@@ -43,10 +43,10 @@
         <a href="{{ card_page.path }}">Read More</a>
       </p>
       
-      {% if card_page.comments and not 'comments' in hide %}
+      {% if card_page.comment_count() and not 'comments' in hide %}
         <a href="{{ card_page.path }}" class="float-right badge badge-pill badge-primary jquery-tooltip" title="Comments">
           <i class="fas fa-comment"></i>
-          {{ card_page.comments|length }}
+          {{ card_page.comment_count() }}
         </a>
       {% endif %}
 
