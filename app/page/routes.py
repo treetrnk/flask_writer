@@ -119,7 +119,7 @@ def subscription(email, code):
     if sub and sub.check_update_code(code):
         Page.set_nav()
         form = SubscriptionForm()
-        form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
+        form.subscription.choices = [(sg,sg) for sg in current_app.config['SUBSCRIPTION_GROUPS']]
         choices = [c[0] for c in form.subscription.choices]
         for field in form:
             print(f"{field.name}: {field.data}")
