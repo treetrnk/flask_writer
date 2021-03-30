@@ -1,6 +1,11 @@
 <div class="row justify-content-md-center">
   <div class="col-md-8 col">
-    <h2>Comments</h2>
+    <h2 class="mb-4">
+      Comments 
+      {% if obj.comments %}
+        ({{ obj.comments|length }})
+      {% endif %}
+    </h2>
 
     <form action="{{ url_for('page.submit_comment') }}" method="post">
       {{ comment_form.hidden_tag() }}

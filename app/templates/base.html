@@ -377,5 +377,9 @@
 		</script>
 		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    {% if js %}
+      <script src="{{ url_for('static', filename='js/comments.js') }}"></script>
+    {% endif %}
+
 	</body>
 </html>

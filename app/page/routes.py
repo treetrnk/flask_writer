@@ -21,7 +21,11 @@ def home():
     if page:
         comment_form.page_id.data = page.id
         return render_template(f'page/{page.template}.html', page=page)
-    return render_template('home.html', page='page', comment_form=comment_form)
+    return render_template('home.html', 
+            page='page', 
+            comment_form=comment_form,
+            js='comments.js'
+        )
 
 @bp.route('/set-theme')
 @bp.route('/set-theme/<string:theme>')
@@ -281,7 +285,10 @@ def index(path):
         comment_form.page_id.data = page.id
         code = request.args['code'] if 'code' in request.args else None
         if page.published or page.check_view_code(code):
-            return render_template(f'page/{page.template}.html', page=page, comment_form=comment_form)    
+            return render_template(f'page/{page.template}.html', 
+                    page=page, 
+                    comment_form=comment_form,
+                    js='comments.js')    
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404
 
