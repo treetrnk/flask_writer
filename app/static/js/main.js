@@ -56,21 +56,50 @@ $(document).ready(function() {
 
   $('form').each(function() {
     if ($(this).find('.captcha').length) {
+      var $this = $(this);
+      var captcha = $this.find('.captcha').find('.captcha-box');
+      var csrf = $this.find('#csrf_token');
+      captcha.data('csrf', csrf.val());
+      csrf.val('');
       $(this).submit(function(e) {
         e.preventDefault();
       });
     }
   });
 
+  // Captcha Click ////////////////////
   $('.captcha-box').click(function() {
     var $this = $(this);
-    //$this.html('<i class="fas fa-circle-notch fa-spin captcha-spinner"></i>');
-    $this.html('<i class="captcha-spinner fas fa-hourglass-start fa-spin"></i>');
-    setTimeout(function() {
-      $this.html('✔');
-      $this.parents('form').find('button[type="submit"]').removeClass('disabled').prop('disabled', false);
-      $this.parents('form').unbind('submit')
-    }, 2500);
+    var form = $this.parents('form');
+    $this.html('<i class="captcha-spinner fas fa-circle-notch fa-spin"></i>');
+
+    var startX,startY,x,y;
+    $(".captcha-box").mouseenter(function(e) {
+      var offset = $(this).offset();
+      startX = e.pageX- offset.left;
+      startY = e.pageY- offset.top;
+      console.log('Mouse Enter ' + startX + ' ' + startY);
+    });
+
+    $(".captcha-box").mouseleave(function(e) {
+      var $this = $(this);
+      var offset = $(this).offset();
+      var form = $this.parents('form');
+      x = e.pageX- offset.left;
+      y = e.pageY- offset.top;
+      console.log('Mouse Leave ' + x + ' ' + y);
+      if (x > startX + 3 || x < startX - 3) {
+        form.find('#csrf_token').val($this.data('csrf'));
+        $this.html('✔');
+        form.find('button[type="submit"]').removeClass('disabled').prop('disabled', false);
+        form.unbind('submit')
+        console.log('HUMAN');
+      } else {
+        $this.html('<span class="text-danger">✘</span>');
+        form.find('button[type="submit"]').addClass('disabled').prop('disabled', true);
+        console.log('ROBOT!!');
+      }
+    });
   });
 
 	$('.page-toggle').click(function(e) {
