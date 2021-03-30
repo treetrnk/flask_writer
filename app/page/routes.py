@@ -82,7 +82,7 @@ def search(tag=None,keyword=None):
 def subscribe():
     Page.set_nav()
     form = SubscribeForm()
-    form.subscription.choices = Subscriber.SUBSCRIPTION_CHOICES
+    form.subscription.choices = [(sg,sg) for sg in current_app.config['SUBSCRIPTION_GROUPS']]
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -108,7 +108,7 @@ def subscribe():
         current_app.logger.info(f'New Subscriber!\n    {repr(sub)}')
         flash('You have subscribed successfully!', 'success')
         return redirect(url_for('page.home'))
-    form.subscription.data = [i[0] for i in Subscriber.SUBSCRIPTION_CHOICES]
+    form.subscription.data = [i for i in current_app.config['SUBSCRIPTION_GROUPS']]
     return render_template('subscribe.html',
             form=form
         )

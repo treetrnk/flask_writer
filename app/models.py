@@ -627,14 +627,6 @@ class Subscriber(db.Model):
     subscription = db.Column(db.String(100), nullable=False, default='all')
     sub_date = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    SUBSCRIPTION_CHOICES = [
-            #('all','All'),
-            ('news', 'Promotions and News'),
-            ('sprig','Sprig Chapter Updates'),
-            ('blog','Blog Posts'),
-            ('stories', 'Other Stories'),
-        ]
-
     def all_subscribers():
         return [s.email for s in Subscriber.query.all()]
 

@@ -31,7 +31,10 @@ class Config(object):
     PRODUCT_DIR = productdir
     BASE_URL = os.environ.get('BASE_URL') or 'http://localhost:5000'
     PRETTY_URL = os.environ.get('PRETTY_URL') or BASE_URL
-    ADMINS=[os.environ.get('ADMINS')]
+    ADMINS=os.environ.get('ADMINS') or ''
+    ADMINS=ADMINS.split(',')
+    SUBSCRIPTION_GROUPS=os.environ.get('SUBSCRIPTION_GROUPS') or 'All'
+    SUBSCRIPTION_GROUPS=SUBSCRIPTION_GROUPS.split(',')
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
     LINK_FORMATS = os.environ.get('LINK_FORMATS')

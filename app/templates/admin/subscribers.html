@@ -33,7 +33,13 @@
 				</td>
 				<td>{{ subscriber.email }}</td>
 				<td>
-					{{ subscriber.subscription[1:-1] }}
+          <small>
+            <ul>
+              {% for sub in subscriber.subscription[1:-1].split(',') %}
+                <li>{{ sub }}</li>
+              {% endfor %}
+            </ul>
+          </small>
 				</td>
 				<td>
 					<span class="d-none">{{ subscriber.sub_date }}</span>
