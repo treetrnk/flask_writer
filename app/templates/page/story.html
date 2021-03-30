@@ -66,6 +66,12 @@
                 <th>
                   <a href="{{ child.path }}">
                     {{ child.title }}
+                    {% if child.comments %}
+                      <span class="badge badge-pill badge-primary jquery-tooltip" title="Comments">
+                        <i class="fas fa-comment"></i>
+                        {{ child.comments|length }}
+                      </span>
+                    {% endif %}
                   </a>
                 </th>
                 <td>
