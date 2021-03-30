@@ -4,7 +4,7 @@ from flask import (
         current_app, make_response, send_from_directory, send_file
     )
 from app.page import bp
-from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm, CommentForm
+from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm, CommentForm, AuthenticatedCommentForm
 from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product, Comment
 from app import db
@@ -14,8 +14,8 @@ from flask_login import current_user
 
 @bp.route('/')
 def home():
-    comment_form=CommentForm()
-    comment_form.subscribe.data = True
+    comment_form = AuthenticatedCommentForm() if current_user.is_authenticated else CommentForm()
+    comment_form.subscribe.data = False if current_user.is_authenticated else True
     Page.set_nav()
     page = Page.query.filter_by(slug='home',published=True).first()
     if page:
@@ -167,7 +167,7 @@ def uploads(filename):
 
 @bp.route('/submit-comment', methods=['POST'])
 def submit_comment():
-    form = CommentForm()
+    form = AuthenticatedCommentForm() if current_user.is_authenticated else CommentForm()
     if form.validate_on_submit():
         form.page_id.data = form.page_id.data if form.page_id.data else None
         form.product_id.data = form.product_id.data if form.product_id.data else None
@@ -176,18 +176,20 @@ def submit_comment():
         comment.ip = request.remote_addr
         if current_user.is_authenticated:
             comment.user_id = current_user.id
+            comment.name = current_user.display_name()
+            comment.email = current_user.email
         db.session.add(comment)
         db.session.commit()
         log_new(comment, 'added a comment')
         flash('Comment added.', 'success')
         if form.subscribe.data:
-            if form.email.data:
-                subscriber = Subscriber.query.filter_by(email=form.email.data).first()
+            if comment.email:
+                subscriber = Subscriber.query.filter_by(email=comment.email).first()
                 if not subscriber: 
                     subscriber = Subscriber(
-                            first_name = form.name.data,
-                            email = form.email.data,
-                            subscription = 'all'
+                            first_name = comment.name,
+                            email = comment.email,
+                            subscription = ['all']
                         )
                     db.session.add(subscriber)
                     db.session.commit()
@@ -269,8 +271,8 @@ def latest(path):
 
 @bp.route('/<path:path>')
 def index(path):
-    comment_form = CommentForm()
-    comment_form.subscribe.data = True
+    comment_form = AuthenticatedCommentForm() if current_user.is_authenticated else CommentForm()
+    comment_form.subscribe.data = False if current_user.is_authenticated else True
     Page.set_nav()
     current_app.logger.debug(request.host_url)
     current_app.logger.debug(request.host.lower())
