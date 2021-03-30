@@ -36,6 +36,5 @@ class CommentForm(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired(), Length(max=100)]) 
     email = StringField('Email', validators=[Optional(), Email(), Length(max=150)]) 
     subscribe = BooleanField('Subscribe', description=f'<small class="text-muted">Subscribe for stroy updates, news, and promotions</small>')
-    captcha = BooleanField('I am not a 🤖')
     page_id = HiddenField('page id')
     product_id = HiddenField('product id')

@@ -16,8 +16,10 @@
         {% endwith %}
       {% endwith %}
 
+      {% include 'captcha.html' %}
+
       <div class="text-right">
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit" class="btn btn-primary btn-block disabled" disabled="disabled">
           <i class="fas fa-comment"></i>
           Comment
         </button>

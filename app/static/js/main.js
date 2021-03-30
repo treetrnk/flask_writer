@@ -54,6 +54,20 @@ $(document).ready(function() {
     $this.val( moment.tz.guess() );
 	});
 
+  $('form').each(function() {
+    if ($(this).find('.captcha').length) {
+      $(this).submit(function(e) {
+        e.preventDefault();
+      });
+    }
+  });
+
+  $('.captcha-box').click(function() {
+    $(this).text('✔');
+    $(this).parents('form').find('button[type="submit"]').removeClass('disabled').prop('disabled', false);
+    $(this).parents('form').unbind('submit')
+  });
+
 	$('.page-toggle').click(function(e) {
 		e.stopPropigation;
 		e.preventDefault();
