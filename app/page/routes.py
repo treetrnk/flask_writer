@@ -194,6 +194,7 @@ def submit_comment():
                     flash('You are already subscribed!', 'info')
             else:
                 flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
+        comment.notify()
     return redirect(request.referrer)
 
 @bp.route('/rss/<path:path>')

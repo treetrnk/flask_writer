@@ -41,6 +41,9 @@
           {{ comment.snippet() }}
 				</td>
 				<td>
+          <span style="display:none;">
+            {{ comment.created.strftime('%Y%m%d %H%M') }}
+          </span>
           {{ moment(comment.created).format('LLL') }}
 				</td>
         <td class="text-center">

@@ -1128,6 +1128,12 @@ class Comment(db.Model):
     session_id =db.Column(db.String(200), nullable=True)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def author(self):
+        if self.user_id:
+            return self.user.display_name()
+        return self.name
+
+
     def html_body(self):
         links = re.findall(r'https?:\/\/\S*', self.body)
         unique_links = []
@@ -1150,6 +1156,45 @@ class Comment(db.Model):
         if len(self.body) > cutoff:
             return self.body[0:cutoff] + '...'
         return self.body
+
+    def notify(self):
+        current_app.logger.debug('Notifiying admin of comment')
+        obj = None
+        obj_name = ''
+        obj_link = ''
+        page = None
+
+        if self.page_id:
+            obj = self.page
+            obj_name = obj.title
+            obj_link = current_app.config['BASE_URL'] + obj.path
+            page = self.page
+        else:
+            obj = self.product
+            obj_name = obj.name
+            obj_link = url_for('shop.view', slug=obj.slug)
+            page = Page.query.filter_by(slug='home').first()
+
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+        subject=f"[New Comment] {obj_name} - {self.author()}"
+        body=f"The following comment was made by {self.author()} on the {obj.__class__.__name__} {obj_name}.\n\n{self.body}\n\nRead more: {obj_link}"
+
+        if current_app.config.get('ADMINS'):
+            for recipient in current_app.config['ADMINS']:
+                send_email(
+                        subject,
+                        sender,
+                        [recipient],
+                        body,
+                        render_template('email/comment-notification.html', 
+                                page=page, 
+                                comment=self,
+                                recipient=recipient,
+                                obj=obj,
+                                obj_name=obj_name,
+                                obj_link=obj_link,
+                            ),
+                    )
 
     def __str__(self):
         return f"{self.name} - {self.snippet()}"
