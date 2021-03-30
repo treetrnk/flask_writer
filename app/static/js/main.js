@@ -63,9 +63,14 @@ $(document).ready(function() {
   });
 
   $('.captcha-box').click(function() {
-    $(this).text('✔');
-    $(this).parents('form').find('button[type="submit"]').removeClass('disabled').prop('disabled', false);
-    $(this).parents('form').unbind('submit')
+    var $this = $(this);
+    //$this.html('<i class="fas fa-circle-notch fa-spin captcha-spinner"></i>');
+    $this.html('<i class="captcha-spinner fas fa-hourglass-start fa-spin"></i>');
+    setTimeout(function() {
+      $this.html('✔');
+      $this.parents('form').find('button[type="submit"]').removeClass('disabled').prop('disabled', false);
+      $this.parents('form').unbind('submit')
+    }, 2500);
   });
 
 	$('.page-toggle').click(function(e) {

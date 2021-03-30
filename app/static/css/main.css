@@ -448,4 +448,11 @@
         line-height: 50px;
         color: #007bff; 
       }
+      .captcha-spinner {
+        font-size:30pt;
+        position:relative;
+        top:-10px;
+        left:9px;
+        color:#ccc;
+      }
 		</style>
