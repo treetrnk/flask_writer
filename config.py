@@ -34,7 +34,7 @@ class Config(object):
     ADMINS=os.environ.get('ADMINS') or ''
     ADMINS=ADMINS.split(',')
     SUBSCRIPTION_GROUPS=os.environ.get('SUBSCRIPTION_GROUPS') or 'All'
-    SUBSCRIPTION_GROUPS=SUBSCRIPTION_GROUPS.split(',')
+    SUBSCRIPTION_GROUPS=[(sg,sg) for sg in SUBSCRIPTION_GROUPS.split(',')]
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
     LINK_FORMATS = os.environ.get('LINK_FORMATS')
