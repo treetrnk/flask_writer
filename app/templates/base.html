@@ -366,6 +366,7 @@
 		<!--script id="dsq-count-scr" src="//houstonhare.disqus.com/count.js" async></script-->
 		{{ moment.include_moment() }}
     <script src="{{ url_for('static', filename='js/moment-timezone-with-data.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config['RECAPTCHA_PUBLIC'] }}"></script>
 		<script type="text/javascript">
 			
 			{% if page %}

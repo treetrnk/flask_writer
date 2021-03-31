@@ -7,7 +7,7 @@
       {% endif %}
     </h2>
 
-    <form action="{{ url_for('page.submit_comment') }}" method="post">
+    <form action="{{ url_for('page.submit_comment') }}" method="post" class="g-recaptcha-form">
       {{ comment_form.hidden_tag() }}
 
       {% with orientation = 'vertical' %}
@@ -16,10 +16,8 @@
         {% endwith %}
       {% endwith %}
 
-      {% include 'captcha.html' %}
-
       <div class="text-right">
-				<button type="submit" class="btn btn-primary btn-block g-recaptcha" {% include 'captcha-button.html' %}>
+				<button class="btn btn-primary btn-block g-recaptcha" {% include 'captcha-button.html' %}>
           <i class="fas fa-comment"></i>
           Comment
         </button>

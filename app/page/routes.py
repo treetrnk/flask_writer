@@ -170,10 +170,12 @@ def uploads(filename):
 def submit_comment():
     form = AuthenticatedCommentForm() if current_user.is_authenticated else CommentForm()
     if form.validate_on_submit():
+        current_app.logger.debug(request.form)
         captcha_data = {
-                
+                'secret': current_app.config['RECAPTCHA_SECRET'],
+                'response': request.form.get('token'),
             }
-        resp = requests.post('https://www.google.com/recaptcha/api/siteverify')
+        resp = requests.post('https://www.google.com/recaptcha/api/siteverify', captcha_data)
         response_data = resp.json()
         current_app.logger.debug(response_data)
         if response_data.get('success'):

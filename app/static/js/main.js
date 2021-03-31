@@ -30,6 +30,11 @@ function count_words() {
 	}
 }
 
+function onSubmit(token) {
+  console.log('recaptcha submit')
+  //$(this).parents('form.g-recaptcha-form').submit();
+}
+
 $(document).ready(function() {
 
 	$('.mkSelect2').select2();
@@ -37,6 +42,19 @@ $(document).ready(function() {
 	$('select[data-type="select2-tags"]').select2({
 		tags: true
 	});
+
+  $('button.g-recaptcha').click(function(e) {
+    console.log('Verifying recaptcha');
+    var $this = $(this);
+    e.preventDefault();
+    grecaptcha.ready(function() {
+      grecaptcha.execute($this.data('sitekey'), {action: 'submit'}).then(function(token) {
+        $this.parents('form').prepend('<input type="hidden" name="token" value="' + token + '">');
+        $this.parents('form').submit();
+      });
+    });
+  });
+
 
 	var page_body = $('#page_body_input');
 	if (page_body.val()) {
