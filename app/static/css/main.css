@@ -449,10 +449,10 @@
         color: #007bff; 
       }
       .captcha-spinner {
-        font-size:30pt;
-        position:relative;
-        top:-10px;
-        left:9px;
-        color:#ccc;
+        font-size: 30pt;
+        position: relative;
+        top: -10px;
+        left: 3px;
+        color: #ccc;
       }
 		</style>
