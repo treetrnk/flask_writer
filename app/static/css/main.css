@@ -455,4 +455,7 @@
         left: 3px;
         color: #ccc;
       }
+      .grecaptcha-badge {
+        display: none !important;
+      }
 		</style>
