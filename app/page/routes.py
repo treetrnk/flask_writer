@@ -1,4 +1,5 @@
 import sys
+import requests
 from flask import (
         render_template, redirect, url_for, flash, session, request, 
         current_app, make_response, send_from_directory, send_file
@@ -169,38 +170,47 @@ def uploads(filename):
 def submit_comment():
     form = AuthenticatedCommentForm() if current_user.is_authenticated else CommentForm()
     if form.validate_on_submit():
-        form.page_id.data = form.page_id.data if form.page_id.data else None
-        form.product_id.data = form.product_id.data if form.product_id.data else None
-        comment = Comment()
-        form.populate_obj(comment)
-        comment.ip = request.remote_addr
-        if current_user.is_authenticated:
-            comment.user_id = current_user.id
-            comment.name = current_user.display_name()
-            comment.email = current_user.email
-        db.session.add(comment)
-        db.session.commit()
-        log_new(comment, 'added a comment')
-        flash('Comment added.', 'success')
-        if form.subscribe.data:
-            if comment.email:
-                subscriber = Subscriber.query.filter_by(email=comment.email).first()
-                if not subscriber: 
-                    subscriber = Subscriber(
-                            first_name = comment.name,
-                            email = comment.email,
-                            subscription = ['all']
-                        )
-                    db.session.add(subscriber)
-                    db.session.commit()
-                    log_new(subscriber, 'subscriberd')
-                    flash('Subscribed!', 'success')
-                    subscriber.welcome()
+        captcha_data = {
+                
+            }
+        resp = requests.post('https://www.google.com/recaptcha/api/siteverify')
+        response_data = resp.json()
+        current_app.logger.debug(response_data)
+        if response_data.get('success'):
+            form.page_id.data = form.page_id.data if form.page_id.data else None
+            form.product_id.data = form.product_id.data if form.product_id.data else None
+            comment = Comment()
+            form.populate_obj(comment)
+            comment.ip = request.remote_addr
+            if current_user.is_authenticated:
+                comment.user_id = current_user.id
+                comment.name = current_user.display_name()
+                comment.email = current_user.email
+            db.session.add(comment)
+            db.session.commit()
+            log_new(comment, 'added a comment')
+            flash('Comment added.', 'success')
+            if form.subscribe.data:
+                if comment.email:
+                    subscriber = Subscriber.query.filter_by(email=comment.email).first()
+                    if not subscriber: 
+                        subscriber = Subscriber(
+                                first_name = comment.name,
+                                email = comment.email,
+                                subscription = ['all']
+                            )
+                        db.session.add(subscriber)
+                        db.session.commit()
+                        log_new(subscriber, 'subscriberd')
+                        flash('Subscribed!', 'success')
+                        subscriber.welcome()
+                    else:
+                        flash('You are already subscribed!', 'info')
                 else:
-                    flash('You are already subscribed!', 'info')
-            else:
-                flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
-        comment.notify()
+                    flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
+            comment.notify()
+        else:
+            flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)
 
 @bp.route('/rss/<path:path>')

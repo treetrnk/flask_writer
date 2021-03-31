@@ -1,11 +1,6 @@
-<div class="captcha">
-  
-  <div class="captcha-text">
-    I am not a 🤖
-  </div>
-
-  <div class="captcha-box">
-
-  </div>
-
-</div>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+ function onSubmit(token) {
+	 $(this).parents('form').submit();
+ }
+</script>

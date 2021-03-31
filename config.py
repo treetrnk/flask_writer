@@ -49,3 +49,6 @@ class Config(object):
     TWITTER_HANDLE = os.environ.get('TWITTER_HANDLE') or ''
     SITE_NAME = os.environ.get('SITE_NAME') or 'Flask Writer'
     DISQUS_SITE_NAME = os.environ.get('DISQUS_SITE_NAME') or SITE_NAME
+    RECAPTCHA_PUBLIC = os.environ.get('RECAPTCHA_PUBLIC') or ''
+    RECAPTCHA_SECRET = os.environ.get('RECAPTCHA_SECRET') or ''
+
