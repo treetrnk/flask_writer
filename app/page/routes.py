@@ -199,7 +199,7 @@ def submit_comment():
                         subscriber = Subscriber(
                                 first_name = comment.name,
                                 email = comment.email,
-                                subscription = ['all']
+                                subscription = ',' + ','.join(current_app.config['SUBSCRIPTION_GROUPS']) + ','
                             )
                         db.session.add(subscriber)
                         db.session.commit()
