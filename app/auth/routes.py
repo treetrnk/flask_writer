@@ -20,6 +20,7 @@ def login():
         login_user(user, remember=form.remember.data)
         flash("You have logged in successfully!", "success")
         return redirect(url_for("admin.pages"))
+    form.remember.data = True
     return render_template('auth/login.html', title='Sign In', form=form)
 
 @bp.route('/logout')
