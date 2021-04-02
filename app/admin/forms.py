@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (
         StringField, TextAreaField, SelectField, IntegerField, SubmitField, 
         BooleanField, SubmitField, DateTimeField, SelectMultipleField, 
-        PasswordField, HiddenField, DateField, TimeField, FileField,
+        PasswordField, HiddenField, DateField, TimeField, FileField, FloatField
 )
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError, InputRequired
@@ -132,14 +132,14 @@ class RecordForm(FlaskForm):
     start_words = IntegerField(f'Start', render_kw={'type': 'number'}, validators=[InputRequired()])
     end_words = IntegerField(f'End', render_kw={'type': 'number'}, validators=[DataRequired()])
     overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
-    minutes = IntegerField('Minutes', render_kw={'type': 'number'}, validators=[Optional()])
+    minutes = FloatField('Minutes', render_kw={'type': 'number', 'step':'any'}, validators=[Optional()])
     comment = StringField('Comment', validators=[Length(max=200)])
     
 class RecordEditForm(FlaskForm):
     start_words = IntegerField(f'Start', render_kw={'type': 'number'}, validators=[InputRequired()])
     end_words = IntegerField(f'End', render_kw={'type': 'number'}, validators=[DataRequired()])
     overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
-    minutes = IntegerField('Minutes', render_kw={'type': 'number'}, validators=[Optional()])
+    minutes = FloatField('Minutes', render_kw={'type': 'number', 'step':'any'}, validators=[Optional()])
     comment = StringField('Comment', validators=[Length(max=200)])
     date = DateField('Date', render_kw={'type': 'date'})
     

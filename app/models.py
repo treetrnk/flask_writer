@@ -1064,7 +1064,7 @@ class Record(db.Model):
     end_words = db.Column(db.Integer, nullable=False)
     overall_words = db.Column(db.Integer)
     comment = db.Column(db.String(200))
-    minutes = db.Column(db.Integer)
+    minutes = db.Column(db.Float)
     words_per_minute = db.Column(db.Integer)
     date = db.Column(db.Date, default=datetime.now)
     created = db.Column(db.DateTime, default=datetime.utcnow)
