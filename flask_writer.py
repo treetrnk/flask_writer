@@ -35,6 +35,10 @@ def install():
     shop_page.set_path()
     db.session.add(shop_page)
     
+    error_page = Page(title='404 Error',slug='404-error',template='page',user_id=user.id,published=False)
+    error_page.set_path()
+    db.session.add(error_page)
+    
     sub_email = Page(title='Subscription Confirmation',slug='subscriber-welcome',template='page',user_id=user.id,published=False)
     sub_email.set_path()
     db.session.add(sub_email)
