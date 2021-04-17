@@ -298,9 +298,25 @@ class Page(db.Model):
         else: 
             return str(current_app.config['DEFAULT_BANNER_PATH'])
 
+    def cover_path(self, always_return_img=False, get_parent=True):
+        cover = self.cover 
+        if not self.cover and (self.template == 'chapter' or self.template == 'post'):
+            if self.parent_id and get_parent:
+                cover = self.parent.cover 
+        if cover:
+            if 'http' in cover[0:5]:
+                return cover
+            else:
+                return str(current_app.config['BASE_URL']) + cover
+        return False
+
     def meta_img(self):
-        if self.banner_path():
-            return self.banner_path()
+        cover = self.cover_path(get_parent=False)
+        banner = self.banner_path()
+        if cover:
+            return cover
+        if banner:
+            return banner
         return str(current_app.config['DEFAULT_FAVICON'])
 
     def section_name(self):

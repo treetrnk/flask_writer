@@ -5,7 +5,7 @@
 									<description>
 										<![CDATA[
 											<a href="https://houstonhare.com/{{ child.path }}">
-												<img src='{{ child.banner_path(True) }}' width="75" style="float:left;"></img>
+												<img src='{{ child.meta_img() }}' width="75" style="float:left;"></img>
 											</a>
 											{{ child.description() }}
 										]]>
