@@ -332,6 +332,12 @@ class Page(db.Model):
                     parent_id=self.id,
             ).order_by('sort','pub_date','title').all()
 
+    def nav_children(self, cap=9):
+        children = self.pub_children()
+        if self.template == 'blog':
+            return children[::-1][0:cap] if len(children) > cap else children[::-1]
+        return children[0:cap] if len(children) > cap else children
+
     def child_comments(self, published_only=True, chapter_post_only=False):
         children = self.pub_children(published_only, chapter_post_only)
         comment_count = len(self.comments) or 0
@@ -577,14 +583,14 @@ class Page(db.Model):
                     'path': top_page.path,
                     'children': [],
                 }
-            for child in top_page.pub_children():
+            for child in top_page.nav_children():
                 kid = {
                         'id': child.id,
                         'title': child.title,
                         'path': child.path,
                         'children': [],
                     }
-                for grandchild in child.pub_children():
+                for grandchild in child.nav_children():
                     kid['children'].append({
                             'id': grandchild.id,
                             'title': grandchild.title,
