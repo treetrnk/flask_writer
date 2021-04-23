@@ -132,7 +132,7 @@ def add_page():
         flash("Page added successfully.", "success")
         log_new(page, 'added a page')
         Page.set_nav()
-        return redirect(url_for('admin.pages'))
+        return redirect(url_for('admin.edit_page', id=page.id))
     if form.errors:
         flash("<b>Error!</b> Please fix the errors below.", "danger")
     return render_template('admin/page-edit.html', 
