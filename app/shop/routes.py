@@ -130,9 +130,9 @@ def success():
 def view(slug):
     Page.set_nav()
     product = Product.query.filter_by(slug=slug,active=True).first()
-    product = product.unghosted()
-    page = Page.query.filter_by(slug='shop').first()
     if product:
+        product = product.unghosted()
+        page = Page.query.filter_by(slug='shop').first()
         if product.active or current_user.is_authenticated:
             related = Product.query.filter(
                     Product.linked_page_id == product.linked_page_id,
