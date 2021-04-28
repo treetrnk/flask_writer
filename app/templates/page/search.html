@@ -32,6 +32,8 @@
 		{% if results %}
 			<h2>{{ results|length }} Results</h2>
 			{% for result in results %}
+        {{ result.card()|safe }}
+        {#
 					<div class='card mb-4'>
 						<div class='card-body'>
 							<p class='text-muted pull-right'><small>{{ result.pub_date }}</small></p>
@@ -43,6 +45,7 @@
 							{% endfor %}
 						</div>
 					</div>
+        #}
 			{% endfor %}
 		{% else %}
 			<h2>0 Results</h2>

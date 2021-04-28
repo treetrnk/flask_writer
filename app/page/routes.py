@@ -64,12 +64,13 @@ def search(tag=None,keyword=None):
         results = Page.query.filter(
                 Page.tags.any(name=tag), 
                 Page.published == True
-            ).order_by('sort','pub_date','title').all()
+            )
     if keyword:
         results = Page.query.filter(
                 Page.body.ilike(f'%{keyword}%'),
                 Page.published == True
-            ).order_by('sort','pub_date','title').all()
+            )
+    results = results.order_by(Page.sort.desc(), Page.pub_date.desc(),'title').all() if results else None
     return render_template('page/search.html',
             form=form,
             keyword=keyword,
