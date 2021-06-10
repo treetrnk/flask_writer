@@ -458,4 +458,7 @@
       .grecaptcha-badge {
         display: none !important;
       }
+      .cursor-pointer {
+        cursor: pointer;
+      }
 		</style>

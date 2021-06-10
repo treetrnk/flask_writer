@@ -22,7 +22,10 @@
             Edit
           </a>
         {% endif %}
-
+        <button type='button' class="btn btn-link btn-sm float-right pl-2 pt-2 comment-reply-btn" data-id="{{ comment.id }}" data-username="{{ comment.name }}" data-date="{{ comment.created }}">
+          <i class="fas fa-reply"></i>
+          Reply
+        </button>
       </div>
     </div>
   </div>

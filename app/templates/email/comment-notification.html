@@ -2,10 +2,20 @@
 {% block content %}
 
 
-<h1>New Comment</h1>
+<h1>
+  {% if reply %}
+    Comment Reply
+  {% else %}
+    New Comment
+  {% endif %}
+</h1>
 
 <p>
-The following comment was made  on the {{ obj.__class__.__name__ }} <b>{{ obj_name }}. 
+  {% if reply %}
+    The following reply was made to your comment on the {{ obj.__class__.__name__ }} <b>{{ obj_name }}. 
+  {% else %}
+    The following comment was made  on the {{ obj.__class__.__name__ }} <b>{{ obj_name }}. 
+  {% endif %}
 </p>
 
 <center>

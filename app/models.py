@@ -1210,6 +1210,49 @@ class Comment(db.Model):
                             ),
                     )
 
+    def notify_reply(self):
+        if self.reply_id and self.replied_comment:
+            if self.replied_comment.email:
+                current_app.logger.debug('Notifiying commenter of reply')
+                obj = None
+                obj_name = ''
+                obj_link = ''
+                page = None
+
+                if self.page_id:
+                    obj = self.page
+                    obj_name = obj.title
+                    obj_link = current_app.config['BASE_URL'] + obj.path
+                    page = self.page
+                else:
+                    obj = self.product
+                    obj_name = obj.name
+                    obj_link = url_for('shop.view', slug=obj.slug)
+                    page = Page.query.filter_by(slug='home').first()
+
+                sender = current_app.config['MAIL_DEFAULT_SENDER']
+                subject=f"[Comment Reply] {obj_name} - {self.author()}"
+                body=f"{self.author()} replied to your comment on the {obj.__class__.__name__} {obj_name}.\n\n{self.body}\n\nRead more: {obj_link}"
+                recipients = [self.replied_comment.email]
+
+                if current_app.config.get('ADMINS'):
+                    for recipient in recipients:
+                        send_email(
+                                subject,
+                                sender,
+                                [recipient],
+                                body,
+                                render_template('email/comment-notification.html', 
+                                        page=page, 
+                                        comment=self,
+                                        recipient=recipient,
+                                        obj=obj,
+                                        obj_name=obj_name,
+                                        obj_link=obj_link,
+                                        reply=True,
+                                    ),
+                            )
+
     def __str__(self):
         return f"{self.name} - {self.snippet()}"
 

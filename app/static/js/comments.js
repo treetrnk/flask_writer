@@ -12,4 +12,23 @@ $(document).ready(function() {
     $('.captcha').slideDown().show();
   });
 
+  var commentForm = $('#comment-form');
+  var replyInd = $('#reply-indicator');
+
+  $('.comment-reply-btn').click(function() {
+    var $this = $(this);
+    console.log(commentForm);
+    console.log(replyInd);
+    commentForm.find('input#reply_id').val($this.data('id'));
+    replyInd.fadeIn().show();
+    replyInd.find('#reply-username').text($this.data('username'));
+    replyInd.find('#reply-date').text($this.data('date'));
+    commentForm.find('textarea#body').focus();
+  });
+
+  $('#reply-remove').click(function() {
+    replyInd.hide();
+    commentForm.find('input#reply_id').val('');
+  });
+
 });

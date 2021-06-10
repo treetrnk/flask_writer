@@ -193,6 +193,7 @@ def submit_comment():
             db.session.commit()
             log_new(comment, 'added a comment')
             flash('Comment added.', 'success')
+            comment.notify() # notify admin
             if form.subscribe.data:
                 if comment.email:
                     subscriber = Subscriber.query.filter_by(email=comment.email).first()
@@ -211,7 +212,7 @@ def submit_comment():
                         flash('You are already subscribed!', 'info')
                 else:
                     flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
-            comment.notify()
+            comment.notify_reply() # Notify commenter replied to        
         else:
             flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)

@@ -7,7 +7,7 @@
       {% endif %}
     </h2>
 
-    <form action="{{ url_for('page.submit_comment') }}" method="post" class="g-recaptcha-form">
+    <form action="{{ url_for('page.submit_comment') }}" method="post" class="g-recaptcha-form" id="comment-form">
       {{ comment_form.hidden_tag() }}
 
       {% with orientation = 'vertical' %}
@@ -15,6 +15,13 @@
           {% include 'form-fields.html' %}
         {% endwith %}
       {% endwith %}
+
+      <div id="reply-indicator" class="mb-3 p-1 table-info" style="display: none;">
+        <b>Reply To:</b>
+        <span id="reply-username"></span>,
+        <span id="reply-date"></span>
+        <i class="fas fa-times text-danger cursor-pointer jquery-tooltip" title="Remove Reply" id="reply-remove"></i>
+      </div>
 
       <div class="text-right">
 				<button class="btn btn-primary btn-block g-recaptcha" {% include 'captcha-button.html' %}>

@@ -36,6 +36,7 @@ class CommentForm(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired(), Length(max=100)]) 
     email = StringField('Email', validators=[Optional(), Email(), Length(max=150)]) 
     subscribe = BooleanField('Subscribe', description=f'<small class="text-muted">Subscribe for story updates, news, and promotions</small>')
+    reply_id = HiddenField('comment id being replied to')
     page_id = HiddenField('page id')
     product_id = HiddenField('product id')
 
