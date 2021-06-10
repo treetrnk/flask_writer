@@ -11,6 +11,12 @@
           <span class="float-right jquery-tooltip" title="{{ comment.created }}">
             {{ moment(comment.created).fromNow() }}
           </span>
+          {% if comment.reply_id %}
+            <small class="table-secondary p-2">
+              <b><i class="fas fa-reply"></i> Reply to {{ comment.replied_comment.name }}:</b> {{ comment.replied_comment.html_body()[:45]|safe }}...
+            </small>
+            <br />
+          {% endif %}
           <b>{% if comment.user_id %}{{ comment.user.display_name() }}{% else %}{{ comment.name }}{% endif %}</b> said: 
           <br />
           {{ comment.html_body()|safe }}

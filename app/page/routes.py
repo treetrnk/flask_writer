@@ -10,7 +10,7 @@ from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product, Comment
 from app import db
 from gtts import gTTS
-from app.admin.functions import log_new
+from app.admin.functions import log_new, log_change
 from flask_login import current_user
 
 @bp.route('/')
@@ -85,6 +85,7 @@ def subscribe():
     Page.set_nav()
     form = SubscribeForm()
     form.subscription.choices = current_app.config['SUBSCRIPTION_GROUPS']
+    form.subscription.choices += [('Comment Replies', 'Comment Replies')]
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit():
@@ -182,6 +183,7 @@ def submit_comment():
         if current_app.config.get('DEVELOPMENT'):
             response_data['success'] = True #REMOVE
         if response_data.get('success'):
+            form.reply_id.data = form.reply_id.data if form.reply_id.data else None
             form.page_id.data = form.page_id.data if form.page_id.data else None
             form.product_id.data = form.product_id.data if form.product_id.data else None
             comment = Comment()
@@ -197,23 +199,33 @@ def submit_comment():
             log_new(comment, 'added a comment')
             flash('Comment added.', 'success')
             comment.notify() # notify admin
-            if form.subscribe.data:
-                if comment.email:
-                    subscriber = Subscriber.query.filter_by(email=comment.email).first()
-                    if not subscriber: 
-                        subscriber = Subscriber(
-                                first_name = comment.name,
-                                email = comment.email,
-                                subscription = ',' + ','.join([i[0] for i in current_app.config['SUBSCRIPTION_GROUPS']]) + ','
-                            )
-                        db.session.add(subscriber)
-                        db.session.commit()
-                        log_new(subscriber, 'subscriberd')
+            if comment.email:
+                subscriber = Subscriber.query.filter_by(email=comment.email).first()
+                if not subscriber: 
+                    subscriber = Subscriber(
+                            first_name = comment.name,
+                            email = comment.email,
+                            subscription = ',Comment Replies,'
+                        )
+                    if form.subscribe.data:
+                        subscriber.subscription += ','.join([i[0] for i in current_app.config['SUBSCRIPTION_GROUPS']]) + ','
+                    db.session.add(subscriber)
+                    db.session.commit()
+
+                    if form.subscribe.data:
+                        log_new(subscriber, 'subscribed')
                         flash('Subscribed!', 'success')
                         subscriber.welcome()
-                    else:
-                        flash('You are already subscribed!', 'info')
                 else:
+                    log_orig = log_change(subscriber)
+                    subscriber.subscription = ',Comment Replies,' 
+                    if form.subscribe.data:
+                        subscriber.subscription += ','.join([i[0] for i in current_app.config['SUBSCRIPTION_GROUPS']]) + ','
+                    log_change(log_orig, subscriber, 'updated subscriptions')
+                    db.session.commit()
+                    flash('You are already subscribed!', 'info')
+            else:
+                if form.subscribe.data:
                     flash('You must provide an email address to subscribe. Please <a href="/subscribe">subscribe here</a> instead.', 'info')
             comment.notify_reply() # Notify commenter replied to        
         else:
