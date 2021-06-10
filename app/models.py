@@ -183,9 +183,9 @@ class Page(db.Model):
 
     def set_path(self):
         if self.parent_id:
-            print(f"PARENT ID: {self.parent_id}")
+            #current_app.logger.debug(f"PARENT ID: {self.parent_id}")
             parent = Page.query.filter_by(id=self.parent_id).first()
-            print(f"PARENT: {parent}")
+            #current_app.logger.debug(f"PARENT: {parent}")
             try:
                 parent_path = parent.path
             except AttributeError:
@@ -200,13 +200,13 @@ class Page(db.Model):
     def replace_page_markup(text, hide=[]):
         result = text
         matches = re.findall('page\[(\d*)\|([a-zA-Z,]*)\]', text)
-        current_app.logger.debug(f'MATCHES: {matches}')
+        #current_app.logger.debug(f'MATCHES: {matches}')
         for match in matches:
             pid = match[0]
-            current_app.logger.debug(f'PID: {pid}')
+            #current_app.logger.debug(f'PID: {pid}')
             hide = []
             hide = hide + match[1].split(',')
-            current_app.logger.debug(f'HIDE: {hide}')
+            #current_app.logger.debug(f'HIDE: {hide}')
             page = Page.query.filter_by(id = pid).first()
             if page:
                 result = result.replace(f'page[{pid}|{match[1]}]', page.card(hide=hide))
@@ -404,7 +404,7 @@ class Page(db.Model):
             return self.next_sibling
         except Exception:
             siblings = self.pub_siblings(published_only, chapter_post_only=True)
-            print(siblings)
+            #current_app.logger.debug(siblings)
             current = False
             for sibling in siblings:
                 if current:
@@ -423,7 +423,7 @@ class Page(db.Model):
             return self.prev_sibling
         except Exception:
             siblings = self.pub_siblings(published_only, chapter_post_only=chapter_post_only)
-            print(siblings)
+            #current_app.logger.debug(siblings)
             prev = None
             for sibling in siblings:
                 if sibling.id == self.id:
@@ -519,8 +519,8 @@ class Page(db.Model):
     def child_write_time(self, published_only=True):
         hourly_words = 350
         words = self.child_word_count(published_only)
-        print(words)
-        print(published_only)
+        #current_app.logger.debug(words)
+        #current_app.logger.debug(published_only)
         if words / hourly_words < 2:
             return str(round(words / hourly_words * 60)) + " mins."
         if words / hourly_words > 48:
@@ -546,10 +546,10 @@ class Page(db.Model):
         self.pub_date = pub_date.astimezone(pytz.utc) 
 
     def send_to_discord_webhook(self):
-        current_app.logger.debug(current_app.config['DISCORD_WEBHOOK'])
+        #current_app.logger.debug(current_app.config['DISCORD_WEBHOOK'])
         if current_app.config['DISCORD_WEBHOOK']:
             try: 
-                current_app.logger.debug('Trying to contact discord webhook')
+                #current_app.logger.debug('Trying to contact discord webhook')
                 if self.notify_group in current_app.config['DISCORD_RELAY_GROUPS']:
                     sleep(3)
                     content = f"New {self.template} released! Here's **{self.title}**:\n"
@@ -560,7 +560,7 @@ class Page(db.Model):
                 current_app.logger.info(f'Failed to notify discord webhook ({self.title} - {self.id}). Exception: {e}')
                 
     def notify_subscribers(self, group):
-        current_app.logger.debug('Notifying Group: ' + group)
+        current_app.logger.info('Notifying Group: ' + group)
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         parent_title = self.parent.title + ' - ' if self.parent else ''
         parent_title = '🌱' + parent_title if parent_title == 'Sprig - ' else parent_title
@@ -861,19 +861,19 @@ class Product(db.Model):
                 current_list += [link]
         link_list.insert(0, current_list)
         link_list = [i for i in link_list if i]
-        current_app.logger.debug(link_list)
+        #current_app.logger.debug(link_list)
         return link_list
 
     def replace_product_markup(text, hide=[]):
         result = text
         matches = re.findall('product\[(\d*)\|([a-zA-Z,]*)\]', text)
-        current_app.logger.debug(f'MATCHES: {matches}')
+        #current_app.logger.debug(f'MATCHES: {matches}')
         for match in matches:
             pid = match[0]
-            current_app.logger.debug(f'PID: {pid}')
+            #current_app.logger.debug(f'PID: {pid}')
             hide = []
             hide = hide + match[1].split(',')
-            current_app.logger.debug(f'HIDE: {hide}')
+            #current_app.logger.debug(f'HIDE: {hide}')
             product = Product.query.filter_by(id = pid).first()
             if product:
                 result = result.replace(f'product[{pid}|{match[1]}]', product.card(hide=hide))
@@ -883,8 +883,8 @@ class Product(db.Model):
         return result
 
     def ghosted(self):
-        current_app.logger.debug('SOURCE LINKS')
-        current_app.logger.debug(self.links)
+        #current_app.logger.debug('SOURCE LINKS')
+        #current_app.logger.debug(self.links)
         data = {}
         data['name'] = self.name
         data['ghost_link'] = self.ghost_link
@@ -916,8 +916,8 @@ class Product(db.Model):
             data['links'] += [ldata]
         
         data['grouped_links'] = self.grouped_links(export_json=True)
-        current_app.logger.debug('GROUPED LINKS')
-        current_app.logger.debug(data['grouped_links'])
+        #current_app.logger.debug('GROUPED LINKS')
+        #current_app.logger.debug(data['grouped_links'])
 
         return data
 
@@ -944,8 +944,8 @@ class Product(db.Model):
         new_self.active = self.active
         new_self.glinks = []
         
-        current_app.logger.debug('MID SELF LINKS')
-        current_app.logger.debug(data.get('links'))
+        #current_app.logger.debug('MID SELF LINKS')
+        #current_app.logger.debug(data.get('links'))
         for link_data in data.get('links'):
             link = Link()
             link.id = (link_data.get('id') or 0) + 5555
@@ -973,8 +973,8 @@ class Product(db.Model):
                 format_group += [link]
             new_self.glinks += [format_group]
 
-        current_app.logger.debug('NEW SELF LINKS')
-        current_app.logger.debug(new_self.links)
+        #current_app.logger.debug('NEW SELF LINKS')
+        #current_app.logger.debug(new_self.links)
 
         new_self.ghost = True
         return new_self
@@ -984,8 +984,8 @@ class Product(db.Model):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         relative_path = '/products'
         path = current_app.config['BASE_DIR'] + relative_path
-        current_app.logger.debug(path)
-        current_app.logger.debug('..' + relative_path)
+        #current_app.logger.debug(path)
+        #current_app.logger.debug('..' + relative_path)
         file_path = path + '/' + self.download_path
         dl_output = self.download_output()
         #attachments = [(
@@ -1172,7 +1172,7 @@ class Comment(db.Model):
         return self.body
 
     def notify(self):
-        current_app.logger.debug('Notifiying admin of comment')
+        current_app.logger.info('Notifiying admin of comment')
         obj = None
         obj_name = ''
         obj_link = ''
@@ -1213,44 +1213,46 @@ class Comment(db.Model):
     def notify_reply(self):
         if self.reply_id and self.replied_comment:
             if self.replied_comment.email or self.replied_comment.user:
-                current_app.logger.debug('Notifiying commenter of reply')
-                obj = None
-                obj_name = ''
-                obj_link = ''
-                page = None
+                recipient_sub = Subscriber.query.filter_by(email=self.replied_comment.email).first()
+                if recipient_sub and ',Comment Replies,' in recipient_sub.subscription:
+                    current_app.logger.info('Notifiying commenter of reply')
+                    recipients = [recipient_sub]
+                    obj = None
+                    obj_name = ''
+                    obj_link = ''
+                    page = None
 
-                if self.page_id:
-                    obj = self.page
-                    obj_name = obj.title
-                    obj_link = current_app.config['BASE_URL'] + obj.path
-                    page = self.page
-                else:
-                    obj = self.product
-                    obj_name = obj.name
-                    obj_link = url_for('shop.view', slug=obj.slug)
-                    page = Page.query.filter_by(slug='home').first()
+                    if self.page_id:
+                        obj = self.page
+                        obj_name = obj.title
+                        obj_link = current_app.config['BASE_URL'] + obj.path
+                        page = self.page
+                    else:
+                        obj = self.product
+                        obj_name = obj.name
+                        obj_link = url_for('shop.view', slug=obj.slug)
+                        page = Page.query.filter_by(slug='home').first()
 
-                sender = current_app.config['MAIL_DEFAULT_SENDER']
-                subject=f"[Comment Reply] {obj_name} - {self.author()}"
-                body=f"{self.author()} replied to your comment on the {obj.__class__.__name__} {obj_name}.\n\n{self.body}\n\nRead more: {obj_link}"
-                recipients = [self.replied_comment.email]
+                    sender = current_app.config['MAIL_DEFAULT_SENDER']
+                    subject=f"[Comment Reply] {obj_name} - {self.author()}"
+                    body=f"{self.author()} replied to your comment on the {obj.__class__.__name__} {obj_name}.\n\n{self.body}\n\nRead more: {obj_link}"
 
-                for recipient in recipients:
-                    send_email(
-                            subject,
-                            sender,
-                            [recipient],
-                            body,
-                            render_template('email/comment-notification.html', 
-                                    page=page, 
-                                    comment=self,
-                                    recipient=recipient,
-                                    obj=obj,
-                                    obj_name=obj_name,
-                                    obj_link=obj_link,
-                                    reply=True,
-                                ),
-                        )
+                    for recipient in recipients:
+                        send_email(
+                                subject,
+                                sender,
+                                [recipient.email],
+                                body,
+                                render_template('email/comment-notification.html', 
+                                        page=page, 
+                                        comment=self,
+                                        recipient=recipient,
+                                        obj=obj,
+                                        obj_name=obj_name,
+                                        obj_link=obj_link,
+                                        reply=True,
+                                    ),
+                            )
 
     def __str__(self):
         return f"{self.name} - {self.snippet()}"
