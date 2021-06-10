@@ -646,7 +646,7 @@ class Subscriber(db.Model):
     email = db.Column(db.String(120), unique=True) 
     first_name = db.Column(db.String(75), nullable=True)
     last_name = db.Column(db.String(75), nullable=True)
-    subscription = db.Column(db.String(100), nullable=False, default='all')
+    subscription = db.Column(db.String(1000), nullable=False, default='all')
     sub_date = db.Column(db.DateTime(), default=datetime.utcnow)
 
     def all_subscribers():
