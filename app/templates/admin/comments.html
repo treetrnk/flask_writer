@@ -38,6 +38,10 @@
           {% endif %}
         </td>
 				<td>
+          {% if comment.reply_id %}
+            <i class="fas fa-reply jquery-tooltip"
+               title="{{ comment.replied_comment.name }}: {{ comment.replied_comment.snippet() }}"></i>
+          {% endif %}
           {{ comment.snippet() }}
 				</td>
 				<td>
