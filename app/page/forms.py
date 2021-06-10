@@ -43,5 +43,6 @@ class CommentForm(FlaskForm):
 class AuthenticatedCommentForm(FlaskForm):
     body = TextAreaField('Comment', validators=[DataRequired(), Length(max=3000)], render_kw={'rows':4}) 
     subscribe = BooleanField('Subscribe', description=f'<small class="text-muted">Subscribe for story updates, news, and promotions</small>')
+    reply_id = HiddenField('comment id being replied to')
     page_id = HiddenField('page id')
     product_id = HiddenField('product id')

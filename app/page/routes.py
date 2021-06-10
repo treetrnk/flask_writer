@@ -179,11 +179,14 @@ def submit_comment():
         resp = requests.post('https://www.google.com/recaptcha/api/siteverify', captcha_data)
         response_data = resp.json()
         current_app.logger.debug(response_data)
+        if current_app.config.get('DEVELOPMENT'):
+            response_data['success'] = True #REMOVE
         if response_data.get('success'):
             form.page_id.data = form.page_id.data if form.page_id.data else None
             form.product_id.data = form.product_id.data if form.product_id.data else None
             comment = Comment()
             form.populate_obj(comment)
+            current_app.logger.debug(f'REPLY ID: {comment.reply_id}')
             comment.ip = request.remote_addr
             if current_user.is_authenticated:
                 comment.user_id = current_user.id
