@@ -819,7 +819,12 @@ class EditComment(SaveObjView):
     def extra(self):
         self.context['tab'] = 'comments'
         self.form.user_id.choices = [(0, '')] + [(u.id, u.username) for u in User.query.all()]
-        self.form.reply_id.choices = [(0, '')] + [(r.id, str(r.id) + ' ' + str(r)) for r in Comment.query.filter(Comment.id!=self.obj.id).all()]
+        self.form.page_id.choices = [(0, '')] + [(p.id, str(p)) for p in Page.query.all()]
+        self.form.reply_id.choices = [(0, '')] + [(r.id, str(r.id) + ' ' + str(r)) for r in Comment.query.filter(
+                Comment.id != self.obj.id,
+                Comment.page_id == self.obj.page_id,
+                Comment.product_id == self.obj.product_id
+            ).all()]
 
     def pre_get(self):
         if self.obj:

@@ -154,6 +154,7 @@ class CommentEditForm(FlaskForm):
     created_date = DateField('Created', validators=[DataRequired()], render_kw={'type': 'date'})
     created_time = TimeField('', validators=[DataRequired()], render_kw={'type': 'time'})
     user_id = SelectField('User', coerce=int)
+    page_id = SelectField('Page', coerce=int, validators=[Optional()], render_kw={'data_type': 'select2'})
     reply_id = SelectField('Replied Comment', coerce=int, validators=[Optional()], render_kw={'data_type': 'select2'})
     timezone = HiddenField('Timezone')
     #page_id = HiddenField('page id')
