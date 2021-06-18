@@ -1,11 +1,11 @@
 <div class="float-right text-muted" id="theme-select">
   {% if not 'theme' in session or session['theme'] == 'light' %}
-      <a href='{{ url_for('page.set_theme') }}?path={{ request.path }}' class='btn btn-sm btn-outline-dark'>
-        <i class="fas fa-fill-drip"></i> Dark Mode
+      <a href='{{ url_for('page.set_theme') }}?path={{ request.path }}' class='btn btn-sm btn-dark rounded-circle jquery-tooltip' title="Dark Mode">
+        <i class="fas fa-moon"></i>
       </a>
   {% else %}
-    <a href='{{ url_for('page.set_theme') }}?path={{ request.path }}' class='btn btn-sm btn-outline-light'>
-      <i class="fas fa-fill-drip"></i> Light Mode
+    <a href='{{ url_for('page.set_theme') }}?path={{ request.path }}' class='btn btn-sm btn-light rounded-circle jquery-tooltip' title="Light Mode">
+      <i class="fas fa-sun"></i>
     </a>
   {% endif %}
 </div>

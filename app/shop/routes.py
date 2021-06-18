@@ -17,10 +17,14 @@ def index(category=None):
         pagination = int(pagination)
     except:
         pagination = 1
+    related = request.args.get('related')
+    related = Page.query.filter_by(slug=related).first()
     category = request.args.get('category')
     if category:
         category = Category.query.filter_by(name=category.lower()).first()
     products = Product.query.filter_by(active=True)
+    if related:
+        products = products.filter_by(linked_page_id = related.id)
     if category:
         products = products.filter_by(category_id=category.id)
     products = products.order_by('sort','name').paginate(
