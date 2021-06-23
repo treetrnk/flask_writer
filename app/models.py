@@ -927,10 +927,10 @@ class Product(db.Model):
 
         try:
             response = requests.get(self.ghost_link)
-        except requests.ConnectionError:
+            data = json.loads(response.text)
+        except Exception:
             return self
         
-        data = json.loads(response.text)
         new_self = Product()
         new_self.id = self.id + 5555
         new_self.name = data.get('name') or self.name
