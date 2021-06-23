@@ -95,7 +95,9 @@
                 <h3 class="mb-0 mt-2">
                   {% if format[0].format %}
                     {% if format[0].format == 'Paperback' %}
-                      <i class="fas fa-book"></i>
+                      <i class="fas fa-book-open"></i>
+                    {% elif format[0].format == 'Hardcover' %}
+                      <i class="far fa-book"></i>
                     {% elif format[0].format == 'eBook' %}
                       <i class="far fa-file-alt"></i>
                     {% endif %}
