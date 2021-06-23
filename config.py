@@ -38,7 +38,7 @@ class Config(object):
     DEFAULT_BANNER_PATH = os.environ.get('DEFAULT_BANNER_PATH') or None
     DEFAULT_FAVICON = os.environ.get('DEFAULT_FAVICON') or None
     LINK_FORMATS = os.environ.get('LINK_FORMATS')
-    LINK_FORMATS = LINK_FORMATS.split(',') if LINK_FORMATS else ['Paperback','eBook','Other','']
+    LINK_FORMATS = LINK_FORMATS.split(',') if LINK_FORMATS else ['Paperback','Hardcover','eBook','Other','']
     STRIPE_PUBLISHABLE = os.environ.get('STRIPE_PUBLISHABLE') or ''
     STRIPE_SECRET = os.environ.get('STRIPE_SECRET') or ''
     STRIPE_WEBHOOK = os.environ.get('STRIPE_WEBHOOK') or ''
