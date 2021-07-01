@@ -38,10 +38,12 @@
         <small class="text-muted">{{ moment(card_page.pub_date).format('llll') }}</small><br />
       {% endif %}
 
-      <p>
-        {{ card_page.description() }}
-        <a href="{{ card_page.path }}">Read More</a>
-      </p>
+      {% if not 'description' in hide %}
+        <p>
+          {{ card_page.description() }}
+          <a href="{{ card_page.path }}">Read More</a>
+        </p>
+      {% endif %}
       
       {% if card_page.comment_count() and not 'comments' in hide %}
         <a href="{{ card_page.path }}" class="float-right badge badge-pill badge-primary jquery-tooltip" title="Comments">
