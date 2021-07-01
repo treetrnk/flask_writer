@@ -28,7 +28,7 @@
 
 			{% for product in products.items %}
           <div class="col-md-4 col-sm-6 col">
-            {{ product.unghosted().card()|safe }}
+            {{ product.unghosted().card(hide=['links'])|safe }}
           </div>
 			{% endfor %}
 

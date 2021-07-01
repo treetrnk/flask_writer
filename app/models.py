@@ -796,6 +796,15 @@ class Link(db.Model):
     def text_simple(self):
         return self.text.replace('Buy it on ','').replace('Buy it at ','').replace('Buy on ','').replace('Buy at ', '')
 
+    def format_icon(self):
+        if self.format == 'Paperback':
+          return '<i class="fas fa-book-open"></i>'
+        elif self.format == 'Hardcover':
+          return '<i class="fas fa-book"></i>'
+        elif self.format == 'eBook':
+          return '<i class="fas fa-file"></i>'
+        return ''
+
     def __str__(self):
         return f"{self.text} ({self.url[0:20]}...)"
 

@@ -56,6 +56,70 @@
 				{% if not 'links' in hide %}
 					<div class="text-center">
 						{% if product.links or product.download_path %}
+              {% if product.links|length > 1 %}
+                {% for format in product.grouped_links() %}
+                  <div class="btn-group btn-block">
+                    <button type="button" class="btn btn-{{ 'secondary' if not format[0].format else 'primary' }} dropdown-toggle btn-block" data-toggle="dropdown">
+                      {{ format[0].format_icon()|safe }}
+                      {{ format[0].format if format[0].format else 'More Links' }}
+                    </button>
+                    <div class="dropdown-menu">
+
+                      {% if format[0].format == 'eBook' %}
+                        {% if product.download_path and product.simple_price() == '000' %}
+                          <a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Free Download
+                          </a>
+                        {% elif product.download_path %}
+                          <a href="{{ url_for('shop.buy', slug=product.slug) }}" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Buy Direct from {{ config.get('SITE_NAME') }}
+                          </a>
+                        {% endif %}
+                      {% elif not format[0].format %}
+                        {% if product.linked_page and product.linked_page.template == 'story' %}
+                          <a href="{{ product.linked_page.path }}" class="dropdown-item">
+                            <i class="fas fa-book-reader"></i>
+                            Read Online
+                          </a>
+                        {% endif %}
+                      {% endif %}
+
+                      {% for l in format %}
+                        <a class="dropdown-item" href="{{ l.url }}" target="_blank">
+                          <i class="{{ l.icon }}"></i>
+                          {{ l.text_simple() }} {% if l.format %}({{ l.format }}){% endif %}
+                        </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                {% elif product.links|length == 1 %}
+                  <a class="btn btn-primary btn-block" href="{{ product.links[0].url }}" target="_blank">
+                    <i class="{{ product.links[0].icon }}"></i>
+                    {{ product.links[0].text_simple() }}
+                  </a>
+
+                {% else %}
+
+
+                  {% if product.download_path and product.simple_price() == '000' %}
+                    <a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block">
+                      <i class="fas fa-download"></i>
+                      Free Download
+                    </a>
+                  {% elif product.download_path %}
+                    <a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-block">
+                      <i class="fas fa-credit-card"></i>
+                      Buy the eBook
+                    </a>
+                  {% endif %}
+
+                {% endif %}
+                        
+            {#
 							<div class="btn-group {% if not 'btnblock' in hide %}btn-block{% endif %}">
 									{% if product.download_path and product.simple_price() == '000' %}
 										<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-block">
@@ -91,6 +155,7 @@
 										<a class="dropdown-item" href="{{ url_for('shop.view', slug=product.slug) }}"><i class="fas fa-bookmark"></i> Product Page</a>
 									</div>
 								</div>
+              #}
 						{% else %}
 							<button type="button" class="btn btn-secondary {% if not 'btnblock' in hide %}btn-block{% endif %} disabled" disabled>
 								<i class="fas fa-seedling"></i> Coming Soon!

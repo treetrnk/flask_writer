@@ -114,6 +114,12 @@
 
 				{% for format in product.grouped_links() %}
         <div {% if format|length > 1 %}class="text-center"{% endif %} id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}style="display:none"{% endif %}>
+            {% if not format[0].format %}
+              <a href="{{ product.linked_page.path }}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-book-reader"></i>
+                Read Online
+              </a>
+            {% endif %}
 						{% for link in format %}
 							<a href="{{ link.url }}" class="btn btn-secondary m-1 btn-lg" target="_blank">
                 <i class="{{ link.icon }}"></i>
@@ -145,7 +151,7 @@
 <div class="row">
 	{% for r_product in related %}
 		<div class="col-md-3 col">
-			{{ r_product.card(hide=['description'])|safe }}
+			{{ r_product.card(hide=['links'])|safe }}
 		</div>
 	{% endfor %}
 </div>
