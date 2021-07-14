@@ -10,6 +10,20 @@
 	<div class="row mb-4">
 
 		<div class="form-group col">
+			{{ form.action.label(class="control-label") }}
+			{% if form.action.errors %}
+				{{ form.action(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.action.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.action(class="form-control") }}
+			{% endif %}
+		</div>
+
+		<div class="form-group col">
 			{{ form.start_words.label(class="control-label") }}
 			{% if form.start_words.errors %}
 				{{ form.start_words(class="form-control is-invalid") }}

@@ -1090,6 +1090,7 @@ class Category(db.Model):
 ############
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(150), nullable=False, default='write')
     words = db.Column(db.Integer)
     start_words = db.Column(db.Integer, nullable=False)
     end_words = db.Column(db.Integer, nullable=False)
@@ -1099,6 +1100,12 @@ class Record(db.Model):
     words_per_minute = db.Column(db.Integer)
     date = db.Column(db.Date, default=datetime.now)
     created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    ACTION_CHOICES = [
+            ('write', 'Write'),
+            ('edit', 'Edit'),
+            ('plan', 'Plan'),
+        ]
 
     def words_by_day(day):
         records = Record.query.filter_by(date=day).order_by(desc('words')).all()

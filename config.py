@@ -51,4 +51,7 @@ class Config(object):
     DISQUS_SITE_NAME = os.environ.get('DISQUS_SITE_NAME') or SITE_NAME
     RECAPTCHA_PUBLIC = os.environ.get('RECAPTCHA_PUBLIC') or ''
     RECAPTCHA_SECRET = os.environ.get('RECAPTCHA_SECRET') or ''
+    SUBSCRIBE_BANNER_SHOW = bool(os.environ.get('SUBSCRIBE_BANNER_SHOW')) or False
+    SUBSCRIBE_CTA = os.environ.get('SUBSCRIBE_CTA') or 'Join the newsletter!'
+    SUBSCRIBE_CTA_IMAGE = os.environ.get('SUBSCRIBE_CTA_IMAGE') 
 

@@ -38,6 +38,10 @@ $(document).ready(function() {
 		tags: true
 	});
 
+  $('#subscribe-hide-btn').click(function() {
+    hideSubBanner();
+  });
+
 	var page_body = $('#page_body_input');
 	if (page_body.val()) {
 		count_words();
@@ -308,4 +312,25 @@ function readProgress() {
 			$("progress").attr('data-original-title', 'Reading Progress (' + percent + '%)');
 		});
 	}
+}
+
+function hideSubBanner() {
+  $('.subscribe-banner').fadeOut().hide();
+  $.ajax({
+    url: '/hide-subscribe-banner',
+    type: "POST",
+    dataType: "html",
+    success: function(data, status) {
+      if (data == 'true') {
+        console.log('Subscribe banner hidden successfully.')
+      }
+    },
+    error: function(xhr, desc, err) {
+      console.log(xhr);
+      var cleanResponse = $(xhr.responseText);
+      console.log("Details: " + desc + "\nError: " + err);
+      $('#results').html('<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <b>Error!</b> Something went wrong! &#129302;<br /><small>Message: ' + err + ' (' + xhr.status + ')</small></div>' + '<h3>Details:</h3><div class="bg-light border" width="100%" style="height: 450px; overflow: auto;"><pre>' + cleanResponse.text() + '</pre></div>');
+    }
+  });
+  
 }

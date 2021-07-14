@@ -232,6 +232,12 @@ def submit_comment():
             flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)
 
+@bp.route('/hide-subscribe-banner', methods=['POST'])
+def hide_subscribe_banner():
+    session['hide_subscribe_banner'] = True
+    current_app.logger.debug('Subscribe banner hidden')
+    return 'true'
+
 @bp.route('/rss/<path:path>')
 def rss(path):
     path = f"/{path}"

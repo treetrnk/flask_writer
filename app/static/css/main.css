@@ -461,4 +461,22 @@
       .cursor-pointer {
         cursor: pointer;
       }
+      .subscribe-banner {
+        position: fixed;
+        bottom: 0px;
+        background: rgba(20,20,20,0.95);
+        width: 100%;
+        height: 100px;
+        z-index: 99;
+      }
+      .subscribe-banner .container {
+        padding: 30px;
+        color: #fff;
+      }
+      @media only screen and (max-width: 400px) {
+        .subscribe-banner {
+          height: 200px;
+        }
+
+      }
 		</style>

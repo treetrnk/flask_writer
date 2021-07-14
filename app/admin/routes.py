@@ -634,6 +634,7 @@ bp.add_url_rule("/admin/category/delete",
 @login_required
 def records(day=None):
     form = RecordForm()
+    form.action.choices = Record.ACTION_CHOICES
     if form.validate_on_submit():
         record = Record()
         current_app.logger.debug('VALIDATED')
@@ -724,6 +725,7 @@ class EditRecord(SaveObjView):
 
     def extra(self):
         self.context['tab'] = 'pages'
+        self.form.action.choices = Record.ACTION_CHOICES
 
     def pre_post(self):
         self.obj.words = self.form.end_words.data - self.form.start_words.data

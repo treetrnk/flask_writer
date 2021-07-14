@@ -129,6 +129,7 @@ class EmailForm(FlaskForm):
     body = TextAreaField('Body')
 
 class RecordForm(FlaskForm):
+    action = SelectField(f'Action', validators=[InputRequired()])
     start_words = IntegerField(f'Start', render_kw={'type': 'number'}, validators=[InputRequired()])
     end_words = IntegerField(f'End', render_kw={'type': 'number'}, validators=[DataRequired()])
     overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
@@ -136,6 +137,7 @@ class RecordForm(FlaskForm):
     comment = StringField('Comment', validators=[Length(max=200)])
     
 class RecordEditForm(FlaskForm):
+    action = SelectField(f'Action', validators=[InputRequired()])
     start_words = IntegerField(f'Start', render_kw={'type': 'number'}, validators=[InputRequired()])
     end_words = IntegerField(f'End', render_kw={'type': 'number'}, validators=[DataRequired()])
     overall_words = IntegerField('Story Total', render_kw={'type': 'number'}, validators=[Optional()])
