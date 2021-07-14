@@ -61,6 +61,27 @@
 		{% endif %}
 
 
+    {% if product.links|length < 2 %}
+      {% if product.download_path %}
+        {% if product.simple_price() == '000' %}
+          <a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
+            <i class="fas fa-download"></i> Download for Free
+          </a>
+        {% else %}
+          <a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
+            <i class="fas fa-credit-card"></i> Buy Direct
+          </a>
+        {% endif %}
+      {% endif %}
+      {% if product.links|length < 2 %}
+        {% if not product.download_path %}
+          <a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
+            <i class="{{ product.links[0].icon }}"></i>
+            {{ product.links[0].text }}
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endif %}
 
 		{% if product.links %}	
 		</center>
