@@ -61,18 +61,6 @@
 		{% endif %}
 
 
-		{% if product.download_path %}
-			{% if product.simple_price() == '000' %}
-				<a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
-					<i class="fas fa-download"></i> Download the eBook
-				</a>
-			{% else %}
-				<a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
-					<i class="fas fa-credit-card"></i> Buy the eBook
-				</a>
-			{% endif %}
-		{% endif %}
-
 
 		{% if product.links %}	
 			{% if not product.download_path %}
@@ -119,6 +107,21 @@
                 <i class="fas fa-book-reader"></i>
                 Read Online
               </a>
+            {% endif %}
+            {% if format[0].format == 'eBook' %}
+
+              {% if product.download_path %}
+                {% if product.simple_price() == '000' %}
+                  <a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
+                    <i class="fas fa-download"></i> Download for Free
+                  </a>
+                {% else %}
+                  <a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
+                    <i class="fas fa-credit-card"></i> Buy Direct
+                  </a>
+                {% endif %}
+              {% endif %}
+
             {% endif %}
 						{% for link in format %}
 							<a href="{{ link.url }}" class="btn btn-secondary m-1 btn-lg" target="_blank">
