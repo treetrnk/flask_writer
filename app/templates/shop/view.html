@@ -63,12 +63,6 @@
 
 
 		{% if product.links %}	
-			{% if not product.download_path %}
-				<a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
-					<i class="{{ product.links[0].icon }}"></i>
-					{{ product.links[0].text }}
-				</a>
-			{% endif %}
 		</center>
 	
 			{% if product.links|length > 1 %}
