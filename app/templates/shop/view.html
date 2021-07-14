@@ -95,7 +95,7 @@
 
 
 				{% for format in product.grouped_links() %}
-        <div {% if format|length > 1 %}class="text-center"{% endif %} id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}style="display:none"{% endif %}>
+        <div class="text-center" id="{{ format[0].format if format[0].format else 'morelinks' }}" {% if loop.index != 1 %}style="display:none"{% endif %}>
             {% if not format[0].format %}
               <a href="{{ product.linked_page.path }}" class="btn btn-secondary btn-lg">
                 <i class="fas fa-book-reader"></i>
