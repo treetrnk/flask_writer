@@ -153,6 +153,7 @@
 	<thead>
 		<tr>
 			<th>Date</th>
+			<th>Action</th>
 			<th>Words</th>
 			<th>Overall</th>
 			<th>Minutes</th>
@@ -170,6 +171,9 @@
 					<span class="d-none">{{ obj.date }} {{ obj.id }}</span>
 					{{ obj.date.strftime('%a. %b. %-d, %Y') }}
 				</td>
+        <td>
+          {{ obj.action.title() if obj.action else 'Write' }}
+        </td>
 				<td>
 					<span data-toggle="tooltip" title="{{ obj.start_words }} 🠦 {{ obj.end_words }}">
 						{{ obj.words }}
