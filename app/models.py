@@ -1108,7 +1108,7 @@ class Record(db.Model):
         ]
 
     def words_by_day(day):
-        records = Record.query.filter_by(date=day).order_by(desc('words')).all()
+        records = Record.query.filter_by(date=day,action='write').order_by(desc('words')).all()
         daily_total = 0
         minutes = 0
         for r in records:

@@ -663,15 +663,18 @@ def records(day=None):
     stats = {
             'week': total_query.filter(
                     Record.date >= (today - timedelta(days=7)),
-                    Record.date <= today
+                    Record.date <= today,
+                    Record.action == 'write'
                 ).all()[0].data,
             'month': total_query.filter(
                     Record.date >= (today - timedelta(days=30)),
-                    Record.date <= today
+                    Record.date <= today,
+                    Record.action == 'write'
                 ).all()[0].data,
             'year': total_query.filter(
                     Record.date >= (today - timedelta(days=365)),
-                    Record.date <= today
+                    Record.date <= today,
+                    Record.action == 'write'
                 ).all()[0].data,
         }
     #stats['week'] = stats['week'].data if stats['week'] else 0
@@ -683,17 +686,20 @@ def records(day=None):
     best_query = db.session.query(Record, db.func.sum(Record.words).label('best')).group_by(Record.date).order_by(desc('best'))
     stats['week_best'] = best_query.filter(
             Record.date >= (today - timedelta(days=7)),
-            Record.date <= today
+            Record.date <= today,
+            Record.action == 'write'
         ).first()
     stats['week_best'] = stats['week_best'].best if stats['week_best'] else 0
     stats['month_best'] = best_query.filter(
             Record.date >= (today - timedelta(days=30)),
-            Record.date <= today
+            Record.date <= today,
+            Record.action == 'write'
         ).first()
     stats['month_best'] = stats['month_best'].best if stats['month_best'] else 0
     stats['year_best'] = best_query.filter(
             Record.date >= (today - timedelta(days=365)),
-            Record.date <= today
+            Record.date <= today,
+            Record.action == 'write'
         ).first()
     stats['year_best'] = stats['year_best'].best if stats['year_best'] else 0
     current_app.logger.debug(datetime.utcnow().date())
