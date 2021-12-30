@@ -4,7 +4,7 @@ from wtforms import (
         BooleanField, SubmitField, DateTimeField, SelectMultipleField, 
         PasswordField, HiddenField, DateField, TimeField, FileField, FloatField
 )
-from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
+from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, EqualTo, ValidationError, InputRequired
 from app.models import Page, User, Tag, Definition, Link, Product
 
