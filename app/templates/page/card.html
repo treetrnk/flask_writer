@@ -8,7 +8,7 @@
       <div class="text-white card-banner" style="background-image:url({{ card_page.banner_path(always_return_img=True) }});">
         <div class="card-banner-overlay">
         {% if not 'bannertext' in hide %}
-          <a href="{{ card_page.path }}">
+        <a href="{{ card_page.path }}" title="{{ card_page.title }}">
             <h3 class="card-title text-outline {% if not 'cover' in hide %}text-right{% endif %} d-none d-md-block">
               {% if card_page.title|length > 35 %}
                 {{ card_page.title[0:32] }}...
