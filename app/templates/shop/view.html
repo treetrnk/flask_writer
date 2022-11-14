@@ -91,7 +91,7 @@
         <!--<h3 class="mt-5">Other Marketplaces</h3>-->
 			
 
-				<ul class="nav nav-tabs nav-fill mb-3 mt-5">
+				<ul class="nav nav-pills nav-fill mb-3 mt-5">
 					{% for format in product.grouped_links() %}
 						<li class="nav-item">
 							<button class="btn btn-link btn-block nav-link toggle-tab {% if loop.index == 1 %}active{% endif %}" data-target="#{{ format[0].format if format[0].format else 'morelinks' }}">
