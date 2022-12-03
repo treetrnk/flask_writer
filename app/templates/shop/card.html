@@ -52,8 +52,8 @@
               {% if not 'fulldescription' in hide %}
                 {{ product.description }}
               {% else %}
-                {{ product.description[:90] }}
-                {% if product.description|length > 90 %}
+                {{ product.description[:80] }}
+                {% if product.description|length > 80 %}
                   . . .
                   <a href="{{ url_for('shop.view', slug=product.slug) }}">Read more</a>
                 {% endif %}
