@@ -49,7 +49,15 @@
 				{% if not 'description' in hide %}
 					<p>
 						<small>
-							{{ product.description }}
+              {% if not 'fulldescription' in hide %}
+                {{ product.description }}
+              {% else %}
+                {{ product.description[:90] }}
+                {% if product.description|length > 90 %}
+                  . . .
+                  <a href="{{ url_for('shop.view', slug=product.slug) }}">Read more</a>
+                {% endif %}
+              {% endif %}
 						</small>
 					</p>
 				{% endif %}
