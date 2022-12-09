@@ -214,6 +214,14 @@
 
 
 		<div class="jumbotron banner">
+      {% if page %}
+        {% if page.banner_video %}
+          <video id="banner-video" 
+            autoplay loop muted poster="{{ page.banner_path(True) }}">
+            <source src="{{ page.banner_video }}" type="video/mp4">
+          </video>
+        {% endif %}
+      {% endif %}
 			<div class="container">
 				<br /><br /><br /><br /><br /><br />
 				{% if page %}

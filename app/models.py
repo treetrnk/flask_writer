@@ -87,6 +87,7 @@ class PageVersion(db.Model):
     template = db.Column(db.String(100))
     cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
+    banner_video = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=ver_tags, lazy='subquery', 
@@ -144,6 +145,7 @@ class Page(db.Model):
     template = db.Column(db.String(100))
     cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
+    banner_video = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
