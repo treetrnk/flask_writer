@@ -169,7 +169,7 @@
 <div class="row">
 	{% for r_product in related %}
 		<div class="col-md-3 col">
-			{{ r_product.card(hide=['links'])|safe }}
+			{{ r_product.card(hide=['links','fulldescription'])|safe }}
 		</div>
 	{% endfor %}
 </div>
