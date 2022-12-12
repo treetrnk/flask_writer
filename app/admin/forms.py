@@ -112,7 +112,7 @@ class ProductEditForm(FlaskForm):
 
 class CategoryEditForm(FlaskForm):
     name = StringField(f'Name', validators=[DataRequired(),Length(max=150)], render_kw={'id':'page_title_input'})
-    icon = StringField('Category', validators=[Length(max=150)])
+    icon = StringField('Icon', validators=[Length(max=150)])
     default = BooleanField('Default')
 
 class LinkEditForm(FlaskForm):
