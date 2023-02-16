@@ -37,6 +37,6 @@ stripe==2.64.0
 style==1.1.0
 update==0.0.1
 urllib3==1.26.7
-Werkzeug==2.0.2
+Werkzeug==2.2.3
 WTForms==3.0.1
 WTForms-SQLAlchemy==0.3
