@@ -73,7 +73,7 @@
           </a>
         {% endif %}
       {% endif %}
-      {% if product.links|length < 2 %}
+      {% if product.links|length == 2 %}
         {% if not product.download_path %}
           <a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
             <i class="{{ product.links[0].icon }}"></i>
