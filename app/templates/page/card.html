@@ -24,7 +24,11 @@
 
     {% if card_page.cover_path() and 'cover' not in hide %}
       <a href="{{ card_page.path }}">
-        <img src="{{ card_page.cover_path() }}" class="float-left img-thumbnail page-card-cover" alt="{{ card_page.title }}" />
+        <div class="book-container">
+          <div class="book">
+            <img src="{{ card_page.cover_path() }}" alt="{{ card_page.title }}" />
+          </div>
+        </div>
       </a>
     {% endif %}
 
