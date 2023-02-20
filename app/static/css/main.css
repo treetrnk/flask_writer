@@ -499,8 +499,8 @@
       align-items: center;
       justify-content: center;
       perspective: 600px;
-      width: 200px;
-      margin-top: 20px;
+      width: 175px;
+      margin: 10px 10px 10px 0px;
       float: left;
     }
 
