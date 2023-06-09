@@ -328,7 +328,3 @@ def index(path):
                     js='comments.js')    
     page = Page.query.filter_by(slug='404-error').first()
     return render_template(f'page/{page.template}.html', page=page), 404
-
-@bp.before_app_first_request
-def set_nav():
-    Page.set_nav()
