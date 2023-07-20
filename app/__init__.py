@@ -39,6 +39,11 @@ def create_app(config_class=Config):
     from app.page import bp as page_bp
     app.register_blueprint(page_bp)
 
+    # @app.before_first_request EQUIVALENT
+    with app.app_context():
+        def set_nav():
+            Page.set_nav()
+
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
             auth = None

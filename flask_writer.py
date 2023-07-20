@@ -70,6 +70,6 @@ def make_shell_context():
             'install': install,
         }
 
-@app.before_first_request
-def set_nav():
-    Page.set_nav()
+#@app.before_first_request
+#def set_nav():
+#    Page.set_nav()
