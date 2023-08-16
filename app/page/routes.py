@@ -44,7 +44,7 @@ def set_theme(theme=None):
         current_app.logger.debug("prev_path")
         current_app.logger.debug(prev_path)
         if prev_path: 
-            return redirect(prev_path)
+            return redirect(current_app.config['BASE_URL'] + '/' + str(prev_path))
     return redirect(url_for('page.home'))
 
 @bp.route('/search', methods=['GET','POST'])
