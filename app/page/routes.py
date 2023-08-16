@@ -43,8 +43,9 @@ def set_theme(theme=None):
         prev_path = re.sub(r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/?", '', prev_path) 
         current_app.logger.debug("prev_path")
         current_app.logger.debug(prev_path)
+        prev_path = "/" + prev_path if prev_path[0] != "/" else prev_path
         if prev_path: 
-            return redirect(current_app.config['BASE_URL'] + '/' + str(prev_path))
+            return redirect(current_app.config['BASE_URL'] + str(prev_path))
     return redirect(url_for('page.home'))
 
 @bp.route('/search', methods=['GET','POST'])
