@@ -1,5 +1,6 @@
 import sys
 import requests
+import re
 from flask import (
         render_template, redirect, url_for, flash, session, request, 
         current_app, make_response, send_from_directory, send_file
@@ -39,7 +40,11 @@ def set_theme(theme=None):
         session['theme'] = 'dark'
     prev_path = request.args['path']
     if prev_path:
-        return redirect(prev_path)
+        prev_path = re.sub(r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/?", '', prev_path) 
+        current_app.logger.debug("prev_path")
+        current_app.logger.debug(prev_path)
+        if prev_path: 
+            return redirect(prev_path)
     return redirect(url_for('page.home'))
 
 @bp.route('/search', methods=['GET','POST'])
