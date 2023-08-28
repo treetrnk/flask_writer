@@ -6,13 +6,17 @@ from flask import (
         current_app, make_response, send_from_directory, send_file
     )
 from app.page import bp
-from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm, CommentForm, AuthenticatedCommentForm
+from app.page.forms import (
+        SearchForm, SubscribeForm, SubscriptionForm, CommentForm, 
+        AuthenticatedCommentForm
+    )
 from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product, Comment
 from app import db
 from gtts import gTTS
 from app.admin.functions import log_new, log_change
 from flask_login import current_user
+from app.email import send_email
 
 @bp.route('/')
 def home():
@@ -237,6 +241,21 @@ def submit_comment():
         else:
             flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)
+
+@bp.route('/contact-form', methods=['POST'])
+def contact_form():
+    form = request.form
+    if form:
+        subject = f"Contact Form Submission - {current_app.config['SITE_NAME']}"
+        body = f"You received an message via the contact form on {current_app.config.get('SITE_NAME')} ({current_app.config.get('BASE_URL')}. <br /><br />"
+        current_app.logger.debug(form)
+        for pair in form:
+            body += f" - {pair[0]}: {pair[1]}<br />"
+        recipients = current_app.config.get('ADMINS') 
+        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body, body)
+        
+    flash('Thank you for reaching out!', 'success')
+    return redirect(url_for('page.index', path="/"))    
 
 @bp.route('/hide-subscribe-banner', methods=['POST'])
 def hide_subscribe_banner():
