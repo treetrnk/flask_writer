@@ -75,7 +75,7 @@
 
 		<style>
 			div.jumbotron {
-				{% if (not page or page.template in ['page','blog','shelf']) and page.title != 'home' %}
+				{% if not page or page.template in ['page','blog','shelf'] %}
 					height: 280px;
 				{% else %}
 					height: 500px;
