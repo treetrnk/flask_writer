@@ -247,12 +247,22 @@ def contact_form():
     form = request.form
     if form:
         subject = f"Contact Form Submission - {current_app.config['SITE_NAME']}"
-        body = f"You received an message via the contact form on {current_app.config.get('SITE_NAME')} ({current_app.config.get('BASE_URL')}. <br /><br />"
         current_app.logger.debug(form)
-        for pair in form:
-            body += f" - {pair[0]}: {pair[1]}<br />"
+        form_text = "\n\n"
+        form_html = "<br /><br />"
+        for key in form:
+            current_app.logger.debug(key)
+            current_app.logger.debug(form[key])
+
+            form_text += f" - {key.title()}: {form[key]}\n"
+            form_html += f" - {key.title()}: {form[key]}<br />"
+
+        current_app.logger.info("Contact form submission: " + form_text)
+
+        body = f"You received an message via the contact form on {current_app.config.get('SITE_NAME')} ({current_app.config.get('BASE_URL')}."
+
         recipients = current_app.config.get('ADMINS') 
-        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body, body)
+        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body+form_html, body+form_text)
         
     flash('Thank you for reaching out!', 'success')
     return redirect(url_for('page.index', path="/"))    
