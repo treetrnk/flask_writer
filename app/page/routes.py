@@ -242,11 +242,11 @@ def submit_comment():
             flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)
 
-@bp.route('/contact-form', methods=['POST'])
-def contact_form():
+@bp.route('/custom-form', methods=['POST'])
+def custom_form():
     form = request.form
     if form:
-        subject = f"Contact Form Submission - {current_app.config['SITE_NAME']}"
+        subject = f"Form Submission - {current_app.config['SITE_NAME']}"
         current_app.logger.debug(form)
         form_text = "\n\n"
         form_html = "<br /><br />"
@@ -257,12 +257,12 @@ def contact_form():
             form_text += f" - {key.title()}: {form[key]}\n"
             form_html += f" - {key.title()}: {form[key]}<br />"
 
-        current_app.logger.info("Contact form submission: " + form_text)
+        current_app.logger.info("Custom form submission: " + form_text)
 
-        body = f"You received an message via the contact form on {current_app.config.get('SITE_NAME')} ({current_app.config.get('BASE_URL')}."
+        body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
 
         recipients = current_app.config.get('ADMINS') 
-        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body+form_html, body+form_text)
+        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body+form_text, body+form_html)
         
     flash('Thank you for reaching out!', 'success')
     return redirect(url_for('page.index', path="/"))    
