@@ -263,7 +263,7 @@ def custom_form():
 
         recipients = current_app.config.get('ADMINS') 
         send_email(
-                subject, 
+                f'Thanks! - {current_app.config["SITE_NAME"]}', 
                 current_app.config['MAIL_DEFAULT_SENDER'], 
                 recipients, 
                 body+form_text, 
@@ -287,7 +287,7 @@ def custom_form():
                         'email/manual.html', 
                         page=response_page,
                         recipient=response_name,
-                        body=response_page.body,
+                        body=response_page.html_body() + "<br /><br />For your reference, you submitted the following information:" + form_html,
                     )
             )
         
