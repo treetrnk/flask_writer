@@ -249,13 +249,15 @@ def custom_form():
         subject = f"Form Submission - {current_app.config['SITE_NAME']}"
         current_app.logger.debug(form)
         form_text = "\n\n"
-        form_html = "<br /><br />"
+        form_html = "<br /><br /><ul>"
         for key in form:
             current_app.logger.debug(key)
             current_app.logger.debug(form[key])
 
             form_text += f" - {key.title()}: {form[key]}\n"
-            form_html += f" - {key.title()}: {form[key]}<br />"
+            form_html += f"<li><b>{key.title()}:</b> {form[key]}</li>"
+
+        form_html += "</ul>"
 
         current_app.logger.info("Custom form submission: " + form_text)
 
