@@ -262,7 +262,32 @@ def custom_form():
         body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
 
         recipients = current_app.config.get('ADMINS') 
-        send_email(subject, current_app.config['MAIL_DEFAULT_SENDER'], recipients, body+form_text, body+form_html)
+        send_email(
+                subject, 
+                current_app.config['MAIL_DEFAULT_SENDER'], 
+                recipients, 
+                body+form_text, 
+                render_template(
+                    'email/manual.html', 
+                    page=Page.query.filter_by(slug='home').first(), 
+                    body=body+form_html
+                )
+        )
+
+        response_page = Page.query.filter_by(slug='custom-form-response').first()
+        response_name = form.get('name') or ''
+        if (form.get('email') and response_page): 
+            send_email(
+                    subject, 
+                    current_app.config['MAIL_DEFAULT_SENDER'], 
+                    recipients, 
+                    body+form_text, 
+                    render_template(
+                        'email/base.html', 
+                        page=response_page,
+                        recipient=response_name,
+                    )
+            )
         
     flash('Thank you for reaching out!', 'success')
     return redirect(url_for('page.index', path="/"))    
