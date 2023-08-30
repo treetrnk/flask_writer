@@ -276,6 +276,7 @@ def custom_form():
 
         response_page = Page.query.filter_by(slug='custom-form-response').first()
         response_name = form.get('name') or ''
+        recipients = [form.get('email')]
         if (form.get('email') and response_page): 
             send_email(
                     subject, 
@@ -283,9 +284,10 @@ def custom_form():
                     recipients, 
                     body+form_text, 
                     render_template(
-                        'email/base.html', 
+                        'email/manual.html', 
                         page=response_page,
                         recipient=response_name,
+                        body=response_page.body,
                     )
             )
         
