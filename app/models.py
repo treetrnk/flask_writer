@@ -219,10 +219,13 @@ class Page(db.Model):
 
     def add_lightbox_imgs(self, html):
         matches = re.finditer("(<img.*src=[\'\"](\S+)[\"\'].*\/>)", html)
+        edits = []
         for match in matches:
             current_app.logger.debug(match.groups())
-            add_link = f'<a href="{match.groups()[1]}" data-lightbox="images">{match.groups()[0]}</a>'
-            html = html.replace(match.groups()[0], add_link)
+            if match.groups()[0] not in edits: 
+                add_link = f'<a href="{match.groups()[1]}" data-lightbox="images">{match.groups()[0]}</a>'
+                html = html.replace(match.groups()[0], add_link)
+                edits += [match.groups()[0]]
 
         return html
 
