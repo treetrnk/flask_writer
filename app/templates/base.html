@@ -70,6 +70,8 @@
 		<!---<link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet">
     <script src="https://use.fontawesome.com/0dabb168cf.js"></script>--->
 
+    <link href="{{ url_for('static', filename='css/lightbox.css') }}" rel="stylesheet" />
+
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 		<link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 
@@ -383,6 +385,7 @@
 		{{ moment.include_moment() }}
     <script src="{{ url_for('static', filename='js/moment-timezone-with-data.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js?render={{ config['RECAPTCHA_PUBLIC'] }}"></script>
+    <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
 		<script type="text/javascript">
 			
 			{% if page %}
