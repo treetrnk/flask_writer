@@ -254,8 +254,9 @@ def custom_form():
             current_app.logger.debug(key)
             current_app.logger.debug(form[key])
 
-            form_text += f" - {key.title()}: {form[key]}\n"
-            form_html += f"<li><b>{key.title()}:</b> {form[key]}</li>"
+            if key.lower() != 'g-recaptcha-response':
+                form_text += f" - {key.title()}: {form[key]}\n"
+                form_html += f"<li><b>{key.title()}:</b> {form[key]}</li>"
 
         form_html += "</ul>"
 
