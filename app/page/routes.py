@@ -282,7 +282,7 @@ def custom_form():
         recipients = [form.get('email')]
         if (form.get('email') and response_page): 
             send_email(
-                    f'Thanks! - {current_app.config["SITE_NAME"]}', 
+                    f'{response_page.title} - {current_app.config["SITE_NAME"]}', 
                     current_app.config['MAIL_DEFAULT_SENDER'], 
                     recipients, 
                     body+form_text, 
