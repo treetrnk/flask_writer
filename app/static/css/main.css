@@ -56,7 +56,7 @@
 				z-index: 1;
 			}
 			body {
-        background-color: #eeeeee;
+        background-color: #fff;
         color: #222222;
 				font-size: 17.5px;
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -193,8 +193,16 @@
         line-height: 17px;
       }
 			footer {
+        background-color: #eee;
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        margin: 0;
+			}
+			footer div {
 				margin: 25px auto 50px auto;
         max-width: 600px;
+        background-color: #eee;
 			}
       footer a {
         color: #555555;
