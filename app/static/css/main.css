@@ -195,12 +195,12 @@
 			footer {
         background-color: #eee;
         width: 100%;
-        padding-top: 50px;
-        padding-bottom: 50px;
         margin: 0;
+        padding-top: 25px;
+        padding-bottom: 50px;
 			}
-			footer div {
-				margin: 25px auto 50px auto;
+			footer div.footer-wrapper {
+				margin: auto;
         max-width: 600px;
         background-color: #eee;
 			}
