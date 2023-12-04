@@ -6,13 +6,17 @@ from flask import (
         current_app, make_response, send_from_directory, send_file
     )
 from app.page import bp
-from app.page.forms import SearchForm, SubscribeForm, SubscriptionForm, CommentForm, AuthenticatedCommentForm
+from app.page.forms import (
+        SearchForm, SubscribeForm, SubscriptionForm, CommentForm, 
+        AuthenticatedCommentForm
+    )
 from sqlalchemy import or_, desc
 from app.models import Page, Tag, Subscriber, Definition, Link, Product, Comment
 from app import db
 from gtts import gTTS
 from app.admin.functions import log_new, log_change
 from flask_login import current_user
+from app.email import send_email
 
 @bp.route('/')
 def home():
@@ -237,6 +241,61 @@ def submit_comment():
         else:
             flash('Unable to save comment. Recaptcha flagged you as a bot. If you are not a bot, please try submitting your comment again.', 'danger')
     return redirect(request.referrer)
+
+@bp.route('/custom-form', methods=['POST'])
+def custom_form():
+    form = request.form
+    if form:
+        subject = f"Form Submission - {current_app.config['SITE_NAME']}"
+        current_app.logger.debug(form)
+        form_text = "\n\n"
+        form_html = "<br /><br /><ul>"
+        for key in form:
+            current_app.logger.debug(key)
+            current_app.logger.debug(form[key])
+
+            if key.lower() != 'g-recaptcha-response':
+                form_text += f" - {key.title()}: {form[key]}\n"
+                form_html += f"<li><b>{key.title()}:</b> {form[key]}</li>"
+
+        form_html += "</ul>"
+
+        current_app.logger.info("Custom form submission: " + form_text)
+
+        body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
+
+        recipients = current_app.config.get('ADMINS') 
+        send_email(
+                subject, 
+                current_app.config['MAIL_DEFAULT_SENDER'], 
+                recipients, 
+                body+form_text, 
+                render_template(
+                    'email/manual.html', 
+                    page=Page.query.filter_by(slug='home').first(), 
+                    body=body+form_html
+                )
+        )
+
+        response_page = Page.query.filter_by(slug='custom-form-response').first()
+        response_name = form.get('name') or ''
+        recipients = [form.get('email')]
+        if (form.get('email') and response_page): 
+            send_email(
+                    f'{response_page.title} - {current_app.config["SITE_NAME"]}', 
+                    current_app.config['MAIL_DEFAULT_SENDER'], 
+                    recipients, 
+                    body+form_text, 
+                    render_template(
+                        'email/manual.html', 
+                        page=response_page,
+                        recipient=response_name,
+                        body=response_page.html_body() + "<br /><br />For your reference, you submitted the following information:" + form_html,
+                    )
+            )
+        
+    flash('Thank you for reaching out!', 'success')
+    return redirect(url_for('page.index', path="/"))    
 
 @bp.route('/hide-subscribe-banner', methods=['POST'])
 def hide_subscribe_banner():

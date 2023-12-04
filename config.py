@@ -31,7 +31,7 @@ class Config(object):
     PRODUCT_DIR = productdir
     BASE_URL = os.environ.get('BASE_URL') or 'http://localhost:5000'
     PRETTY_URL = os.environ.get('PRETTY_URL') or BASE_URL
-    ADMINS=os.environ.get('ADMINS') or ''
+    ADMINS=os.environ.get('ADMINS') or MAIL_USERNAME
     ADMINS=ADMINS.split(',')
     SUBSCRIPTION_GROUPS=os.environ.get('SUBSCRIPTION_GROUPS') or 'All'
     SUBSCRIPTION_GROUPS=[(sg,sg) for sg in SUBSCRIPTION_GROUPS.split(',')]
