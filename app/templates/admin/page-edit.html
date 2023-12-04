@@ -155,6 +155,23 @@
 		</div>
 	</div>
 
+	<!--BANNER_VIDEO-->
+	<div class="form-group row">
+		{{ form.banner_video.label(class="col-sm-2 control-from-label text-md-right") }} 
+		<div class="col-sm-8">
+			{% if form.banner_video.errors %}
+				{{ form.banner_video(class="form-control is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.banner_video.errors %}
+						{{ error }}
+					{% endfor %}
+				</div>
+			{% else %}
+				{{ form.banner_video(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+
 	<!--BODY-->
 	<div class="form-group row">
 		{{ form.body.label(class="col-sm-2 control-from-label text-md-right required-label") }} 

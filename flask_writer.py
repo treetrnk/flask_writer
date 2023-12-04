@@ -1,5 +1,6 @@
 from app import create_app, db
 from app.models import User, Page, Tag, Subscriber, Definition, Link, Product, Record, Comment
+from datetime import datetime
 
 app = create_app()
 
@@ -50,6 +51,10 @@ def install():
     db.session.commit()
     return print('Insttalled!')
 
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
 @app.shell_context_processor
 def make_shell_context():
     return {'db': db, 
@@ -65,3 +70,6 @@ def make_shell_context():
             'install': install,
         }
 
+#@app.before_first_request
+#def set_nav():
+#    Page.set_nav()

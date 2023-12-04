@@ -42,6 +42,7 @@ class AddPageForm(FlaskForm):
    parent_id = SelectField('Parent', coerce=int)
    cover = StringField('Cover Image', validators=[Length(max=500)])
    banner = StringField('Banner Image', validators=[Length(max=500)])
+   banner_video = StringField('Banner Video', validators=[Length(max=500)])
    summary = TextAreaField('Summary', validators=[Length(max=300),Optional()])
    author_note = TextAreaField("Author's Note", validators=[Length(max=5000),Optional()], render_kw={'rows':4})
    author_note_location = SelectField('Note Location', coerce=str, choices=Page.AUTHOR_NOTE_LOCATIONS)
@@ -111,7 +112,7 @@ class ProductEditForm(FlaskForm):
 
 class CategoryEditForm(FlaskForm):
     name = StringField(f'Name', validators=[DataRequired(),Length(max=150)], render_kw={'id':'page_title_input'})
-    icon = StringField('Category', validators=[Length(max=150)])
+    icon = StringField('Icon', validators=[Length(max=150)])
     default = BooleanField('Default')
 
 class LinkEditForm(FlaskForm):

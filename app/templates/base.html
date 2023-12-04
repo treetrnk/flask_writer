@@ -70,6 +70,8 @@
 		<!---<link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet">
     <script src="https://use.fontawesome.com/0dabb168cf.js"></script>--->
 
+    <link href="{{ url_for('static', filename='css/lightbox.css') }}" rel="stylesheet" />
+
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 		<link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 
@@ -93,9 +95,13 @@
 
 			{% if session['theme'] == 'dark' %}
 				body {
-					background-color: #1c1c1c;
+					background-color: #222;
 					color: #aaa;
 				}
+        footer { 
+					background-color: #333;
+					color: #aaa;
+        }
 				.card {
 					background-color: #222;
 					color: #aaa;
@@ -214,6 +220,14 @@
 
 
 		<div class="jumbotron banner">
+      {% if page %}
+        {% if page.banner_video %}
+          <video id="banner-video" 
+            autoplay loop muted poster="{{ page.banner_path(True) }}">
+            <source src="{{ page.banner_video }}" type="video/mp4">
+          </video>
+        {% endif %}
+      {% endif %}
 			<div class="container">
 				<br /><br /><br /><br /><br /><br />
 				{% if page %}
@@ -308,58 +322,62 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-		<section class="container content-wrapper">
-			{% if page and page.parent_id %}
-				<ol class="breadcrumb mb-5">
-					{% for parent in page.ancestors()[::-1] %}
-						<li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
-					{% endfor %}
-					{% if glossary %}
-						<li class="breadcrumb-item"><a href="{{ page.path }}">{{ page.title }}</a></li>
-						<li class="breadcrumb-item active">Glossary</li>
-					{% else %}
-						<li class="breadcrumb-item active">{{ page.title }}</li>
-					{% endif %}
-				</ol>
-			{% else %}
-				<br />
-			{% endif %}
-			{# $page->breadcrumbs() #}
-
-			{% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            {% for category, message in messages %}
-							{% if category != "message" %}
-								<div class="alert alert-{{ category }}" role="alert">
-									{% if category == 'success' %}
-										<b><i class="fas fa-check-circle"></i> Success!</b>
-									{% elif category == 'info' %}
-										<b><i class="fas fa-info-circle"></i> Info!</b>
-									{% elif category == 'warning' %}
-										<b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
-									{% elif category == 'danger' %}
-										<b><i class="fas fa-exclamation-circle"></i> Error!</b>
-									{% endif %}
-									{{ message|safe }}
-								</div>
-							{% else %}
-								<div class="alert alert-warning" role="alert">
-									<b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
-									{{ message|safe }}
-								</div>
-							{% endif %}
+		<section class="container-fluid content-wrapper">
+      <div class="container">
+        {% if page and page.parent_id %}
+          <ol class="breadcrumb mb-5">
+            {% for parent in page.ancestors()[::-1] %}
+              <li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
             {% endfor %}
+            {% if glossary %}
+              <li class="breadcrumb-item"><a href="{{ page.path }}">{{ page.title }}</a></li>
+              <li class="breadcrumb-item active">Glossary</li>
+            {% else %}
+              <li class="breadcrumb-item active">{{ page.title }}</li>
+            {% endif %}
+          </ol>
+        {% else %}
+          <br />
         {% endif %}
-			{% endwith %}
+        {# $page->breadcrumbs() #}
 
-			{% block content %}
-			{% endblock %}
+        {% with messages = get_flashed_messages(with_categories=True) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                {% if category != "message" %}
+                  <div class="alert alert-{{ category }}" role="alert">
+                    {% if category == 'success' %}
+                      <b><i class="fas fa-check-circle"></i> Success!</b>
+                    {% elif category == 'info' %}
+                      <b><i class="fas fa-info-circle"></i> Info!</b>
+                    {% elif category == 'warning' %}
+                      <b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
+                    {% elif category == 'danger' %}
+                      <b><i class="fas fa-exclamation-circle"></i> Error!</b>
+                    {% endif %}
+                    {{ message|safe }}
+                  </div>
+                {% else %}
+                  <div class="alert alert-warning" role="alert">
+                    <b><i class="fas fa-exclamation-triangle"></i> Warning!</b>
+                    {{ message|safe }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+        {% endwith %}
 
+        {% block content %}
+        {% endblock %}
+
+      </div>
 			<br /><br />
     </section>
 
 		<footer class="text-muted small">
-      {% include 'footer.html' %}
+      <div class="footer-wrapper">
+        {% include 'footer.html' %}
+      </div>
 		</footer>
 
     {% include 'subscribe-banner.html' %}
@@ -373,6 +391,7 @@
 		{{ moment.include_moment() }}
     <script src="{{ url_for('static', filename='js/moment-timezone-with-data.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js?render={{ config['RECAPTCHA_PUBLIC'] }}"></script>
+    <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
 		<script type="text/javascript">
 			
 			{% if page %}

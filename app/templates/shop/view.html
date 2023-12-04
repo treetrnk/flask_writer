@@ -73,7 +73,7 @@
           </a>
         {% endif %}
       {% endif %}
-      {% if product.links|length < 2 %}
+      {% if product.links|length == 2 %}
         {% if not product.download_path %}
           <a href="{{ product.links[0].url }}" class="btn btn-primary btn-lg mb-3" target="_blank">
             <i class="{{ product.links[0].icon }}"></i>
@@ -147,14 +147,33 @@
 					</div>
 				{% endfor %}
 
+      {% else %} {# if only 1 product link #}
+        <div class="text-center">
+          {% if product.download_path %}
+            {% if product.simple_price() == '000' %}
+              <a href="{{ url_for('shop.subscribe', obj_id=product.id) }}" class="btn btn-primary btn-lg" >
+                <i class="fas fa-download"></i> Download for Free
+              </a>
+            {% else %}
+              <a href="{{ url_for('shop.buy', slug=product.slug) }}" class="btn btn-primary btn-lg" >
+                <i class="fas fa-credit-card"></i> Buy Direct
+              </a>
+            {% endif %}
 
+          {% endif %}
+          <a href="{{ product.links[0].url }}" class="btn btn-secondary m-1 btn-lg" target="_blank">
+            <i class="{{ product.links[0].icon }}"></i>
+            {{ product.links[0].text_simple() }}
+          </a>
+        </div>
 			{% endif %}
-		{% else %}
+
+    {% else %} {# if no product.links #}
 			{% if not product.download_path %}
-				<button type="button" class="btn btn-secondary btn-lg disabled" disabled>
-					<i class="fas fa-seedling"></i> Coming Soon!
-				</button>
-				</center>
+        <button type="button" class="btn btn-secondary btn-lg disabled" disabled>
+          <i class="fas fa-seedling"></i> Coming Soon!
+        </button>
+        </center>
 			{% endif %}
 		{% endif %}
 	</div>
@@ -169,7 +188,7 @@
 <div class="row">
 	{% for r_product in related %}
 		<div class="col-md-3 col">
-			{{ r_product.card(hide=['links'])|safe }}
+			{{ r_product.card(hide=['links','fulldescription'])|safe }}
 		</div>
 	{% endfor %}
 </div>

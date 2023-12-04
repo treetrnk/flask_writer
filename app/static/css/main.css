@@ -56,7 +56,7 @@
 				z-index: 1;
 			}
 			body {
-        background-color: #eeeeee;
+        background-color: #fff;
         color: #222222;
 				font-size: 17.5px;
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -91,6 +91,8 @@
 			}
 			div.jumbotron {
 				margin-bottom: 0;
+        position: relative;
+        z-index: -10;
 			}
 			div.jumbotron h1 {
 				display: inline;
@@ -105,16 +107,28 @@
 				border-radius: 5px;
         text-transform: uppercase;
 			}
+      #banner-video {
+        width: 100vw;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -10 !important;
+      }
 			section.content-wrapper {
         background-color: #ffffff;
         color: #222222;
 				padding: 25px;
-				margin-top: -50px;
+				/*margin-top: -50px;
 				margin-bottom: 50px;
 				-moz-box-shadow:    0 30px 50px 0 rgba(1,1,1,.15);
 				-webkit-box-shadow: 0 30px 50px 0 rgba(1,1,1,.15);
 				box-shadow: 0 30px 50px 0 rgba(1,1,1,.15);
-        z-index: 3;
+        z-index: 30 !important;
+        */
 			}
       .content-wrapper h1 {
         font-size: 250%;
@@ -179,7 +193,14 @@
         line-height: 17px;
       }
 			footer {
-				margin: 10px auto 50px auto;
+        background-color: #eee;
+        width: 100%;
+        margin: 0;
+        padding-top: 25px;
+        padding-bottom: 50px;
+			}
+			footer div.footer-wrapper {
+				margin: auto;
         max-width: 600px;
 			}
       footer a {
@@ -479,4 +500,99 @@
         }
 
       }
+
+    /* 3D Hover Book Cover START */
+    .book-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 600px;
+      width: 175px;
+      margin: 10px 10px 10px 0px;
+      float: left;
+    }
+
+    @keyframes initAnimation {
+      0% {
+        transform: rotateY(0deg);
+      }
+      100% {
+        transform: rotateY(-30deg);
+      }
+    }
+
+    .book-container .book {
+      width: 150px;
+      height: 245px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(-30deg);
+      transition: transform 1s ease;
+      animation: 1s ease 0s 1 initAnimation-;
+    }
+
+    .book-container .book:hover {
+      transform: rotateY(0deg);
+    }
+
+    .book-container .book > :first-child {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 150px;
+      height: 245px;
+      transform: translateZ(25px);
+      background-color: #01060f;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 5px 5px 20px rgba(128,128,128,0.6);
+      background-color: #01060f;
+    }
+
+    /* BOOK PAGES */
+    .book-container .book::before {
+      position: absolute;
+      content: ' ';
+      left: 0;
+      top: 3px;
+      width: 48px;
+      height: 240px;
+      transform: translateX(120px) rotateY(90deg);
+      background: linear-gradient(90deg,
+        #fff 0%,
+        #f9f9f9 5%,
+        #fff 10%,
+        #f9f9f9 15%,
+        #fff 20%,
+        #f9f9f9 25%,
+        #fff 30%,
+        #f9f9f9 35%,
+        #fff 40%,
+        #f9f9f9 45%,
+        #fff 50%,
+        #f9f9f9 55%,
+        #fff 60%,
+        #f9f9f9 65%,
+        #fff 70%,
+        #f9f9f9 75%,
+        #fff 80%,
+        #f9f9f9 85%,
+        #fff 90%,
+        #f9f9f9 95%,
+        #fff 100%
+        );
+    }
+
+    /* BOOK BACK */
+    .book-container .book::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: ' ';
+      width: 150px;
+      height: 245px;
+      transform: translateZ(-25px);
+      background-color: #01060f;
+      border-radius: 0 2px 2px 0;
+      box-shadow: -10px 0 50px 10px rgba(128,128,128,0.6);
+    }
 		</style>

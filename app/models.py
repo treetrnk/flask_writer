@@ -87,6 +87,7 @@ class PageVersion(db.Model):
     template = db.Column(db.String(100))
     cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
+    banner_video = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=ver_tags, lazy='subquery', 
@@ -144,6 +145,7 @@ class Page(db.Model):
     template = db.Column(db.String(100))
     cover = db.Column(db.String(500), nullable=True)
     banner = db.Column(db.String(500), nullable=True)
+    banner_video = db.Column(db.String(500), nullable=True)
     body = db.Column(db.Text(10000000))
     notes = db.Column(db.Text(5000000))
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', 
@@ -215,6 +217,19 @@ class Page(db.Model):
                 result = result.replace(f'page[{pid}]', '')
         return result
 
+    def add_lightbox_imgs(self, html):
+        matches = re.finditer("(<img.*src=[\'\"](\S+)[\"\'].*\/>)", html)
+        edits = []
+        for match in matches:
+            current_app.logger.debug(match.groups())
+            if match.groups()[0] not in edits: 
+                add_link = f'<a href="{match.groups()[1]}" data-lightbox="images">{match.groups()[0]}</a>'
+                html = html.replace(match.groups()[0], add_link)
+                edits += [match.groups()[0]]
+
+        return html
+
+
     def html(self, field):
         if field == 'body':
             data = self.body
@@ -223,6 +238,9 @@ class Page(db.Model):
         if field == 'author_note':
             data = self.author_note
         data = markdown(data.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+
+
+        data = data.replace('<img ', '<img data-lightbox="images" ')
         data = Product.replace_product_markup(data)
         data = Page.replace_page_markup(data)
         return data
@@ -230,6 +248,7 @@ class Page(db.Model):
     def html_body(self):
         if self.body:
             body = markdown(self.body.replace('---', '<center>&#127793;</center>').replace('--', '&#8212;'))
+            body = self.add_lightbox_imgs(body)
             body = Product.replace_product_markup(body)
             body = Page.replace_page_markup(body)
             return body
@@ -245,6 +264,7 @@ class Page(db.Model):
             if self.parent_id:
                 sidebar = self.parent.sidebar
         sidebar = markdown(sidebar)
+        sidebar = sidebar.replace('<img ', '<img data-lightbox="images" ')
         sidebar = Product.replace_product_markup(sidebar)
         sidebar = Page.replace_page_markup(sidebar)
         return sidebar
