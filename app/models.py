@@ -831,6 +831,28 @@ class Link(db.Model):
     def __repr__(self):
         return f"<Link({self.id}, {self.text}, {self.url[:20]}...)>"
     
+#########
+# PRICE #
+#########
+class Price(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Numeric(12,12), default=0.0)
+    currency = db.Column(db.String(100))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    product = db.relationship('Product', backref=backref('prices', order_by=(currency,value)))
+    direct = db.Column(db.Boolean, default=False)
+    shipping = db.Column(db.Boolean, default=False)
+
+    CURRENCY_CHOICES = [
+            ('USD','USD'),
+            ('XMR','XMR'),
+        ]
+
+    def __str__(self):
+        return f"{self.value} ({self.currency})"
+
+    def __repr__(self):
+        return f"<Price({self.id}, {self.value}, {self.currency})>"
 
 #############
 ## PRODUCT ##
@@ -840,16 +862,25 @@ class Product(db.Model):
     name = db.Column(db.String(150), nullable=False)
     slug = db.Column(db.String(150), nullable=False)
     ghost_link = db.Column(db.String(500))
+    type = db.Column(db.String(100))
     price = db.Column(db.String(10), nullable=False, default='$0.00')
     sale_price = db.Column(db.String(10), default='$0.00')
     description = db.Column(db.String(1000))
     image = db.Column(db.String(500), default="/uploads/missing-product.png")
     download_path = db.Column(db.String(500))
+    direct_sale = db.Column(db.Boolean(), default=False)
+    shipping_required = db.Column(db.Boolean(), default=False)
+    subscription_required = db.Column(db.Boolean(), default=False)
     sort = db.Column(db.Integer, default=500)
     linked_page_id = db.Column(db.Integer(), db.ForeignKey('page.id'), nullable=True)
     category_id = db.Column(db.Integer(), db.ForeignKey('category.id'), nullable=True)
     on_sale = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
+
+    TYPE_CHOICES = [
+            ('physical', 'Physical'),
+            ('digital', 'Digital'),
+        ]
 
     def card(self, hide=[]):
         return render_template('shop/card.html',
