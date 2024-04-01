@@ -19,6 +19,7 @@ class SubscribeForm(FlaskForm):
             validators=[DataRequired()], 
             description="Please select one or more.",
         )
+    validated = StringField('Honey Pot')
 
     def validate_email(self, email):
         subscriber = Subscriber.query.filter_by(email=email.data).first()

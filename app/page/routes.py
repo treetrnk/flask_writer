@@ -98,7 +98,7 @@ def subscribe():
     form.subscription.choices += [('Comment Replies', 'Comment Replies')]
     for field in form:
         print(f"{field.name}: {field.data}")
-    if form.validate_on_submit():
+    if form.validate_on_submit() and form.validated.data == '':
         print("Validated")
         sub = Subscriber(
             email=form.email.data,
