@@ -94,8 +94,10 @@ def search(tag=None,keyword=None):
 def subscribe():
     Page.set_nav()
     form = SubscribeForm()
+    comment_replies_choice = ('Comment Replies', 'Comment Replies')
     form.subscription.choices = current_app.config['SUBSCRIPTION_GROUPS']
-    form.subscription.choices += [('Comment Replies', 'Comment Replies')]
+    if not comment_replies_choice in form.subscription.choices:
+        form.subscription.choices += [comment_replies_choice]
     for field in form:
         print(f"{field.name}: {field.data}")
     if form.validate_on_submit() and form.validated.data == '':
