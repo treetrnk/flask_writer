@@ -262,39 +262,41 @@ def custom_form():
 
         form_html += "</ul>"
 
+
         current_app.logger.info("Custom form submission: " + form_text)
 
-        body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
+        if re.match(r"[A-Za-z'-\s]*", form.get('name')): # Validate against Bitcoin requests
+            body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
 
-        recipients = current_app.config.get('ADMINS') 
-        send_email(
-                subject, 
-                current_app.config['MAIL_DEFAULT_SENDER'], 
-                recipients, 
-                body+form_text, 
-                render_template(
-                    'email/manual.html', 
-                    page=Page.query.filter_by(slug='home').first(), 
-                    body=body+form_html
-                )
-        )
-
-        response_page = Page.query.filter_by(slug='custom-form-response').first()
-        response_name = form.get('name') or ''
-        recipients = [form.get('email')]
-        if (form.get('email') and response_page): 
+            recipients = current_app.config.get('ADMINS') 
             send_email(
-                    f'{response_page.title} - {current_app.config["SITE_NAME"]}', 
+                    subject, 
                     current_app.config['MAIL_DEFAULT_SENDER'], 
                     recipients, 
                     body+form_text, 
                     render_template(
                         'email/manual.html', 
-                        page=response_page,
-                        recipient=response_name,
-                        body=response_page.html_body() + "<br /><br />For your reference, you submitted the following information:" + form_html,
+                        page=Page.query.filter_by(slug='home').first(), 
+                        body=body+form_html
                     )
             )
+
+            response_page = Page.query.filter_by(slug='custom-form-response').first()
+            response_name = form.get('name') or ''
+            recipients = [form.get('email')]
+            if (form.get('email') and response_page): 
+                send_email(
+                        f'{response_page.title} - {current_app.config["SITE_NAME"]}', 
+                        current_app.config['MAIL_DEFAULT_SENDER'], 
+                        recipients, 
+                        body+form_text, 
+                        render_template(
+                            'email/manual.html', 
+                            page=response_page,
+                            recipient=response_name,
+                            body=response_page.html_body() + "<br /><br />For your reference, you submitted the following information:" + form_html,
+                        )
+                )
         
     flash('Thank you for reaching out!', 'success')
     return redirect(url_for('page.index', path="/"))    
