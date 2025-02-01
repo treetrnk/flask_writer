@@ -265,7 +265,8 @@ def custom_form():
 
         current_app.logger.info("Custom form submission: " + form_text)
 
-        if re.match(r"[A-Za-z'-\s]*", form.get('name')): # Validate against Bitcoin requests
+        if re.match(r"^[A-Za-z'\s-]*$", form.get('name')): # Validate against Bitcoin requests
+            current_app.logger.info(f'Form submission passed validation.')
             body = f"You received a message via the {current_app.config.get('SITE_NAME')} custom form at {current_app.config.get('BASE_URL')}."
 
             recipients = current_app.config.get('ADMINS') 
@@ -297,6 +298,8 @@ def custom_form():
                             body=response_page.html_body() + "<br /><br />For your reference, you submitted the following information:" + form_html,
                         )
                 )
+        else:
+            current_app.logger.info(f'Form submission failed validation.')
         
     flash('Thank you for reaching out!', 'success')
     return redirect(url_for('page.index', path="/"))    
